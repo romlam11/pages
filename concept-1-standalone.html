@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty DIY Onboarding — Cinematic Migration Theatre</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #000; }
+
+        /* Screen management */
+        .screen { display: none; min-height: 100vh; }
+        .screen.active { display: flex; flex-direction: column; }
+
+        /* ── SCREEN 1: URL Entry ── */
+        .url-entry { align-items: center; justify-content: center; text-align: center; padding: 40px 20px; }
+        .url-entry h1 { font-size: 36px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .url-entry p { font-size: 18px; color: #666; margin-bottom: 40px; max-width: 500px; }
+        .url-input-wrap { display: flex; gap: 12px; width: 100%; max-width: 560px; }
+        .url-input-wrap input {
+            flex: 1; border: 2px solid #000; padding: 14px 18px; font-size: 16px;
+            border-radius: 8px; outline: none; transition: border-color 0.2s;
+        }
+        .url-input-wrap input:focus { border-color: #333; }
+        .url-input-wrap button {
+            background: #000; color: #fff; border: none; padding: 14px 28px;
+            font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .url-input-wrap button:hover { background: #333; }
+        .url-validation { margin-top: 16px; font-size: 14px; color: #999; height: 20px; }
+        .url-validation.error { color: #c00; }
+        .url-validation.success { color: #060; }
+        .url-trust { margin-top: 48px; display: flex; gap: 32px; color: #999; font-size: 13px; }
+        .url-trust span { display: flex; align-items: center; gap: 6px; }
+
+        /* ── SCREEN 2: Cinematic Generation ── */
+        .generation { background: #000; color: #fff; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .gen-stage-label {
+            position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+            font-size: 14px; color: #888; letter-spacing: 1px; text-transform: uppercase;
+            transition: opacity 0.6s;
+        }
+        .gen-progress-bar {
+            position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+            width: 200px; height: 3px; background: #333; border-radius: 2px; overflow: hidden;
+        }
+        .gen-progress-fill { height: 100%; width: 0%; background: #fff; transition: width 1.2s ease-out; }
+        .gen-site-preview {
+            width: 80%; max-width: 900px; background: #111; border: 1px solid #333;
+            border-radius: 12px; overflow: hidden; min-height: 500px; position: relative;
+        }
+        .gen-browser-bar {
+            background: #1a1a1a; padding: 10px 16px; display: flex; align-items: center; gap: 8px;
+            border-bottom: 1px solid #333;
+        }
+        .gen-browser-dot { width: 10px; height: 10px; border-radius: 50%; background: #333; }
+        .gen-browser-url { flex: 1; background: #222; border-radius: 4px; padding: 6px 12px; font-size: 12px; color: #666; margin-left: 8px; }
+        .gen-site-content { padding: 0; }
+        .gen-section {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            padding: 32px 40px; border-bottom: 1px solid #222;
+        }
+        .gen-section.revealed { opacity: 1; transform: translateY(0); }
+        .gen-section-label {
+            font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555;
+            margin-bottom: 12px;
+        }
+        .gen-hero { min-height: 180px; background: #1a1a1a; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .gen-hero-text { text-align: center; }
+        .gen-hero-text h2 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .gen-hero-text p { color: #888; font-size: 14px; }
+        .gen-nav { display: flex; gap: 24px; padding: 16px 40px; border-bottom: 1px solid #222; }
+        .gen-nav span { font-size: 13px; color: #666; }
+        .gen-nav span:first-child { color: #fff; }
+        .gen-services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .gen-service-card {
+            background: #1a1a1a; border-radius: 8px; padding: 20px;
+            border: 1px solid #333;
+        }
+        .gen-service-card h4 { font-size: 14px; color: #fff; margin-bottom: 4px; }
+        .gen-service-card p { font-size: 12px; color: #666; }
+        .gen-about { display: flex; gap: 24px; align-items: center; }
+        .gen-about-img { width: 120px; height: 80px; background: #1a1a1a; border-radius: 8px; flex-shrink: 0; }
+        .gen-about-text h3 { font-size: 16px; color: #fff; margin-bottom: 4px; }
+        .gen-about-text p { font-size: 13px; color: #666; line-height: 1.5; }
+        .gen-narration {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            font-size: 15px; color: #fff; text-align: center;
+            transition: opacity 0.4s;
+        }
+
+        /* ── SCREEN 3: Service Setup ── */
+        .service-setup { padding: 60px 40px; max-width: 800px; margin: 0 auto; width: 100%; }
+        .service-setup h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .service-setup > p { color: #666; margin-bottom: 32px; font-size: 15px; }
+        .service-categories { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+        .service-cat {
+            border: 2px solid #ddd; border-radius: 24px; padding: 8px 18px;
+            font-size: 14px; cursor: pointer; transition: all 0.2s; background: #fff;
+        }
+        .service-cat:hover { border-color: #000; }
+        .service-cat.selected { background: #000; color: #fff; border-color: #000; }
+        .service-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+        .service-item {
+            display: grid; grid-template-columns: 1fr 100px 80px 40px;
+            gap: 12px; align-items: center; padding: 16px; border: 1px solid #e0e0e0;
+            border-radius: 8px; transition: border-color 0.2s;
+        }
+        .service-item:hover { border-color: #000; }
+        .service-item input {
+            border: 1px solid #ddd; padding: 8px 10px; border-radius: 4px;
+            font-size: 14px; outline: none;
+        }
+        .service-item input:focus { border-color: #000; }
+        .service-item .service-name { font-weight: 500; font-size: 15px; }
+        .service-remove { background: none; border: none; font-size: 18px; color: #999; cursor: pointer; }
+        .service-remove:hover { color: #000; }
+        .add-service-btn {
+            background: #fff; border: 2px dashed #ddd; padding: 14px; text-align: center;
+            border-radius: 8px; cursor: pointer; font-size: 14px; color: #666;
+            transition: border-color 0.2s;
+        }
+        .add-service-btn:hover { border-color: #000; color: #000; }
+        .setup-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
+        .skip-btn { background: none; border: none; font-size: 14px; color: #666; cursor: pointer; text-decoration: underline; }
+        .continue-btn {
+            background: #000; color: #fff; border: none; padding: 14px 32px;
+            font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer;
+        }
+        .continue-btn:hover { background: #333; }
+
+        /* ── SCREEN 4: Wix Dashboard (faithful to real Wix BM) ── */
+        .dashboard { display: flex !important; flex-direction: row !important; min-height: 100vh; background: #f0f2f5; }
+
+        /* Hide topbar and sidebar until dashboard is active */
+        .wix-topbar, .wix-sidebar { display: none; }
+        .dashboard.active .wix-topbar { display: flex; }
+        .dashboard.active .wix-sidebar { display: flex; }
+
+        /* Top bar */
+        .wix-topbar {
+            position: fixed; top: 0; left: 0; right: 0; height: 48px; background: #1b1f3b;
+            align-items: center; padding: 0 16px; z-index: 200; color: #fff;
+        }
+        .wix-topbar-logo { font-weight: 700; font-size: 14px; margin-right: 8px; letter-spacing: 0.5px; }
+        .wix-topbar-site { font-size: 13px; color: #c0c4d0; margin-right: 16px; display: flex; align-items: center; gap: 4px; }
+        .wix-topbar-links { display: flex; gap: 14px; margin-right: auto; }
+        .wix-topbar-links a { color: #c0c4d0; font-size: 12px; text-decoration: none; }
+        .wix-topbar-links a:hover { color: #fff; }
+        .wix-topbar-upgrade { background: #4e5dff; color: #fff; border: none; padding: 5px 14px; border-radius: 16px; font-size: 12px; font-weight: 600; cursor: pointer; margin-right: 16px; }
+        .wix-topbar-search { background: #2b2f4e; border: none; color: #8b8fa3; padding: 6px 14px; border-radius: 18px; font-size: 12px; width: 200px; margin-right: 12px; }
+        .wix-topbar-icons { display: flex; gap: 12px; align-items: center; }
+        .wix-topbar-icon { width: 28px; height: 28px; border-radius: 50%; background: #2b2f4e; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #c0c4d0; cursor: pointer; }
+
+        /* Left sidebar */
+        .wix-sidebar {
+            width: 220px; min-width: 220px; background: #fff; border-right: 1px solid #e0e3e8;
+            padding-top: 48px; flex-direction: column; height: 100vh;
+            position: fixed; top: 0; left: 0; z-index: 150; overflow-y: auto;
+        }
+        .wix-sidebar-section { padding: 12px 12px 8px; }
+        .wix-sidebar-section-title { font-size: 11px; font-weight: 600; color: #999; padding: 4px 12px; margin-bottom: 4px; }
+        .wix-sidebar-progress { font-size: 11px; color: #999; padding: 0 12px 8px; }
+        .wix-sidebar-nav { flex: 1; padding: 0 8px; }
+        .wix-nav-item {
+            display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+            font-size: 13px; color: #333; border-radius: 6px; cursor: pointer;
+            transition: background 0.1s; text-decoration: none;
+        }
+        .wix-nav-item:hover { background: #f5f5f5; }
+        .wix-nav-item.active { background: #f0f2f5; font-weight: 500; }
+        .wix-nav-icon { width: 18px; text-align: center; font-size: 14px; color: #666; flex-shrink: 0; }
+        .wix-nav-label { flex: 1; }
+        .wix-nav-badge { background: #4e5dff; color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 8px; font-weight: 600; }
+        .wix-nav-chevron { font-size: 10px; color: #ccc; }
+        .wix-quick-actions {
+            margin: 8px 12px 12px; padding: 8px; border: 1px solid #e0e3e8; border-radius: 8px;
+            text-align: center; font-size: 13px; color: #333; cursor: pointer;
+        }
+        .wix-quick-actions:hover { background: #f5f5f5; }
+
+        /* Main content */
+        .wix-main { flex: 1; margin-left: 220px; padding-top: 48px; }
+        .wix-main-content { padding: 32px; max-width: 880px; }
+        .wix-welcome { font-size: 26px; font-weight: 600; margin-bottom: 4px; }
+        .wix-welcome-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .wix-design-site-btn {
+            display: flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #ddd;
+            padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; color: #333;
+        }
+        .wix-design-site-btn:hover { border-color: #000; }
+
+        /* Checklist card */
+        .wix-checklist-card {
+            background: #fff; border: 1px solid #e0e3e8; border-radius: 12px;
+            overflow: hidden;
+        }
+        .wix-checklist-header {
+            padding: 20px 24px 16px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .wix-checklist-header h3 { font-size: 16px; font-weight: 600; }
+        .wix-checklist-progress-wrap { display: flex; align-items: center; gap: 8px; }
+        .wix-checklist-progress-text { font-size: 13px; color: #666; }
+        .wix-checklist-progress-bar { width: 80px; height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
+        .wix-checklist-progress-fill { height: 100%; background: #4e5dff; border-radius: 3px; }
+        .wix-checklist-items { }
+        .wix-checklist-item {
+            display: flex; align-items: center; gap: 14px; padding: 16px 24px;
+            border-top: 1px solid #f0f0f0; cursor: pointer; transition: background 0.1s;
+        }
+        .wix-checklist-item:hover { background: #fafafa; }
+        .wix-checklist-item.expanded { background: #f5f7ff; border: 1px solid #d0d5ff; border-radius: 8px; margin: 8px 12px; padding: 20px; flex-direction: column; align-items: flex-start; }
+        .wix-checklist-dot {
+            width: 8px; height: 8px; border-radius: 50%; background: #4e5dff; flex-shrink: 0;
+        }
+        .wix-checklist-dot.done { background: #ccc; }
+        .wix-checklist-text { flex: 1; font-size: 14px; color: #333; }
+        .wix-checklist-text.done { color: #999; text-decoration: line-through; }
+        .wix-checklist-action {
+            background: #fff; border: 1px solid #ddd; padding: 6px 16px; border-radius: 18px;
+            font-size: 13px; cursor: pointer; white-space: nowrap;
+        }
+        .wix-checklist-action:hover { border-color: #000; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .url-entry h1 { font-size: 28px; }
+            .url-input-wrap { flex-direction: column; }
+            .gen-site-preview { width: 95%; }
+            .gen-services-grid { grid-template-columns: 1fr; }
+            .service-item { grid-template-columns: 1fr; }
+            .wix-sidebar { display: none; }
+            .wix-main { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SCREEN 1: URL Entry -->
+<div class="screen url-entry active" id="screen-url">
+    <h1>Bring your beauty business to Wix</h1>
+    <p>Paste your website URL and watch your new site come to life — with online booking ready from day one.</p>
+    <div class="url-input-wrap">
+        <input type="url" id="urlInput" placeholder="https://your-salon-website.com" aria-label="Your website URL">
+        <button id="generateBtn" onclick="startGeneration()">Generate my site</button>
+    </div>
+    <div class="url-validation" id="urlValidation"></div>
+    <div class="url-trust">
+        <span>✓ Your content stays yours</span>
+        <span>✓ Ready in under 10 minutes</span>
+        <span>✓ Online booking included</span>
+    </div>
+</div>
+
+<!-- SCREEN 2: Cinematic Generation -->
+<div class="screen generation" id="screen-generation">
+    <div class="gen-stage-label" id="genStageLabel">Analyzing your website</div>
+    <div class="gen-progress-bar"><div class="gen-progress-fill" id="genProgressFill"></div></div>
+
+    <div class="gen-site-preview">
+        <div class="gen-browser-bar">
+            <div class="gen-browser-dot"></div>
+            <div class="gen-browser-dot"></div>
+            <div class="gen-browser-dot"></div>
+            <div class="gen-browser-url" id="genBrowserUrl">your-new-site.wix.com</div>
+        </div>
+        <!-- CONCEPT 1 CHANGE: Progressive reveal navigation -->
+        <div class="gen-nav gen-section" id="genNav">
+            <span>Home</span><span>Services</span><span>About</span><span>Book Now</span><span>Contact</span>
+        </div>
+        <div class="gen-site-content">
+            <!-- CONCEPT 1 CHANGE: Each section reveals progressively with narration -->
+            <div class="gen-section" id="genHero">
+                <div class="gen-section-label">Hero Section — imported from your site</div>
+                <div class="gen-hero">
+                    <div class="gen-hero-text">
+                        <h2>Jane's Beauty Studio</h2>
+                        <p>Premium hair and beauty services in downtown LA</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gen-section" id="genServices">
+                <div class="gen-section-label">Services — extracted from your site</div>
+                <div class="gen-services-grid">
+                    <div class="gen-service-card"><h4>Haircut & Style</h4><p>From $65 · 45 min</p></div>
+                    <div class="gen-service-card"><h4>Balayage</h4><p>From $180 · 120 min</p></div>
+                    <div class="gen-service-card"><h4>Blowout</h4><p>$45 · 30 min</p></div>
+                    <div class="gen-service-card"><h4>Color Treatment</h4><p>From $120 · 90 min</p></div>
+                    <div class="gen-service-card"><h4>Deep Conditioning</h4><p>$35 · 20 min</p></div>
+                    <div class="gen-service-card"><h4>Bridal Styling</h4><p>From $250 · 180 min</p></div>
+                </div>
+            </div>
+            <div class="gen-section" id="genAbout">
+                <div class="gen-section-label">About — matched to your brand</div>
+                <div class="gen-about">
+                    <div class="gen-about-img"></div>
+                    <div class="gen-about-text">
+                        <h3>About Jane's Beauty Studio</h3>
+                        <p>Located in the heart of downtown, we've been transforming looks and boosting confidence for over 8 years. Our expert stylists specialize in color, cuts, and bridal beauty.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="gen-section" id="genBooking">
+                <div class="gen-section-label">Booking — Wix Bookings auto-configured</div>
+                <div style="text-align:center; padding: 24px; background: #1a1a1a; border-radius: 8px;">
+                    <p style="color: #888; font-size: 14px; margin-bottom: 12px;">Online booking is live</p>
+                    <div style="background:#fff; color:#000; display:inline-block; padding: 10px 24px; border-radius: 6px; font-weight: 600; font-size: 14px;">Book an Appointment</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gen-narration" id="genNarration">Scanning your website...</div>
+</div>
+
+<!-- SCREEN 3: Service Setup -->
+<div class="screen service-setup" id="screen-services">
+    <h2>Confirm your services</h2>
+    <p>We found these services on your website. Edit names, prices, or durations — then add any we missed.</p>
+
+    <div class="service-categories">
+        <span class="service-cat selected">All</span>
+        <span class="service-cat">Hair</span>
+        <span class="service-cat">Color</span>
+        <span class="service-cat">Styling</span>
+        <span class="service-cat">Treatments</span>
+    </div>
+
+    <div class="service-list">
+        <div class="service-item">
+            <span class="service-name">Haircut & Style</span>
+            <input type="text" value="$65" aria-label="Price">
+            <input type="text" value="45 min" aria-label="Duration">
+            <button class="service-remove" aria-label="Remove service">×</button>
+        </div>
+        <div class="service-item">
+            <span class="service-name">Balayage</span>
+            <input type="text" value="$180" aria-label="Price">
+            <input type="text" value="120 min" aria-label="Duration">
+            <button class="service-remove" aria-label="Remove service">×</button>
+        </div>
+        <div class="service-item">
+            <span class="service-name">Blowout</span>
+            <input type="text" value="$45" aria-label="Price">
+            <input type="text" value="30 min" aria-label="Duration">
+            <button class="service-remove" aria-label="Remove service">×</button>
+        </div>
+        <div class="service-item">
+            <span class="service-name">Color Treatment</span>
+            <input type="text" value="$120" aria-label="Price">
+            <input type="text" value="90 min" aria-label="Duration">
+            <button class="service-remove" aria-label="Remove service">×</button>
+        </div>
+        <div class="service-item">
+            <span class="service-name">Deep Conditioning</span>
+            <input type="text" value="$35" aria-label="Price">
+            <input type="text" value="20 min" aria-label="Duration">
+            <button class="service-remove" aria-label="Remove service">×</button>
+        </div>
+        <div class="service-item">
+            <span class="service-name">Bridal Styling</span>
+            <input type="text" value="$250" aria-label="Price">
+            <input type="text" value="180 min" aria-label="Duration">
+            <button class="service-remove" aria-label="Remove service">×</button>
+        </div>
+    </div>
+    <div class="add-service-btn" onclick="alert('Add custom service form would open')">+ Add a service</div>
+    <div class="setup-actions">
+        <button class="skip-btn" onclick="showScreen('screen-dashboard')">Set up later</button>
+        <button class="continue-btn" onclick="showScreen('screen-dashboard')">Save and continue</button>
+    </div>
+</div>
+
+<!-- SCREEN 4: Wix Dashboard — curated for beauty -->
+<div class="screen dashboard" id="screen-dashboard">
+    <!-- Top bar (matches Wix Studio) -->
+    <div class="wix-topbar">
+        <span class="wix-topbar-logo">Wix</span>
+        <span class="wix-topbar-site">Jane's Beauty Studio ▾</span>
+        <div class="wix-topbar-links">
+            <a href="#">Resources</a>
+            <a href="#">Community</a>
+            <a href="#">Help</a>
+        </div>
+        <button class="wix-topbar-upgrade">Upgrade</button>
+        <input class="wix-topbar-search" placeholder="Search for tools, apps, help & more..." aria-label="Search">
+        <div class="wix-topbar-icons">
+            <div class="wix-topbar-icon">🔔</div>
+            <div class="wix-topbar-icon">✉</div>
+            <div class="wix-topbar-icon" style="background:#4e5dff;">✦</div>
+        </div>
+    </div>
+
+    <!-- Left sidebar — beauty-lean navigation -->
+    <nav class="wix-sidebar" aria-label="Dashboard navigation">
+        <div class="wix-quick-actions">Quick Actions ▾</div>
+
+        <div class="wix-sidebar-section">
+            <div class="wix-sidebar-section-title">Get set up for beauty</div>
+            <div class="wix-sidebar-progress">2/5 completed</div>
+        </div>
+
+        <div class="wix-sidebar-nav">
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">⚙</span><span class="wix-nav-label">Setup</span></a>
+            <a class="wix-nav-item active" href="#"><span class="wix-nav-icon">🏠</span><span class="wix-nav-label">Home</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">📅</span><span class="wix-nav-label">Booking Calendar</span><span class="wix-nav-chevron">›</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">💳</span><span class="wix-nav-label">Getting Paid</span><span class="wix-nav-chevron">›</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">📋</span><span class="wix-nav-label">Catalog</span><span class="wix-nav-chevron">›</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">🌐</span><span class="wix-nav-label">Site & Mobile App</span><span class="wix-nav-chevron">›</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">📣</span><span class="wix-nav-label">Marketing</span><span class="wix-nav-chevron">›</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">✉</span><span class="wix-nav-label">Inbox</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">👥</span><span class="wix-nav-label">Customers & Leads</span><span class="wix-nav-chevron">›</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">📊</span><span class="wix-nav-label">Analytics</span><span class="wix-nav-chevron">›</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">⚡</span><span class="wix-nav-label">Automations</span></a>
+            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">⚙</span><span class="wix-nav-label">Settings</span></a>
+        </div>
+    </nav>
+
+    <!-- Main content area -->
+    <div class="wix-main">
+        <div class="wix-main-content">
+            <div class="wix-welcome-row">
+                <h1 class="wix-welcome">Welcome to your new home at Wix</h1>
+                <button class="wix-design-site-btn">✏ Design Site</button>
+            </div>
+
+            <!-- Beauty onboarding checklist -->
+            <div class="wix-checklist-card">
+                <div class="wix-checklist-header">
+                    <h3>Get your beauty business live</h3>
+                    <div class="wix-checklist-progress-wrap">
+                        <span class="wix-checklist-progress-text">2/5 completed</span>
+                        <div class="wix-checklist-progress-bar"><div class="wix-checklist-progress-fill" style="width:40%"></div></div>
+                    </div>
+                </div>
+                <div class="wix-checklist-items">
+                    <div class="wix-checklist-item">
+                        <div class="wix-checklist-dot done"></div>
+                        <span class="wix-checklist-text done">Site generated from your URL</span>
+                    </div>
+                    <div class="wix-checklist-item">
+                        <div class="wix-checklist-dot done"></div>
+                        <span class="wix-checklist-text done">Services set up in Wix Bookings</span>
+                    </div>
+                    <div class="wix-checklist-item">
+                        <div class="wix-checklist-dot"></div>
+                        <span class="wix-checklist-text">Set your working hours</span>
+                        <button class="wix-checklist-action">Set Hours</button>
+                    </div>
+                    <div class="wix-checklist-item expanded">
+                        <div style="display:flex; align-items:center; gap:14px; width:100%;">
+                            <div class="wix-checklist-dot"></div>
+                            <span class="wix-checklist-text" style="font-weight:600;">Connect a custom domain</span>
+                        </div>
+                        <p style="font-size:13px; color:#666; margin: 8px 0 12px 22px;">Make this recommended domain yours or search for an available one.</p>
+                        <div style="display:flex; gap:8px; margin-left:22px; width: calc(100% - 22px);">
+                            <input type="text" value="janes-beauty.com" style="flex:1; border:1px solid #ddd; padding:8px 12px; border-radius:20px; font-size:13px; outline:none;">
+                            <button style="background:#4e5dff; color:#fff; border:none; padding:8px 18px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer;">Let's Go</button>
+                        </div>
+                    </div>
+                    <div class="wix-checklist-item">
+                        <div class="wix-checklist-dot"></div>
+                        <span class="wix-checklist-text">Share your booking link</span>
+                        <button class="wix-checklist-action">Share Link</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startGeneration() {
+        const url = document.getElementById('urlInput').value.trim();
+        const validation = document.getElementById('urlValidation');
+
+        if (!url) {
+            validation.textContent = 'Please enter your website URL to continue.';
+            validation.className = 'url-validation error';
+            return;
+        }
+        if (!url.match(/^https?:\/\/.+\..+/)) {
+            validation.textContent = 'This doesn\'t look like a website URL. Try something like https://your-salon.com';
+            validation.className = 'url-validation error';
+            return;
+        }
+
+        validation.textContent = 'URL verified — starting generation...';
+        validation.className = 'url-validation success';
+
+        setTimeout(() => {
+            showScreen('screen-generation');
+            runCinematicGeneration();
+        }, 800);
+    }
+
+    function runCinematicGeneration() {
+        const stages = [
+            { label: 'Scanning your website', narration: 'Reading your homepage content and design...', progress: 10, delay: 0 },
+            { label: 'Extracting brand identity', narration: 'Found your logo, brand colors, and imagery...', progress: 25, delay: 2000, reveal: 'genNav' },
+            { label: 'Building your homepage', narration: 'Recreating your hero section on Wix...', progress: 40, delay: 4000, reveal: 'genHero' },
+            { label: 'Finding your services', narration: 'Extracted 6 services from your site...', progress: 60, delay: 7000, reveal: 'genServices' },
+            { label: 'Generating pages', narration: 'Creating About and Contact pages in your style...', progress: 75, delay: 10000, reveal: 'genAbout' },
+            { label: 'Setting up Wix Bookings', narration: 'Online booking is now active on your site...', progress: 90, delay: 13000, reveal: 'genBooking' },
+            { label: 'Your site is ready', narration: '', progress: 100, delay: 16000 },
+        ];
+
+        stages.forEach(stage => {
+            setTimeout(() => {
+                document.getElementById('genStageLabel').textContent = stage.label;
+                document.getElementById('genProgressFill').style.width = stage.progress + '%';
+                document.getElementById('genNarration').textContent = stage.narration;
+                if (stage.reveal) {
+                    document.getElementById(stage.reveal).classList.add('revealed');
+                }
+            }, stage.delay);
+        });
+
+        // Transition to service setup
+        setTimeout(() => {
+            showScreen('screen-services');
+        }, 19000);
+    }
+
+    // Pre-fill URL for demo
+    document.getElementById('urlInput').value = 'https://janes-beauty-studio.com';
+</script>
+
+</body>
+</html>
