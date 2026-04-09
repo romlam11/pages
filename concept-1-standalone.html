@@ -132,12 +132,7 @@
         .continue-btn:hover { background: #333; }
 
         /* ── SCREEN 4: Wix Dashboard (faithful to real Wix BM) ── */
-        .dashboard { display: flex !important; flex-direction: row !important; min-height: 100vh; background: #f0f2f5; }
-
-        /* Hide topbar and sidebar until dashboard is active */
-        .wix-topbar, .wix-sidebar { display: none; }
-        .dashboard.active .wix-topbar { display: flex; }
-        .dashboard.active .wix-sidebar { display: flex; }
+        .dashboard.active { display: flex; flex-direction: row; min-height: 100vh; background: #f0f2f5; }
 
         /* Top bar */
         .wix-topbar {
