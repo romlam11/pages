@@ -5,275 +5,383 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beauty DIY Onboarding — Concept 1</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #000; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif; background: #fff; color: #111; -webkit-font-smoothing: antialiased; }
 
+        /* ── Screen transitions ── */
         .screen { display: none; min-height: 100vh; }
-        .screen.active { display: flex; flex-direction: column; }
-
-        /* ────────────────────────────────────────
-           SCREEN 1: URL → Fetch → Confirm
-        ──────────────────────────────────────── */
-        .url-entry { align-items: center; justify-content: center; text-align: center; padding: 60px 20px; }
-        .url-entry h1 { font-size: 36px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
-        .url-entry > p { font-size: 18px; color: #666; margin-bottom: 40px; max-width: 500px; }
-
-        .url-phase { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 560px; gap: 12px; }
-        .url-phase-row { display: flex; gap: 12px; width: 100%; }
-        .url-phase-row input { flex: 1; border: 2px solid #000; padding: 14px 18px; font-size: 16px; border-radius: 8px; outline: none; }
-        .url-phase-row button { background: #000; color: #fff; border: none; padding: 14px 28px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; white-space: nowrap; }
-        .url-phase-row button:hover { background: #333; }
-        .url-validation { font-size: 14px; color: #999; min-height: 20px; text-align: left; width: 100%; }
-        .url-validation.error { color: #c00; }
-
-        .url-fetching { display: none; align-items: center; gap: 10px; font-size: 14px; color: #666; margin-top: 4px; }
-        .url-fetching.visible { display: flex; }
-        .fetch-spinner { width: 16px; height: 16px; border: 2px solid #ddd; border-top-color: #000; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+        .screen.active { display: flex; flex-direction: column; animation: screenIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        @keyframes screenIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes shimmer { 0% { background-position: -500px 0; } 100% { background-position: 500px 0; } }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        .confirm-phase { display: none; flex-direction: column; width: 100%; max-width: 560px; gap: 16px; }
-        .confirm-phase.visible { display: flex; }
-        .confirm-intro { background: #f5f5f5; border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 10px; font-size: 14px; text-align: left; }
-        .confirm-intro strong { display: block; font-size: 15px; margin-bottom: 2px; }
-        .confirm-intro span { color: #666; font-size: 13px; }
-        .confirm-fields { display: flex; flex-direction: column; gap: 12px; }
-        .confirm-field { display: flex; flex-direction: column; gap: 4px; }
-        .confirm-field label { font-size: 13px; font-weight: 500; color: #333; text-align: left; }
-        .confirm-field input, .confirm-field select { border: 2px solid #e0e0e0; padding: 12px 16px; font-size: 15px; border-radius: 8px; outline: none; transition: border-color 0.2s; background: #fff; color: #000; }
-        .confirm-field input:focus, .confirm-field select:focus { border-color: #000; }
-        .confirm-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .confirm-actions { display: flex; justify-content: space-between; align-items: center; }
-        .confirm-back { background: none; border: none; font-size: 14px; color: #666; cursor: pointer; text-decoration: underline; }
-        .confirm-next { background: #000; color: #fff; border: none; padding: 14px 32px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; }
-        .confirm-next:hover { background: #333; }
+        /* ── Step dots ── */
+        .steps { display: flex; align-items: center; justify-content: center; padding: 28px 0 0; gap: 0; flex-shrink: 0; }
+        .step-dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #ccc; transition: all 0.35s cubic-bezier(0.22,1,0.36,1); background: #fff; z-index: 1; }
+        .step-dot.active { border-color: #111; color: #111; }
+        .step-dot.done { border-color: #111; background: #111; color: #fff; }
+        .step-line { width: 44px; height: 2px; background: #e8e8e8; transition: background 0.35s ease; }
+        .step-line.done { background: #111; }
+        .step-labels { display: flex; justify-content: center; margin-top: 7px; gap: 0; padding: 0; }
+        .step-lbl { width: 70px; text-align: center; font-size: 11px; color: #ccc; transition: color 0.3s; line-height: 1.3; }
+        .step-lbl.active { color: #111; font-weight: 500; }
+        .step-lbl.done { color: #888; }
 
-        .url-trust { margin-top: 40px; display: flex; gap: 32px; color: #999; font-size: 13px; }
-        .url-trust span { display: flex; align-items: center; gap: 6px; }
+        /* ════════════════════════════════════
+           SCREEN 1 — URL Entry
+        ════════════════════════════════════ */
+        #screen-url { align-items: center; justify-content: center; text-align: center; padding: 52px 24px 72px; }
+        .s1-inner { width: 100%; max-width: 520px; }
+        .s1-logo { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 36px; font-size: 13px; font-weight: 600; color: #111; }
+        .s1-logo-mark { width: 22px; height: 22px; background: #111; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; }
+        #screen-url h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 12px; }
+        #screen-url h1 span { color: #888; }
+        #screen-url > .s1-inner > p { font-size: 16px; color: #777; margin-bottom: 36px; line-height: 1.55; }
 
-        /* ────────────────────────────────────────
-           SCREEN 2: Template Selection
-        ──────────────────────────────────────── */
-        .template-screen { align-items: center; padding: 48px 24px; }
-        .template-screen h2 { font-size: 30px; font-weight: 700; margin-bottom: 8px; }
-        .template-screen > p { color: #666; font-size: 16px; margin-bottom: 36px; text-align: center; }
-        .template-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 960px; width: 100%; margin-bottom: 32px; }
-        .template-card { border: 2px solid #e0e0e0; border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
-        .template-card:hover { border-color: #999; }
-        .template-card.selected { border-color: #000; box-shadow: 0 0 0 2px #000; }
-        .template-preview { height: 260px; background: #f5f5f5; display: flex; flex-direction: column; }
-        .tp-nav { display: flex; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #eee; font-size: 11px; color: #999; }
-        .tp-hero { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .tp-hero-text { text-align: center; }
-        .tp-hero-text h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-        .tp-hero-text p { font-size: 11px; color: #777; }
-        .tp-services { display: flex; gap: 8px; padding: 10px 14px; border-top: 1px solid #eee; }
-        .tp-service-pill { font-size: 10px; background: #eee; border-radius: 10px; padding: 3px 8px; color: #555; }
-        .template-info { padding: 14px 16px; }
-        .template-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: #000; color: #fff; margin-bottom: 6px; }
-        .template-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
-        .template-info p { font-size: 12px; color: #666; }
-        .template-actions { display: flex; justify-content: space-between; align-items: center; max-width: 960px; width: 100%; }
-        .tmpl-back-btn { background: none; border: none; font-size: 14px; color: #666; cursor: pointer; text-decoration: underline; }
-        .tmpl-continue-btn { background: #000; color: #fff; border: none; padding: 14px 32px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; }
-        .tmpl-continue-btn:hover { background: #333; }
-        .tmpl-1 .tp-hero { background: #f8f8f8; }
-        .tmpl-2 .tp-hero { background: #f2f0ec; }
-        .tmpl-2 .tp-hero-text h3 { font-style: italic; }
-        .tmpl-3 .tp-hero { background: #e8e8e8; }
-        .tmpl-3 .tp-hero-text h3 { letter-spacing: 2px; font-size: 13px; text-transform: uppercase; }
-        .tmpl-3 .tp-nav { justify-content: center; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; }
+        /* URL input row */
+        .url-row { position: relative; margin-bottom: 10px; }
+        .url-row input { width: 100%; border: 2px solid #e0e0e0; padding: 15px 132px 15px 16px; font-size: 15px; border-radius: 12px; outline: none; color: #111; background: #fff; transition: border-color 0.2s, box-shadow 0.2s; }
+        .url-row input:focus { border-color: #111; box-shadow: 0 0 0 4px rgba(17,17,17,0.06); }
+        .url-row input.has-error { border-color: #d92020; }
+        .url-go { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: #111; color: #fff; border: none; padding: 10px 18px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; white-space: nowrap; transition: background 0.15s, transform 0.1s; }
+        .url-go:hover { background: #333; }
+        .url-go:active { transform: translateY(-50%) scale(0.97); }
+        .url-err { font-size: 13px; color: #d92020; min-height: 18px; text-align: left; margin-bottom: 4px; animation: fadeUp 0.2s ease; }
+        .url-fetching { display: none; align-items: center; justify-content: center; gap: 9px; font-size: 14px; color: #777; padding: 8px 0 4px; }
+        .url-fetching.on { display: flex; animation: fadeUp 0.3s ease; }
+        .spinner-sm { width: 17px; height: 17px; border: 2px solid #e0e0e0; border-top-color: #111; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
 
-        /* ────────────────────────────────────────
-           SCREEN 3: Services Setup
-        ──────────────────────────────────────── */
-        .service-setup { padding: 60px 40px; max-width: 800px; margin: 0 auto; width: 100%; }
-        .service-setup h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-        .service-setup > p { color: #666; margin-bottom: 32px; font-size: 15px; }
-        .service-categories { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
-        .service-cat { border: 2px solid #ddd; border-radius: 24px; padding: 8px 18px; font-size: 14px; cursor: pointer; transition: all 0.15s; background: #fff; }
-        .service-cat:hover { border-color: #000; }
-        .service-cat.selected { background: #000; color: #fff; border-color: #000; }
+        /* Divider */
+        .or-row { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+        .or-row::before, .or-row::after { content: ''; flex: 1; height: 1px; background: #ebebeb; }
+        .or-row span { font-size: 12px; color: #bbb; }
 
-        /* Source banner */
-        .source-banner {
-            display: flex; align-items: center; gap: 10px; padding: 12px 16px;
-            background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 8px;
-            margin-bottom: 16px; font-size: 13px; color: #555;
-        }
-        .source-banner-icon { font-size: 16px; flex-shrink: 0; }
-        .source-banner strong { color: #000; }
-        .source-banner-url { font-size: 12px; color: #999; margin-top: 1px; }
+        /* Social import buttons */
+        .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+        .soc-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 8px; border: 2px solid #ebebeb; border-radius: 11px; background: #fff; cursor: pointer; font-size: 13px; font-weight: 500; color: #333; transition: all 0.2s ease; }
+        .soc-btn:hover { border-color: #111; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+        .soc-btn.active { border-color: #111; background: #fafafa; }
+        .soc-icon { font-size: 18px; line-height: 1; flex-shrink: 0; }
+        .soc-icon-ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; font-size: 15px; }
+        .soc-icon-fb { color: #1877f2; font-weight: 700; font-size: 16px; font-style: normal; font-family: Georgia, serif; }
+        .soc-icon-ggl { font-size: 15px; }
 
-        .service-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 8px; }
-        .service-item {
-            display: grid; grid-template-columns: 1fr 100px 80px 36px;
-            gap: 12px; align-items: center; padding: 14px 16px;
-            border: 1px solid #e0e0e0; border-radius: 8px; transition: border-color 0.15s;
-        }
-        /* Imported tag inside each row */
-        .service-source-tag {
-            font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 10px;
-            background: #f0f0f0; color: #888; white-space: nowrap; text-align: center;
-        }
-        .service-item:hover { border-color: #bbb; }
-        .service-item input { border: 1px solid #ddd; padding: 8px 10px; border-radius: 6px; font-size: 14px; outline: none; }
-        .service-item input:focus { border-color: #000; }
-        .service-item .service-name { font-weight: 500; font-size: 15px; }
-        .service-remove { background: none; border: none; font-size: 18px; color: #ccc; cursor: pointer; line-height: 1; }
-        .service-remove:hover { color: #c00; }
+        /* Social result card */
+        .soc-result { display: none; background: #f8f9fb; border: 1.5px solid #e4e7ed; border-radius: 12px; padding: 14px 16px; text-align: left; gap: 12px; align-items: center; margin-bottom: 16px; }
+        .soc-result.on { display: flex; animation: fadeUp 0.3s ease; }
+        .soc-result-avatar { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #f4a3c0, #c0a3f4); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .soc-result-info { flex: 1; }
+        .soc-result-name { font-size: 14px; font-weight: 600; color: #111; }
+        .soc-result-handle { font-size: 12px; color: #888; margin-top: 2px; }
+        .soc-result-use { background: #111; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+        .soc-result-use:hover { background: #333; }
 
-        /* Add service — inline form that expands */
-        .add-service-btn {
-            background: #fff; border: 2px dashed #ddd; padding: 14px; text-align: center;
-            border-radius: 8px; cursor: pointer; font-size: 14px; color: #666;
-            transition: border-color 0.15s, color 0.15s; margin-bottom: 0;
-        }
-        .add-service-btn:hover { border-color: #000; color: #000; }
-        .add-service-form {
-            display: none; border: 2px solid #000; border-radius: 8px; padding: 16px;
-            margin-bottom: 0; flex-direction: column; gap: 12px;
-        }
-        .add-service-form.visible { display: flex; }
-        .add-service-form-title { font-size: 14px; font-weight: 600; }
-        .add-service-fields { display: grid; grid-template-columns: 1fr 100px 80px; gap: 10px; }
-        .add-service-fields input { border: 1px solid #ddd; padding: 10px 12px; border-radius: 6px; font-size: 14px; outline: none; }
-        .add-service-fields input:focus { border-color: #000; }
-        .add-service-fields input::placeholder { color: #bbb; }
-        .add-service-form-actions { display: flex; gap: 8px; }
-        .add-svc-confirm { background: #000; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; }
-        .add-svc-cancel { background: #fff; color: #666; border: 1px solid #ddd; padding: 10px 20px; border-radius: 6px; font-size: 14px; cursor: pointer; }
-        .add-svc-cancel:hover { border-color: #000; color: #000; }
+        /* Skip */
+        .skip-url { background: none; border: none; font-size: 13px; color: #bbb; cursor: pointer; padding: 8px; display: block; width: 100%; text-align: center; transition: color 0.15s; margin-top: 4px; }
+        .skip-url:hover { color: #666; }
 
-        .setup-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
-        .skip-btn { background: none; border: none; font-size: 14px; color: #666; cursor: pointer; text-decoration: underline; }
-        .continue-btn { background: #000; color: #fff; border: none; padding: 14px 32px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; }
-        .continue-btn:hover { background: #333; }
+        /* Trust badges */
+        .trust-row { display: flex; gap: 20px; justify-content: center; color: #ccc; font-size: 12px; margin-top: 36px; flex-wrap: wrap; }
+        .trust-row span { display: flex; align-items: center; gap: 5px; }
+        .trust-row span::before { content: '✓'; color: #22c55e; font-weight: 700; }
 
-        /* ────────────────────────────────────────
-           SCREEN 4: Cinematic Generation
-        ──────────────────────────────────────── */
-        .generation { background: #000; color: #fff; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .gen-stage-label { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); font-size: 14px; color: #888; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
-        .gen-progress-bar { position: absolute; top: 80px; left: 50%; transform: translateX(-50%); width: 200px; height: 3px; background: #333; border-radius: 2px; overflow: hidden; }
-        .gen-progress-fill { height: 100%; width: 0%; background: #fff; transition: width 1.2s ease-out; }
-        .gen-site-preview { width: 80%; max-width: 900px; background: #111; border: 1px solid #333; border-radius: 12px; overflow: hidden; min-height: 500px; }
-        .gen-browser-bar { background: #1a1a1a; padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #333; }
-        .gen-browser-dot { width: 10px; height: 10px; border-radius: 50%; background: #333; }
-        .gen-browser-url { flex: 1; background: #222; border-radius: 4px; padding: 6px 12px; font-size: 12px; color: #666; margin-left: 8px; }
-        .gen-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; padding: 32px 40px; border-bottom: 1px solid #222; }
-        .gen-section.revealed { opacity: 1; transform: translateY(0); }
-        .gen-section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555; margin-bottom: 12px; }
-        .gen-nav { display: flex; gap: 24px; padding: 16px 40px; border-bottom: 1px solid #222; }
-        .gen-nav span { font-size: 13px; color: #666; }
-        .gen-nav span:first-child { color: #fff; }
-        .gen-hero { min-height: 180px; background: #1a1a1a; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .gen-hero-text { text-align: center; }
-        .gen-hero-text h2 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-        .gen-hero-text p { color: #888; font-size: 14px; }
-        .gen-services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .gen-service-card { background: #1a1a1a; border-radius: 8px; padding: 20px; border: 1px solid #333; }
-        .gen-service-card h4 { font-size: 14px; color: #fff; margin-bottom: 4px; }
-        .gen-service-card p { font-size: 12px; color: #666; }
-        .gen-about { display: flex; gap: 24px; align-items: center; }
-        .gen-about-img { width: 120px; height: 80px; background: #1a1a1a; border-radius: 8px; flex-shrink: 0; }
-        .gen-about-text h3 { font-size: 16px; color: #fff; margin-bottom: 4px; }
-        .gen-about-text p { font-size: 13px; color: #666; line-height: 1.5; }
-        .gen-narration { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); font-size: 15px; color: #fff; text-align: center; white-space: nowrap; }
+        /* ════════════════════════════════════
+           SCREEN 2 — Business Details
+        ════════════════════════════════════ */
+        #screen-details { align-items: center; justify-content: center; padding: 44px 24px 72px; }
+        .s2-inner { width: 100%; max-width: 540px; }
+        .fetched-pill { display: inline-flex; align-items: center; gap: 5px; background: #ecfdf5; color: #059669; border-radius: 20px; font-size: 11px; font-weight: 600; padding: 4px 10px; margin-bottom: 14px; animation: pop 0.4s ease; }
+        .s2-inner h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.6px; margin-bottom: 6px; }
+        .s2-inner > p { font-size: 15px; color: #777; margin-bottom: 28px; line-height: 1.55; }
 
-        /* ────────────────────────────────────────
-           SCREEN 5: Celebration — split layout
-        ──────────────────────────────────────── */
-        .celebration {
-            flex-direction: row !important;
-            min-height: 100vh; background: #fff;
-        }
+        /* Assets row */
+        .asset-row { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-end; }
+        .asset-col-label { font-size: 11px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .asset-logo-box { width: 72px; height: 72px; border-radius: 14px; border: 2px dashed #ddd; background: linear-gradient(135deg, #fce7f3, #ede9fe); display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; position: relative; overflow: hidden; transition: border-color 0.2s; flex-shrink: 0; }
+        .asset-logo-box:hover { border-color: #111; }
+        .asset-logo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.45); opacity: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #fff; font-weight: 600; transition: opacity 0.2s; }
+        .asset-logo-box:hover .asset-logo-overlay { opacity: 1; }
+        .asset-hero-box { flex: 1; height: 72px; border-radius: 12px; border: 2px dashed #ddd; background: linear-gradient(135deg, #fef3c7, #dbeafe, #fce7f3); position: relative; cursor: pointer; transition: border-color 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: #ccc; overflow: hidden; }
+        .asset-hero-box:hover { border-color: #111; }
+        .asset-badge { position: absolute; top: 6px; right: 8px; background: rgba(0,0,0,0.55); color: #fff; font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 10px; letter-spacing: 0.3px; text-transform: uppercase; }
 
-        /* Left pane: site fills the entire frame */
-        .cel-left {
-            flex: 1; display: flex; flex-direction: column;
-            border-right: 1px solid #e0e0e0; overflow: hidden;
-        }
-        .cel-browser-bar {
-            background: #f5f5f5; padding: 10px 14px; display: flex; align-items: center; gap: 8px;
-            border-bottom: 1px solid #e0e0e0; flex-shrink: 0;
-        }
-        .cel-browser-dot { width: 9px; height: 9px; border-radius: 50%; }
-        .cel-browser-dot:nth-child(1) { background: #ff5f57; }
-        .cel-browser-dot:nth-child(2) { background: #febc2e; }
-        .cel-browser-dot:nth-child(3) { background: #28c840; }
-        .cel-browser-url-bar {
-            flex: 1; background: #fff; border: 1px solid #e0e0e0; border-radius: 6px;
-            padding: 5px 12px; font-size: 12px; color: #666; margin: 0 8px;
-        }
-        /* Site content fills remaining height */
-        .cel-site-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .cel-site-nav { display: flex; gap: 20px; padding: 14px 32px; border-bottom: 1px solid #eee; flex-shrink: 0; }
-        .cel-site-nav span { font-size: 13px; color: #666; }
-        .cel-site-nav span:first-child { font-weight: 600; color: #000; }
-        .cel-site-hero-section {
-            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 48px 32px; border-bottom: 1px solid #eee;
-            background: #fafafa;
-        }
-        .cel-site-hero-section h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-        .cel-site-hero-section p { font-size: 14px; color: #666; margin-bottom: 24px; }
-        .cel-book-now-btn { display: inline-block; background: #000; color: #fff; padding: 12px 28px; border-radius: 6px; font-size: 15px; font-weight: 600; }
-        .cel-site-services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #eee; flex-shrink: 0; }
-        .cel-site-service { background: #fff; padding: 20px; }
-        .cel-site-service h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-        .cel-site-service p { font-size: 12px; color: #888; }
+        /* Form fields */
+        .field-stack { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+        .field { display: flex; flex-direction: column; gap: 5px; }
+        .field label { font-size: 12px; font-weight: 600; color: #444; }
+        .field input, .field select { border: 2px solid #e8e8e8; padding: 13px 16px; font-size: 15px; border-radius: 10px; outline: none; background: #fff; color: #111; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; -webkit-appearance: none; appearance: none; }
+        .field input:focus, .field select:focus { border-color: #111; box-shadow: 0 0 0 4px rgba(17,17,17,0.05); }
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .sel-wrap { position: relative; }
+        .sel-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 13px; color: #999; pointer-events: none; }
 
-        /* Right pane: text + CTAs */
-        .cel-right {
-            width: 400px; min-width: 360px; display: flex; flex-direction: column;
-            justify-content: center; padding: 52px 44px;
-        }
-        .cel-confetti { font-size: 40px; margin-bottom: 20px; animation: pop 0.5s ease-out; }
-        @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .cel-right h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; line-height: 1.2; }
-        .cel-right > p { font-size: 14px; color: #666; margin-bottom: 28px; line-height: 1.65; }
-        .cel-stats { display: flex; gap: 20px; margin-bottom: 32px; }
-        .cel-stat-value { font-size: 24px; font-weight: 700; }
-        .cel-stat-label { font-size: 12px; color: #666; margin-top: 2px; }
-        .cel-ctas { display: flex; flex-direction: column; gap: 10px; }
-        .cel-primary-btn { background: #000; color: #fff; border: none; padding: 15px 24px; font-size: 16px; font-weight: 600; border-radius: 10px; cursor: pointer; text-align: center; transition: background 0.2s; }
-        .cel-primary-btn:hover { background: #333; }
+        .row-actions { display: flex; justify-content: space-between; align-items: center; }
+        .back-btn { background: none; border: none; font-size: 14px; color: #aaa; cursor: pointer; display: flex; align-items: center; gap: 3px; padding: 0; transition: color 0.15s; }
+        .back-btn:hover { color: #333; }
+        .next-btn { background: #111; color: #fff; border: none; padding: 14px 32px; font-size: 15px; font-weight: 600; border-radius: 10px; cursor: pointer; transition: background 0.15s, transform 0.1s; }
+        .next-btn:hover { background: #333; }
+        .next-btn:active { transform: scale(0.98); }
 
-        /* SMS link row */
-        .cel-sms-row {
-            display: flex; gap: 8px; align-items: center;
-        }
-        .cel-sms-input {
-            flex: 1; border: 2px solid #e0e0e0; padding: 12px 14px; border-radius: 10px;
-            font-size: 14px; outline: none; transition: border-color 0.15s;
-        }
-        .cel-sms-input:focus { border-color: #000; }
-        .cel-sms-btn {
-            background: #fff; color: #000; border: 2px solid #000; padding: 12px 16px;
-            border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;
-            transition: background 0.15s;
-        }
-        .cel-sms-btn:hover { background: #f5f5f5; }
-        .cel-sms-sent { display: none; font-size: 13px; color: #060; text-align: center; }
-        .cel-sms-sent.visible { display: block; }
+        /* ════════════════════════════════════
+           SCREEN 3 — Template Selection
+        ════════════════════════════════════ */
+        #screen-template { align-items: center; padding: 44px 24px 72px; }
+        #screen-template h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.6px; margin-bottom: 8px; }
+        #screen-template > p { font-size: 15px; color: #777; margin-bottom: 32px; text-align: center; line-height: 1.5; }
 
-        .cel-divider { display: flex; align-items: center; gap: 10px; margin: 4px 0; }
-        .cel-divider::before, .cel-divider::after { content: ''; flex: 1; height: 1px; background: #e0e0e0; }
-        .cel-divider span { font-size: 12px; color: #bbb; }
+        .tmpl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 840px; width: 100%; margin-bottom: 32px; }
+        .tmpl-card { border: 2px solid #e8e8e8; border-radius: 14px; overflow: hidden; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; position: relative; }
+        .tmpl-card:hover { border-color: #999; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
+        .tmpl-card.selected { border-color: #111; box-shadow: 0 0 0 3px #111; }
+        .tmpl-check { position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; border-radius: 50%; background: #111; color: #fff; display: none; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; animation: pop 0.3s ease; z-index: 2; }
+        .tmpl-card.selected .tmpl-check { display: flex; }
+        .tmpl-preview { height: 230px; display: flex; flex-direction: column; overflow: hidden; }
 
-        .cel-dashboard-btn { background: #fff; color: #000; border: 2px solid #e0e0e0; padding: 13px 24px; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; text-align: center; transition: border-color 0.15s; }
-        .cel-dashboard-btn:hover { border-color: #000; }
+        /* Template 1: Modern Minimal */
+        .t1 .tmpl-preview { background: #fff; }
+        .t1 .tp-nav { display: flex; align-items: center; gap: 14px; padding: 9px 12px; border-bottom: 1px solid #f0f0f0; }
+        .t1 .tp-logo { width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #f4a3c0, #c0a3f4); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; margin-right: auto; }
+        .t1 .tp-link { font-size: 9px; color: #aaa; }
+        .t1 .tp-book { font-size: 9px; font-weight: 600; background: #111; color: #fff; padding: 3px 9px; border-radius: 4px; }
+        .t1 .tp-hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px; text-align: center; background: #fff; }
+        .t1 .tp-hero h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 4px; letter-spacing: -0.3px; }
+        .t1 .tp-hero p { font-size: 9px; color: #aaa; letter-spacing: 1.2px; text-transform: uppercase; }
+        .t1 .tp-hero-cta { background: #111; color: #fff; font-size: 9px; font-weight: 600; padding: 5px 12px; border-radius: 5px; margin-top: 10px; display: inline-block; }
+        .t1 .tp-svcs { display: flex; border-top: 1px solid #f0f0f0; }
+        .t1 .tp-svc { flex: 1; padding: 8px 10px; border-right: 1px solid #f0f0f0; }
+        .t1 .tp-svc:last-child { border-right: none; }
+        .t1 .tp-svc-n { font-size: 9px; font-weight: 600; color: #111; }
+        .t1 .tp-svc-p { font-size: 8px; color: #aaa; margin-top: 1px; }
 
-        /* ────────────────────────────────────────
-           SCREEN 6: Wix Dashboard
-        ──────────────────────────────────────── */
-        .dashboard.active { display: flex; flex-direction: row; min-height: 100vh; background: #f0f2f5; }
+        /* Template 2: Elegant Classic */
+        .t2 .tmpl-preview { background: #faf6f0; }
+        .t2 .tp-hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        .t2 .tp-eyebrow { font-size: 7px; letter-spacing: 2.5px; text-transform: uppercase; color: #b8966a; margin-bottom: 10px; }
+        .t2 .tp-hero h3 { font-size: 16px; font-style: italic; font-weight: 400; color: #3d2a1a; margin-bottom: 0; }
+        .t2 .tp-divider { width: 28px; height: 1px; background: #c9a87c; margin: 8px auto; }
+        .t2 .tp-hero p { font-size: 9px; color: #8b6b4a; letter-spacing: 0.5px; }
+        .t2 .tp-hero-cta { background: #8b6b4a; color: #fff; font-size: 8px; font-weight: 600; padding: 5px 13px; border-radius: 2px; margin-top: 10px; display: inline-block; letter-spacing: 1px; text-transform: uppercase; }
+        .t2 .tp-svcs { display: flex; justify-content: center; gap: 0; border-top: 1px solid #e8ddd0; background: #fdf9f5; padding: 10px 12px; }
+        .t2 .tp-svc { padding: 4px 10px; border-right: 1px solid #e8ddd0; text-align: center; }
+        .t2 .tp-svc:last-child { border-right: none; }
+        .t2 .tp-svc-n { font-size: 9px; font-weight: 500; color: #3d2a1a; }
+        .t2 .tp-svc-p { font-size: 8px; color: #8b6b4a; }
+
+        /* Template 3: Bold Statement */
+        .t3 .tmpl-preview { background: #0d0d0d; }
+        .t3 .tp-nav { display: flex; justify-content: center; gap: 12px; padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .t3 .tp-link { font-size: 8px; color: rgba(255,255,255,0.35); letter-spacing: 1.2px; text-transform: uppercase; }
+        .t3 .tp-hero { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px; text-align: center; }
+        .t3 .tp-hero h3 { font-size: 18px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 4px; }
+        .t3 .tp-hero p { font-size: 8px; color: rgba(255,255,255,0.35); letter-spacing: 2px; text-transform: uppercase; }
+        .t3 .tp-hero-cta { background: #fff; color: #000; font-size: 8px; font-weight: 700; padding: 5px 14px; border-radius: 2px; margin-top: 10px; display: inline-block; letter-spacing: 1px; text-transform: uppercase; }
+        .t3 .tp-svcs { display: flex; border-top: 1px solid rgba(255,255,255,0.07); }
+        .t3 .tp-svc { flex: 1; padding: 8px 10px; border-right: 1px solid rgba(255,255,255,0.07); }
+        .t3 .tp-svc:last-child { border-right: none; }
+        .t3 .tp-svc-n { font-size: 8px; font-weight: 600; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.3px; }
+        .t3 .tp-svc-p { font-size: 7px; color: rgba(255,255,255,0.3); margin-top: 1px; }
+
+        .tmpl-info { padding: 13px 16px; border-top: 1px solid #f0f0f0; }
+        .tmpl-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #111; color: #fff; margin-bottom: 5px; }
+        .tmpl-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; color: #111; }
+        .tmpl-info p { font-size: 12px; color: #888; }
+
+        .tmpl-actions { display: flex; justify-content: space-between; align-items: center; max-width: 840px; width: 100%; }
+
+        /* ════════════════════════════════════
+           SCREEN 4 — Generation
+        ════════════════════════════════════ */
+        #screen-generation { background: #080808; color: #fff; align-items: center; padding: 28px 20px 40px; position: relative; overflow: hidden; }
+
+        /* Ambient light orbs */
+        .amb-orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0; pointer-events: none; transition: opacity 2s ease; }
+        .amb-1 { width: 420px; height: 420px; background: #6d5acd; top: -100px; right: -80px; animation: pulse 5s ease-in-out infinite; }
+        .amb-2 { width: 320px; height: 320px; background: #e879a0; bottom: -60px; left: -60px; animation: pulse 6s ease-in-out infinite 1.5s; }
+        #screen-generation.active .amb-orb { opacity: 0.14; }
+
+        .gen-header { width: 100%; max-width: 860px; margin: 0 auto 20px; text-align: center; position: relative; z-index: 1; }
+        .gen-step-tag { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 0.5px; margin-bottom: 4px; min-height: 18px; transition: all 0.4s ease; }
+        .gen-title { font-size: 17px; font-weight: 600; color: #fff; min-height: 26px; transition: all 0.4s ease; }
+        .gen-prog-track { width: 260px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin: 12px auto 0; }
+        .gen-prog-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #7b68ee, #e879a0); border-radius: 2px; transition: width 1.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Browser chrome */
+        .gen-browser { width: 100%; max-width: 860px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.09); box-shadow: 0 28px 80px rgba(0,0,0,0.65); position: relative; z-index: 1; }
+        .gen-chrome { background: rgba(255,255,255,0.04); padding: 10px 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .gen-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.12); }
+        .gen-url { flex: 1; background: rgba(255,255,255,0.06); border-radius: 5px; padding: 5px 12px; font-size: 12px; color: rgba(255,255,255,0.35); margin-left: 8px; transition: color 0.6s; }
+        .gen-url.live { color: rgba(255,255,255,0.7); }
+
+        /* Site content area inside generator */
+        .gen-site { min-height: 400px; transition: background 0.8s ease; }
+        .gen-section { opacity: 0; transform: translateY(10px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .gen-section.on { opacity: 1; transform: translateY(0); }
+
+        /* ── Minimal template preview (generation) ── */
+        .gp-min { background: #fff; color: #111; }
+        .gp-min .gp-nav { display: flex; align-items: center; gap: 20px; padding: 13px 32px; border-bottom: 1px solid #f0f0f0; }
+        .gp-min .gp-logo { width: 30px; height: 30px; border-radius: 7px; background: linear-gradient(135deg,#f4a3c0,#c0a3f4); display:flex;align-items:center;justify-content:center;font-size:13px;margin-right:auto; }
+        .gp-min .gp-nl { font-size: 12px; color: #888; }
+        .gp-min .gp-nb { font-size: 12px; font-weight: 600; background: #111; color: #fff; padding: 6px 14px; border-radius: 6px; }
+        .gp-min .gp-hero { padding: 52px 32px 40px; text-align: center; background: #fff; border-bottom: 1px solid #f0f0f0; }
+        .gp-min .gp-hero-img { width: 100%; height: 180px; border-radius: 10px; background: linear-gradient(135deg,#fce7f3,#dbeafe); margin-bottom: 22px; display:flex;align-items:center;justify-content:center;font-size:36px; }
+        .gp-min .gp-hero h2 { font-size: 32px; font-weight: 700; letter-spacing: -0.7px; margin-bottom: 8px; }
+        .gp-min .gp-hero p { font-size: 14px; color: #888; margin-bottom: 20px; }
+        .gp-min .gp-cta { background: #111; color: #fff; padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-block; }
+        .gp-min .gp-svcs { display: grid; grid-template-columns: repeat(3, 1fr); }
+        .gp-min .gp-svc { padding: 20px 24px; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; }
+        .gp-min .gp-svc:nth-child(3n) { border-right: none; }
+        .gp-min .gp-svc-n { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+        .gp-min .gp-svc-p { font-size: 12px; color: #888; }
+
+        /* ── Classic template preview (generation) ── */
+        .gp-cls { background: #faf6f0; color: #3d2a1a; }
+        .gp-cls .gp-hero { padding: 52px 32px 40px; text-align: center; }
+        .gp-cls .gp-hero-img { width: 100%; height: 180px; border-radius: 6px; background: linear-gradient(135deg,#fde8cc,#f5e0c0); margin-bottom: 22px; display:flex;align-items:center;justify-content:center;font-size:36px; }
+        .gp-cls .gp-eyebrow { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #b8966a; margin-bottom: 12px; }
+        .gp-cls .gp-hero h2 { font-size: 30px; font-style: italic; font-weight: 400; color: #3d2a1a; margin-bottom: 0; }
+        .gp-cls .gp-div { width: 40px; height: 1px; background: #c9a87c; margin: 10px auto; }
+        .gp-cls .gp-hero p { font-size: 13px; color: #8b6b4a; margin-bottom: 20px; line-height: 1.6; }
+        .gp-cls .gp-cta { background: #8b6b4a; color: #fff; padding: 12px 28px; border-radius: 2px; font-size: 12px; font-weight: 600; display: inline-block; letter-spacing: 1px; text-transform: uppercase; }
+        .gp-cls .gp-svcs { display: grid; grid-template-columns: repeat(3, 1fr); background: #fdf9f5; border-top: 1px solid #e8ddd0; }
+        .gp-cls .gp-svc { padding: 20px 24px; border-right: 1px solid #e8ddd0; border-bottom: 1px solid #e8ddd0; }
+        .gp-cls .gp-svc:nth-child(3n) { border-right: none; }
+        .gp-cls .gp-svc-n { font-size: 13px; font-weight: 600; color: #3d2a1a; margin-bottom: 3px; }
+        .gp-cls .gp-svc-p { font-size: 11px; color: #8b6b4a; }
+
+        /* ── Bold template preview (generation) ── */
+        .gp-bld { background: #0d0d0d; color: #fff; }
+        .gp-bld .gp-nav { display: flex; justify-content: center; gap: 24px; padding: 13px 32px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .gp-bld .gp-nl { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; }
+        .gp-bld .gp-hero { padding: 52px 32px 40px; text-align: center; }
+        .gp-bld .gp-hero-img { width: 100%; height: 180px; border-radius: 4px; background: linear-gradient(135deg,#1a1a1a,#2a1a2a); margin-bottom: 22px; display:flex;align-items:center;justify-content:center;font-size:36px; }
+        .gp-bld .gp-hero h2 { font-size: 38px; font-weight: 800; letter-spacing: -1px; text-transform: uppercase; margin-bottom: 8px; color: #fff; }
+        .gp-bld .gp-hero p { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 20px; }
+        .gp-bld .gp-cta { background: #fff; color: #000; padding: 12px 28px; border-radius: 2px; font-size: 11px; font-weight: 700; display: inline-block; letter-spacing: 1.5px; text-transform: uppercase; }
+        .gp-bld .gp-svcs { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,0.07); }
+        .gp-bld .gp-svc { padding: 20px 24px; border-right: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .gp-bld .gp-svc:nth-child(3n) { border-right: none; }
+        .gp-bld .gp-svc-n { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.9); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .gp-bld .gp-svc-p { font-size: 10px; color: rgba(255,255,255,0.35); }
+
+        /* Publishing overlay */
+        .gen-pub-overlay { position: absolute; inset: 0; background: rgba(8,8,8,0.88); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; z-index: 20; backdrop-filter: blur(6px); }
+        .gen-pub-overlay.on { opacity: 1; pointer-events: all; }
+        .pub-spinner { width: 46px; height: 46px; border: 3px solid rgba(255,255,255,0.12); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .pub-spinner.done { display: none; }
+        .pub-check { font-size: 40px; display: none; animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+        .pub-check.on { display: block; }
+        .pub-text { font-size: 17px; font-weight: 600; color: #fff; }
+        .pub-sub { font-size: 13px; color: rgba(255,255,255,0.45); }
+
+        /* ════════════════════════════════════
+           SCREEN 5 — Celebration
+        ════════════════════════════════════ */
+        #screen-celebration { flex-direction: row !important; min-height: 100vh; background: #fff; }
+
+        /* Confetti canvas */
+        #confettiCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+
+        /* Left: live site preview */
+        .cel-left { flex: 1; display: flex; flex-direction: column; overflow: hidden; border-right: 1px solid #ebebeb; }
+        .cel-chrome { background: #f4f4f6; padding: 9px 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e8e8e8; flex-shrink: 0; }
+        .cel-dot { width: 9px; height: 9px; border-radius: 50%; }
+        .cel-dot:nth-child(1) { background: #ff5f57; }
+        .cel-dot:nth-child(2) { background: #febc2e; }
+        .cel-dot:nth-child(3) { background: #28c840; }
+        .cel-urlbar { flex: 1; background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 5px 12px; font-size: 12px; color: #555; margin: 0 8px; display: flex; align-items: center; gap: 6px; }
+        .cel-lock { color: #28c840; font-size: 10px; }
+        .cel-live { background: #dcfce7; color: #16a34a; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; animation: pop 0.4s ease; }
+        .cel-site-frame { flex: 1; overflow-y: auto; animation: fadeIn 0.8s ease; }
+
+        /* ── Minimal celebration site ── */
+        .cs-min { background: #fff; color: #111; }
+        .cs-min .cs-nav { display: flex; align-items: center; gap: 18px; padding: 13px 28px; border-bottom: 1px solid #f0f0f0; }
+        .cs-min .cs-logo { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg,#f4a3c0,#c0a3f4); display:flex;align-items:center;justify-content:center;font-size:12px;margin-right:auto; }
+        .cs-min .cs-nl { font-size: 12px; color: #888; }
+        .cs-min .cs-nb { font-size: 12px; font-weight: 600; background: #111; color: #fff; padding: 6px 14px; border-radius: 6px; }
+        .cs-min .cs-hero { padding: 44px 28px 32px; text-align: center; border-bottom: 1px solid #f0f0f0; background: #fff; }
+        .cs-min .cs-hero-img { width: 100%; height: 220px; border-radius: 10px; background: linear-gradient(135deg,#fce7f3,#dbeafe); margin-bottom: 22px; display:flex;align-items:center;justify-content:center;font-size:48px; }
+        .cs-min .cs-hero h2 { font-size: 30px; font-weight: 700; letter-spacing: -0.6px; margin-bottom: 8px; }
+        .cs-min .cs-hero p { font-size: 14px; color: #888; margin-bottom: 20px; }
+        .cs-min .cs-book { background: #111; color: #fff; padding: 12px 26px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-block; }
+        .cs-min .cs-svcs { display: grid; grid-template-columns: repeat(3, 1fr); }
+        .cs-min .cs-svc { padding: 18px 22px; border-right: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; }
+        .cs-min .cs-svc:nth-child(3n) { border-right: none; }
+        .cs-min .cs-svc-n { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+        .cs-min .cs-svc-p { font-size: 12px; color: #888; }
+
+        /* ── Classic celebration site ── */
+        .cs-cls { background: #faf6f0; color: #3d2a1a; }
+        .cs-cls .cs-hero { padding: 44px 28px 32px; text-align: center; }
+        .cs-cls .cs-hero-img { width: 100%; height: 220px; border-radius: 6px; background: linear-gradient(135deg,#fde8cc,#f5e0c0); margin-bottom: 22px; display:flex;align-items:center;justify-content:center;font-size:48px; }
+        .cs-cls .cs-eyebrow { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #b8966a; margin-bottom: 12px; }
+        .cs-cls .cs-hero h2 { font-size: 28px; font-style: italic; font-weight: 400; color: #3d2a1a; }
+        .cs-cls .cs-div { width: 40px; height: 1px; background: #c9a87c; margin: 10px auto; }
+        .cs-cls .cs-hero p { font-size: 13px; color: #8b6b4a; margin-bottom: 20px; line-height: 1.6; }
+        .cs-cls .cs-book { background: #8b6b4a; color: #fff; padding: 12px 26px; border-radius: 2px; font-size: 12px; font-weight: 600; display: inline-block; letter-spacing: 1px; text-transform: uppercase; }
+        .cs-cls .cs-svcs { display: grid; grid-template-columns: repeat(3, 1fr); background: #fdf9f5; border-top: 1px solid #e8ddd0; }
+        .cs-cls .cs-svc { padding: 18px 22px; border-right: 1px solid #e8ddd0; border-bottom: 1px solid #e8ddd0; }
+        .cs-cls .cs-svc:nth-child(3n) { border-right: none; }
+        .cs-cls .cs-svc-n { font-size: 13px; font-weight: 600; color: #3d2a1a; margin-bottom: 3px; }
+        .cs-cls .cs-svc-p { font-size: 11px; color: #8b6b4a; }
+
+        /* ── Bold celebration site ── */
+        .cs-bld { background: #0d0d0d; color: #fff; }
+        .cs-bld .cs-hero { padding: 44px 28px 32px; text-align: center; }
+        .cs-bld .cs-hero-img { width: 100%; height: 220px; border-radius: 4px; background: linear-gradient(135deg,#1a1a1a,#2a1a2a); margin-bottom: 22px; display:flex;align-items:center;justify-content:center;font-size:48px; }
+        .cs-bld .cs-hero h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.8px; text-transform: uppercase; margin-bottom: 8px; color: #fff; }
+        .cs-bld .cs-hero p { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 20px; }
+        .cs-bld .cs-book { background: #fff; color: #000; padding: 12px 26px; border-radius: 2px; font-size: 11px; font-weight: 700; display: inline-block; letter-spacing: 1.5px; text-transform: uppercase; }
+        .cs-bld .cs-svcs { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,0.07); }
+        .cs-bld .cs-svc { padding: 18px 22px; border-right: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .cs-bld .cs-svc:nth-child(3n) { border-right: none; }
+        .cs-bld .cs-svc-n { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .cs-bld .cs-svc-p { font-size: 10px; color: rgba(255,255,255,0.35); }
+
+        /* Right panel */
+        .cel-right { width: 370px; min-width: 330px; display: flex; flex-direction: column; padding: 44px 36px; background: #fff; overflow-y: auto; }
+        .cel-emoji { font-size: 44px; display: inline-block; animation: pop 0.7s cubic-bezier(0.34,1.56,0.64,1); margin-bottom: 16px; }
+        .cel-right h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1.2; }
+        .cel-right > p { font-size: 14px; color: #777; margin-bottom: 22px; line-height: 1.6; }
+
+        .cel-stats { display: flex; gap: 10px; margin-bottom: 26px; }
+        .cel-stat { flex: 1; background: #f8f8f8; border-radius: 10px; padding: 12px; text-align: center; }
+        .cel-stat-v { font-size: 22px; font-weight: 700; }
+        .cel-stat-l { font-size: 11px; color: #888; margin-top: 2px; line-height: 1.3; }
+
+        .cel-sect-lbl { font-size: 11px; font-weight: 600; color: #bbb; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .cel-sms-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .cel-sms-in { flex: 1; border: 2px solid #e8e8e8; padding: 12px 14px; border-radius: 10px; font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; appearance: none; }
+        .cel-sms-in:focus { border-color: #111; box-shadow: 0 0 0 4px rgba(17,17,17,0.05); }
+        .cel-sms-go { background: #111; color: #fff; border: none; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s, transform 0.1s; }
+        .cel-sms-go:hover { background: #333; }
+        .cel-sms-ok { font-size: 13px; color: #16a34a; display: none; text-align: center; padding: 4px 0; animation: fadeUp 0.3s ease; }
+        .cel-sms-ok.on { display: block; }
+
+        .cel-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; }
+        .cel-divider::before, .cel-divider::after { content: ''; flex: 1; height: 1px; background: #f0f0f0; }
+        .cel-divider span { font-size: 12px; color: #ccc; }
+
+        .cel-dash-btn { background: #fff; color: #111; border: 2px solid #e8e8e8; padding: 13px 24px; font-size: 14px; font-weight: 500; border-radius: 10px; cursor: pointer; text-align: center; transition: border-color 0.2s, background 0.15s; width: 100%; margin-bottom: 10px; }
+        .cel-dash-btn:hover { border-color: #111; }
+        .cel-restart-btn { background: none; border: none; color: #bbb; font-size: 13px; cursor: pointer; width: 100%; text-align: center; padding: 8px; transition: color 0.15s; }
+        .cel-restart-btn:hover { color: #666; }
+
+        /* ════════════════════════════════════
+           SCREEN 6 — Dashboard
+        ════════════════════════════════════ */
+        .dashboard.active { display: flex; flex-direction: row; min-height: 100vh; background: #f5f6fa; }
         .wix-topbar, .wix-sidebar { display: none; }
         .dashboard.active .wix-topbar { display: flex; }
         .dashboard.active .wix-sidebar { display: flex; }
         .wix-topbar { position: fixed; top: 0; left: 0; right: 0; height: 48px; background: #1b1f3b; align-items: center; padding: 0 16px; z-index: 200; color: #fff; }
         .wix-topbar-logo { font-weight: 700; font-size: 14px; margin-right: 8px; }
-        .wix-topbar-site { font-size: 13px; color: #c0c4d0; margin-right: 16px; display: flex; align-items: center; gap: 4px; }
+        .wix-topbar-site { font-size: 13px; color: #c0c4d0; margin-right: 16px; }
         .wix-topbar-links { display: flex; gap: 14px; margin-right: auto; }
         .wix-topbar-links a { color: #c0c4d0; font-size: 12px; text-decoration: none; }
         .wix-topbar-upgrade { background: #4e5dff; color: #fff; border: none; padding: 5px 14px; border-radius: 16px; font-size: 12px; font-weight: 600; cursor: pointer; margin-right: 16px; }
@@ -283,7 +391,6 @@
         .wix-sidebar { width: 220px; min-width: 220px; background: #fff; border-right: 1px solid #e0e3e8; padding-top: 48px; flex-direction: column; height: 100vh; position: fixed; top: 0; left: 0; z-index: 150; overflow-y: auto; }
         .wix-sidebar-section { padding: 12px 12px 8px; }
         .wix-sidebar-section-title { font-size: 11px; font-weight: 600; color: #999; padding: 4px 12px; margin-bottom: 4px; }
-        .wix-sidebar-progress { font-size: 11px; color: #999; padding: 0 12px 8px; }
         .wix-sidebar-nav { flex: 1; padding: 0 8px; }
         .wix-nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; font-size: 13px; color: #333; border-radius: 6px; cursor: pointer; transition: background 0.1s; text-decoration: none; }
         .wix-nav-item:hover { background: #f5f5f5; }
@@ -315,328 +422,416 @@
         .wix-checklist-action { background: #fff; border: 1px solid #ddd; padding: 6px 16px; border-radius: 18px; font-size: 13px; cursor: pointer; white-space: nowrap; }
         .wix-checklist-action:hover { border-color: #000; }
 
-        /* Responsive */
+        /* ─── Responsive ─── */
         @media (max-width: 900px) {
-            .celebration { flex-direction: column !important; }
-            .cel-left { border-right: none; border-bottom: 1px solid #e0e0e0; }
-            .cel-right { width: 100%; padding: 40px 24px; }
-            .template-grid { grid-template-columns: 1fr; }
+            #screen-celebration { flex-direction: column !important; }
+            .cel-left { border-right: none; border-bottom: 1px solid #ebebeb; max-height: 55vh; }
+            .cel-right { width: 100%; min-width: unset; padding: 32px 24px; }
+            .tmpl-grid { grid-template-columns: 1fr; }
             .wix-sidebar { display: none !important; }
             .wix-main { margin-left: 0; }
         }
         @media (max-width: 600px) {
-            .url-phase-row { flex-direction: column; }
-            .service-item { grid-template-columns: 1fr; }
-            .gen-services-grid { grid-template-columns: 1fr; }
-            .cel-site-services { grid-template-columns: 1fr; }
-            .confirm-field-row { grid-template-columns: 1fr; }
+            #screen-url h1 { font-size: 26px; }
+            .social-grid { grid-template-columns: 1fr; }
+            .field-row { grid-template-columns: 1fr; }
+            .gp-min .gp-svcs, .gp-cls .gp-svcs, .gp-bld .gp-svcs,
+            .cs-min .cs-svcs, .cs-cls .cs-svcs, .cs-bld .cs-svcs { grid-template-columns: 1fr; }
+            .cel-stats { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════
-     SCREEN 1: URL → Fetch → Confirm
-══════════════════════════════════ -->
-<div class="screen url-entry active" id="screen-url">
-    <h1>Bring your beauty business to Wix</h1>
-    <p>Paste your website URL and watch your new site come to life — with online booking ready from day one.</p>
+<!-- Ambient orbs for generation screen -->
+<div class="amb-orb amb-1"></div>
+<div class="amb-orb amb-2"></div>
 
-    <!-- Phase A: URL -->
-    <div class="url-phase" id="phase-url">
-        <div class="url-phase-row">
-            <input type="url" id="urlInput" value="https://janes-beauty-studio.com" placeholder="https://your-salon-website.com" aria-label="Your website URL">
-            <button onclick="fetchSiteDetails()">Continue →</button>
-        </div>
-        <div class="url-validation" id="urlValidation"></div>
-        <div class="url-fetching" id="urlFetching">
-            <div class="fetch-spinner"></div>
-            <span>Looking up your business...</span>
-        </div>
+<!-- Confetti canvas (celebration) -->
+<canvas id="confettiCanvas"></canvas>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1: Source / URL Entry
+══════════════════════════════════════ -->
+<div class="screen active" id="screen-url">
+    <!-- Step indicator -->
+    <div class="steps" id="steps-1">
+        <div class="step-dot active">1</div>
+        <div class="step-line"></div>
+        <div class="step-dot">2</div>
+        <div class="step-line"></div>
+        <div class="step-dot">3</div>
+    </div>
+    <div class="step-labels">
+        <div class="step-lbl active">Your business</div>
+        <div class="step-lbl" style="margin-left:44px">Design</div>
+        <div class="step-lbl" style="margin-left:44px">Create</div>
     </div>
 
-    <!-- Phase B: Confirm fetched details -->
-    <div class="confirm-phase" id="phase-confirm">
-        <div class="confirm-intro">
-            <span style="font-size:20px;">✓</span>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:32px 24px 72px;">
+    <div class="s1-inner">
+        <div class="s1-logo">
+            <div class="s1-logo-mark">W</div>
+            Wix Beauty
+        </div>
+
+        <h1>Bring your beauty<br><span>business to Wix</span></h1>
+        <p>Paste your website URL and we'll import your content, services, and branding — or connect from social.</p>
+
+        <!-- URL input -->
+        <div id="phase-url">
+            <div class="url-row">
+                <input type="url" id="urlInput" value="https://janes-beauty-studio.com" placeholder="https://your-salon-website.com" autocomplete="off">
+                <button class="url-go" onclick="fetchFromUrl()">Import site →</button>
+            </div>
+            <div class="url-err" id="urlErr"></div>
+            <div class="url-fetching" id="urlFetching">
+                <div class="spinner-sm"></div>
+                <span>Looking up your business...</span>
+            </div>
+        </div>
+
+        <div class="or-row"><span>or import from</span></div>
+
+        <!-- Social buttons -->
+        <div class="social-grid">
+            <button class="soc-btn" id="soc-ig" onclick="importFromSocial('instagram')">
+                <span class="soc-icon soc-icon-ig">IG</span> Instagram
+            </button>
+            <button class="soc-btn" id="soc-fb" onclick="importFromSocial('facebook')">
+                <i class="soc-icon soc-icon-fb">f</i> Facebook
+            </button>
+            <button class="soc-btn" id="soc-ggl" onclick="importFromSocial('google')">
+                <span class="soc-icon soc-icon-ggl">🅖</span> Google
+            </button>
+        </div>
+
+        <!-- Social result -->
+        <div class="soc-result" id="socResult">
+            <div class="soc-result-avatar" id="socAvatar">💆</div>
+            <div class="soc-result-info">
+                <div class="soc-result-name" id="socName">Jane's Beauty Studio</div>
+                <div class="soc-result-handle" id="socHandle">@janes_beauty_studio · 2.4k followers</div>
+            </div>
+            <button class="soc-result-use" onclick="useImportedBusiness()">Use this →</button>
+        </div>
+
+        <!-- Skip -->
+        <button class="skip-url" onclick="skipToDetails()">Continue without a URL</button>
+
+        <div class="trust-row">
+            <span>Your content stays yours</span>
+            <span>Ready in under 5 min</span>
+            <span>Online booking included</span>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2: Business Details
+══════════════════════════════════════ -->
+<div class="screen" id="screen-details">
+    <div class="steps">
+        <div class="step-dot done">✓</div>
+        <div class="step-line done"></div>
+        <div class="step-dot active">2</div>
+        <div class="step-line"></div>
+        <div class="step-dot">3</div>
+    </div>
+    <div class="step-labels">
+        <div class="step-lbl done">Your business</div>
+        <div class="step-lbl active" style="margin-left:44px">Design</div>
+        <div class="step-lbl" style="margin-left:44px">Create</div>
+    </div>
+
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:32px 24px 72px;">
+    <div class="s2-inner">
+        <div class="fetched-pill" id="fetchedPill">✓ Details imported</div>
+        <h2>Confirm your business details</h2>
+        <p>We pulled this from your site — make sure everything looks right before we build.</p>
+
+        <!-- Logo + Hero image -->
+        <div class="asset-row">
             <div>
-                <strong>We found your business</strong>
-                <span>Review the details below — we pulled these from your site.</span>
-            </div>
-        </div>
-        <div class="confirm-fields">
-            <div class="confirm-field-row">
-                <div class="confirm-field">
-                    <label for="businessNameInput">Business name</label>
-                    <input type="text" id="businessNameInput" value="Jane's Beauty Studio">
-                </div>
-                <div class="confirm-field">
-                    <label for="businessTypeInput">Business type</label>
-                    <select id="businessTypeInput">
-                        <option value="hair-salon" selected>Hair Salon</option>
-                        <option value="nail-studio">Nail Studio</option>
-                        <option value="spa">Spa</option>
-                        <option value="medspa">Medspa</option>
-                        <option value="barbershop">Barbershop</option>
-                        <option value="lash-brow">Lash & Brow Studio</option>
-                        <option value="makeup">Makeup Studio</option>
-                        <option value="beauty-other">Other Beauty</option>
-                    </select>
+                <div class="asset-col-label">Logo</div>
+                <div class="asset-logo-box" title="Click to change logo">
+                    <span id="logoEmoji">💅</span>
+                    <div class="asset-logo-overlay">Change</div>
                 </div>
             </div>
-            <div class="confirm-field">
-                <label for="emailInput">Email address</label>
-                <input type="email" id="emailInput" value="jane@janes-beauty-studio.com">
-            </div>
-        </div>
-        <div class="confirm-actions">
-            <button class="confirm-back" onclick="resetToUrl()">← Change URL</button>
-            <button class="confirm-next" onclick="goToTemplates()">Choose a template →</button>
-        </div>
-    </div>
-
-    <div class="url-trust" id="urlTrust">
-        <span>✓ Your content stays yours</span>
-        <span>✓ Ready in under 10 minutes</span>
-        <span>✓ Online booking included</span>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════
-     SCREEN 2: Template Selection
-══════════════════════════════════ -->
-<div class="screen template-screen" id="screen-template">
-    <h2>Choose your site style</h2>
-    <p>We'll apply this look to your new Wix site. You can always change it later.</p>
-
-    <div class="template-grid">
-        <div class="template-card tmpl-1 selected" onclick="selectTemplate(this)">
-            <div class="template-preview">
-                <div class="tp-nav"><span>Home</span><span>Services</span><span>Book Now</span><span>About</span></div>
-                <div class="tp-hero"><div class="tp-hero-text"><h3>Jane's Beauty Studio</h3><p>Hair · Color · Bridal</p></div></div>
-                <div class="tp-services"><span class="tp-service-pill">Haircut</span><span class="tp-service-pill">Color</span><span class="tp-service-pill">Blowout</span></div>
-            </div>
-            <div class="template-info"><span class="template-badge">Recommended</span><h4>Modern Minimal</h4><p>Clean lines, whitespace-focused, editorial style</p></div>
-        </div>
-        <div class="template-card tmpl-2" onclick="selectTemplate(this)">
-            <div class="template-preview">
-                <div class="tp-nav"><span>Home</span><span>Services</span><span>Book Now</span><span>About</span></div>
-                <div class="tp-hero"><div class="tp-hero-text"><h3>Jane's Beauty Studio</h3><p>Premium Hair &amp; Beauty</p></div></div>
-                <div class="tp-services"><span class="tp-service-pill">Haircut</span><span class="tp-service-pill">Balayage</span><span class="tp-service-pill">Bridal</span></div>
-            </div>
-            <div class="template-info"><h4>Elegant Classic</h4><p>Serif typography, warm tones, luxury aesthetic</p></div>
-        </div>
-        <div class="template-card tmpl-3" onclick="selectTemplate(this)">
-            <div class="template-preview">
-                <div class="tp-nav"><span>Home</span><span>Services</span><span>Book</span><span>About</span></div>
-                <div class="tp-hero"><div class="tp-hero-text"><h3>Jane's Beauty</h3><p>Studio · LA · Est. 2016</p></div></div>
-                <div class="tp-services"><span class="tp-service-pill">Cuts</span><span class="tp-service-pill">Color</span><span class="tp-service-pill">Styling</span></div>
-            </div>
-            <div class="template-info"><h4>Bold Statement</h4><p>High contrast, uppercase type, gallery-driven</p></div>
-        </div>
-    </div>
-
-    <div class="template-actions">
-        <button class="tmpl-back-btn" onclick="history.back()">← Back</button>
-        <button class="tmpl-continue-btn" onclick="startGeneration()">Generate my site →</button>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════
-     SCREEN 3: Services Setup
-══════════════════════════════════ -->
-<div class="screen service-setup" id="screen-services">
-    <h2>Confirm your services</h2>
-    <p>We found these services on your website. Edit names, prices, or durations — then add any we missed.</p>
-
-    <div class="service-categories">
-        <span class="service-cat selected">All</span>
-        <span class="service-cat">Hair</span>
-        <span class="service-cat">Color</span>
-        <span class="service-cat">Styling</span>
-        <span class="service-cat">Treatments</span>
-    </div>
-
-    <div class="service-list" id="serviceList">
-        <div class="service-item"><span class="service-name">Haircut & Style</span><input type="text" value="$65" aria-label="Price"><input type="text" value="45 min" aria-label="Duration"><button class="service-remove" aria-label="Remove" onclick="this.closest('.service-item').remove()">×</button></div>
-        <div class="service-item"><span class="service-name">Balayage</span><input type="text" value="$180" aria-label="Price"><input type="text" value="120 min" aria-label="Duration"><button class="service-remove" aria-label="Remove" onclick="this.closest('.service-item').remove()">×</button></div>
-        <div class="service-item"><span class="service-name">Blowout</span><input type="text" value="$45" aria-label="Price"><input type="text" value="30 min" aria-label="Duration"><button class="service-remove" aria-label="Remove" onclick="this.closest('.service-item').remove()">×</button></div>
-        <div class="service-item"><span class="service-name">Color Treatment</span><input type="text" value="$120" aria-label="Price"><input type="text" value="90 min" aria-label="Duration"><button class="service-remove" aria-label="Remove" onclick="this.closest('.service-item').remove()">×</button></div>
-        <div class="service-item"><span class="service-name">Deep Conditioning</span><input type="text" value="$35" aria-label="Price"><input type="text" value="20 min" aria-label="Duration"><button class="service-remove" aria-label="Remove" onclick="this.closest('.service-item').remove()">×</button></div>
-        <div class="service-item"><span class="service-name">Bridal Styling</span><input type="text" value="$250" aria-label="Price"><input type="text" value="180 min" aria-label="Duration"><button class="service-remove" aria-label="Remove" onclick="this.closest('.service-item').remove()">×</button></div>
-    </div>
-
-    <!-- Add service: button collapses into inline form -->
-    <div id="addServiceBtn" class="add-service-btn" onclick="openAddService()">+ Add a service</div>
-    <div class="add-service-form" id="addServiceForm">
-        <div class="add-service-form-title">New service</div>
-        <div class="add-service-fields">
-            <input type="text" id="newServiceName" placeholder="Service name (e.g. Lash Lift)">
-            <input type="text" id="newServicePrice" placeholder="Price ($)">
-            <input type="text" id="newServiceDuration" placeholder="Duration">
-        </div>
-        <div class="add-service-form-actions">
-            <button class="add-svc-confirm" onclick="confirmAddService()">Add service</button>
-            <button class="add-svc-cancel" onclick="cancelAddService()">Cancel</button>
-        </div>
-    </div>
-
-    <div class="setup-actions">
-        <button class="skip-btn" onclick="showScreen('screen-celebration')">Skip for now</button>
-        <button class="continue-btn" onclick="showScreen('screen-celebration')">Save and continue →</button>
-    </div>
-</div>
-
-<!-- ══════════════════════════════════
-     SCREEN 4: Cinematic Generation
-══════════════════════════════════ -->
-<div class="screen generation" id="screen-generation">
-    <div class="gen-stage-label" id="genStageLabel">Analyzing your website</div>
-    <div class="gen-progress-bar"><div class="gen-progress-fill" id="genProgressFill"></div></div>
-
-    <div class="gen-site-preview">
-        <div class="gen-browser-bar">
-            <div class="gen-browser-dot"></div>
-            <div class="gen-browser-dot"></div>
-            <div class="gen-browser-dot"></div>
-            <div class="gen-browser-url" id="genBrowserUrl">your-new-site.wixsite.com</div>
-        </div>
-        <div class="gen-nav gen-section" id="genNav">
-            <span>Home</span><span>Services</span><span>About</span><span>Book Now</span><span>Contact</span>
-        </div>
-        <div>
-            <div class="gen-section" id="genHero">
-                <div class="gen-section-label">Hero — imported from your site</div>
-                <div class="gen-hero"><div class="gen-hero-text"><h2 id="genSiteName">Jane's Beauty Studio</h2><p>Premium hair and beauty services in downtown LA</p></div></div>
-            </div>
-            <div class="gen-section" id="genServices">
-                <div class="gen-section-label">Services — matched from your catalog</div>
-                <div class="gen-services-grid">
-                    <div class="gen-service-card"><h4>Haircut & Style</h4><p>From $65 · 45 min</p></div>
-                    <div class="gen-service-card"><h4>Balayage</h4><p>From $180 · 120 min</p></div>
-                    <div class="gen-service-card"><h4>Blowout</h4><p>$45 · 30 min</p></div>
-                    <div class="gen-service-card"><h4>Color Treatment</h4><p>From $120 · 90 min</p></div>
-                    <div class="gen-service-card"><h4>Deep Conditioning</h4><p>$35 · 20 min</p></div>
-                    <div class="gen-service-card"><h4>Bridal Styling</h4><p>From $250 · 180 min</p></div>
+            <div style="flex:1;">
+                <div class="asset-col-label">Hero image</div>
+                <div class="asset-hero-box" title="Click to change image">
+                    <span>📷</span> <span>Hero photo imported</span>
+                    <div class="asset-badge">From your site</div>
                 </div>
             </div>
-            <div class="gen-section" id="genAbout">
-                <div class="gen-section-label">About — matched to your brand</div>
-                <div class="gen-about">
-                    <div class="gen-about-img"></div>
-                    <div class="gen-about-text">
-                        <h3>About Jane's Beauty Studio</h3>
-                        <p>Located in the heart of downtown, we've been transforming looks and boosting confidence for over 8 years.</p>
+        </div>
+
+        <div class="field-stack">
+            <div class="field-row">
+                <div class="field">
+                    <label for="bizName">Business name</label>
+                    <input type="text" id="bizName" value="Jane's Beauty Studio">
+                </div>
+                <div class="field">
+                    <label for="bizType">Business type</label>
+                    <div class="sel-wrap">
+                        <select id="bizType">
+                            <option value="hair-salon" selected>Hair Salon</option>
+                            <option value="nail-studio">Nail Studio</option>
+                            <option value="spa">Spa</option>
+                            <option value="medspa">Medspa</option>
+                            <option value="barbershop">Barbershop</option>
+                            <option value="lash-brow">Lash & Brow Studio</option>
+                            <option value="makeup">Makeup Studio</option>
+                            <option value="beauty-other">Other Beauty</option>
+                        </select>
                     </div>
                 </div>
             </div>
-            <div class="gen-section" id="genBooking">
-                <div class="gen-section-label">Booking — Wix Bookings active</div>
-                <div style="text-align:center; padding:24px; background:#1a1a1a; border-radius:8px;">
-                    <p style="color:#888; font-size:14px; margin-bottom:12px;">Online booking is live</p>
-                    <div style="background:#fff; color:#000; display:inline-block; padding:10px 24px; border-radius:6px; font-weight:600; font-size:14px;">Book an Appointment</div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="bizEmail">Email address</label>
+                    <input type="email" id="bizEmail" value="jane@janes-beauty-studio.com">
+                </div>
+                <div class="field">
+                    <label for="bizPhone">Phone number</label>
+                    <input type="tel" id="bizPhone" placeholder="+1 (555) 000-0000">
                 </div>
             </div>
         </div>
+
+        <div class="row-actions">
+            <button class="back-btn" onclick="goBack('screen-url')">← Back</button>
+            <button class="next-btn" onclick="goToTemplates()">Choose a template →</button>
+        </div>
     </div>
-    <div class="gen-narration" id="genNarration">Scanning your website...</div>
+    </div>
 </div>
 
-<!-- ══════════════════════════════════
-     SCREEN 5: Celebration (split)
-══════════════════════════════════ -->
-<div class="screen celebration" id="screen-celebration">
-    <!-- Left: site fills the entire frame -->
+<!-- ══════════════════════════════════════
+     SCREEN 3: Template Selection
+══════════════════════════════════════ -->
+<div class="screen" id="screen-template">
+    <div class="steps">
+        <div class="step-dot done">✓</div>
+        <div class="step-line done"></div>
+        <div class="step-dot done">✓</div>
+        <div class="step-line done"></div>
+        <div class="step-dot active">3</div>
+    </div>
+    <div class="step-labels">
+        <div class="step-lbl done">Your business</div>
+        <div class="step-lbl done" style="margin-left:44px">Design</div>
+        <div class="step-lbl active" style="margin-left:44px">Create</div>
+    </div>
+
+    <h2 style="margin-top:28px">Choose your site style</h2>
+    <p>We'll apply this look to your new Wix site — you can always change it later.</p>
+
+    <div class="tmpl-grid">
+        <!-- Template 1: Modern Minimal -->
+        <div class="tmpl-card t1 selected" onclick="selectTemplate(this,'minimal')" data-tmpl="minimal">
+            <div class="tmpl-check">✓</div>
+            <div class="tmpl-preview">
+                <div class="tp-nav">
+                    <div class="tp-logo">💅</div>
+                    <span class="tp-link">Services</span>
+                    <span class="tp-link">About</span>
+                    <span class="tp-book">Book</span>
+                </div>
+                <div class="tp-hero">
+                    <div style="width:100%;height:60px;border-radius:6px;background:linear-gradient(135deg,#fce7f3,#dbeafe);margin-bottom:10px;"></div>
+                    <h3 id="tp1-name">Jane's Beauty Studio</h3>
+                    <p>HAIR · COLOR · BRIDAL</p>
+                    <div class="tp-hero-cta">Book Now</div>
+                </div>
+                <div class="tp-svcs">
+                    <div class="tp-svc"><div class="tp-svc-n">Haircut</div><div class="tp-svc-p">From $65</div></div>
+                    <div class="tp-svc"><div class="tp-svc-n">Balayage</div><div class="tp-svc-p">From $180</div></div>
+                    <div class="tp-svc"><div class="tp-svc-n">Blowout</div><div class="tp-svc-p">$45</div></div>
+                </div>
+            </div>
+            <div class="tmpl-info">
+                <div class="tmpl-badge">Recommended</div>
+                <h4>Modern Minimal</h4>
+                <p>Clean lines, whitespace-focused, editorial</p>
+            </div>
+        </div>
+
+        <!-- Template 2: Elegant Classic -->
+        <div class="tmpl-card t2" onclick="selectTemplate(this,'classic')" data-tmpl="classic">
+            <div class="tmpl-check">✓</div>
+            <div class="tmpl-preview">
+                <div class="tp-hero">
+                    <div style="width:100%;height:60px;border-radius:4px;background:linear-gradient(135deg,#fde8cc,#f5e0c0);margin-bottom:10px;"></div>
+                    <div class="tp-eyebrow">Beauty &amp; Wellness</div>
+                    <h3 id="tp2-name">Jane's Beauty</h3>
+                    <div class="tp-divider"></div>
+                    <p>Premium hair &amp; beauty services</p>
+                    <div class="tp-hero-cta">Book Appointment</div>
+                </div>
+                <div class="tp-svcs">
+                    <div class="tp-svc"><div class="tp-svc-n">Haircut</div><div class="tp-svc-p">$65</div></div>
+                    <div class="tp-svc"><div class="tp-svc-n">Balayage</div><div class="tp-svc-p">$180</div></div>
+                    <div class="tp-svc"><div class="tp-svc-n">Bridal</div><div class="tp-svc-p">$250</div></div>
+                </div>
+            </div>
+            <div class="tmpl-info">
+                <h4>Elegant Classic</h4>
+                <p>Serif type, warm tones, luxury aesthetic</p>
+            </div>
+        </div>
+
+        <!-- Template 3: Bold Statement -->
+        <div class="tmpl-card t3" onclick="selectTemplate(this,'bold')" data-tmpl="bold">
+            <div class="tmpl-check">✓</div>
+            <div class="tmpl-preview">
+                <div class="tp-nav">
+                    <span class="tp-link">HOME</span>
+                    <span class="tp-link">SERVICES</span>
+                    <span class="tp-link">BOOK</span>
+                </div>
+                <div class="tp-hero">
+                    <div style="width:100%;height:60px;border-radius:3px;background:linear-gradient(135deg,#1a1a1a,#2a1a2a);margin-bottom:10px;"></div>
+                    <h3 id="tp3-name">JANE'S BEAUTY</h3>
+                    <p>STUDIO · LA · EST. 2016</p>
+                    <div class="tp-hero-cta">BOOK NOW</div>
+                </div>
+                <div class="tp-svcs">
+                    <div class="tp-svc"><div class="tp-svc-n">CUTS</div><div class="tp-svc-p">$65</div></div>
+                    <div class="tp-svc"><div class="tp-svc-n">COLOR</div><div class="tp-svc-p">$120</div></div>
+                    <div class="tp-svc"><div class="tp-svc-n">BRIDAL</div><div class="tp-svc-p">$250</div></div>
+                </div>
+            </div>
+            <div class="tmpl-info">
+                <h4>Bold Statement</h4>
+                <p>High contrast, uppercase, gallery-driven</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="tmpl-actions">
+        <button class="back-btn tmpl-back-btn" onclick="goBack('screen-details')">← Back</button>
+        <button class="next-btn tmpl-continue-btn" onclick="startGeneration()">Generate my site →</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4: Generation
+══════════════════════════════════════ -->
+<div class="screen" id="screen-generation">
+    <div class="gen-header">
+        <div class="gen-step-tag" id="genTag">Building your site</div>
+        <div class="gen-title" id="genTitle">Scanning your website...</div>
+        <div class="gen-prog-track"><div class="gen-prog-fill" id="genProg"></div></div>
+    </div>
+
+    <div class="gen-browser">
+        <div class="gen-chrome">
+            <div class="gen-dot"></div>
+            <div class="gen-dot"></div>
+            <div class="gen-dot"></div>
+            <div class="gen-url" id="genUrl">your-new-site.wixsite.com</div>
+        </div>
+        <div class="gen-site" id="genSite">
+            <!-- Template content injected by JS -->
+        </div>
+        <div class="gen-pub-overlay" id="genPubOverlay">
+            <div class="pub-spinner" id="pubSpinner"></div>
+            <div class="pub-check" id="pubCheck">🎉</div>
+            <div class="pub-text" id="pubText">Publishing your site...</div>
+            <div class="pub-sub" id="pubSub">Setting up your live URL</div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5: Celebration
+══════════════════════════════════════ -->
+<div class="screen" id="screen-celebration">
+    <!-- Left: live site -->
     <div class="cel-left">
-        <div class="cel-browser-bar">
-            <div class="cel-browser-dot"></div>
-            <div class="cel-browser-dot"></div>
-            <div class="cel-browser-dot"></div>
-            <div class="cel-browser-url-bar">janes-beauty-studio.wixsite.com</div>
+        <div class="cel-chrome">
+            <div class="cel-dot"></div>
+            <div class="cel-dot"></div>
+            <div class="cel-dot"></div>
+            <div class="cel-urlbar">
+                <span class="cel-lock">🔒</span>
+                <span id="celUrlText">janes-beauty-studio.wixsite.com</span>
+                <span class="cel-live">● LIVE</span>
+            </div>
         </div>
-        <div class="cel-site-body">
-            <div class="cel-site-nav">
-                <span>Home</span><span>Services</span><span>About</span><span>Book Now</span><span>Contact</span>
-            </div>
-            <div class="cel-site-hero-section">
-                <h2>Jane's Beauty Studio</h2>
-                <p>Hair · Color · Bridal · Downtown LA</p>
-                <div class="cel-book-now-btn">Book an Appointment</div>
-            </div>
-            <div class="cel-site-services">
-                <div class="cel-site-service"><h4>Haircut & Style</h4><p>From $65 · 45 min</p></div>
-                <div class="cel-site-service"><h4>Balayage</h4><p>From $180 · 120 min</p></div>
-                <div class="cel-site-service"><h4>Blowout</h4><p>$45 · 30 min</p></div>
-                <div class="cel-site-service"><h4>Color Treatment</h4><p>From $120 · 90 min</p></div>
-                <div class="cel-site-service"><h4>Deep Conditioning</h4><p>$35 · 20 min</p></div>
-                <div class="cel-site-service"><h4>Bridal Styling</h4><p>From $250 · 180 min</p></div>
-            </div>
+        <div class="cel-site-frame" id="celSiteFrame">
+            <!-- Template HTML injected by JS -->
         </div>
     </div>
 
-    <!-- Right: text + CTAs -->
+    <!-- Right: celebration panel -->
     <div class="cel-right">
-        <div class="cel-confetti">🎉</div>
-        <h1>Your beauty site is live!</h1>
-        <p>Jane's Beauty Studio is ready to take bookings. Send yourself the link to try it from your phone.</p>
+        <div><span class="cel-emoji">🎉</span></div>
+        <h1>Your site is live!</h1>
+        <p id="celIntroText">Jane's Beauty Studio is ready to take bookings online. Send yourself the link to preview it on mobile.</p>
+
         <div class="cel-stats">
-            <div class="cel-stat"><div class="cel-stat-value">6</div><div class="cel-stat-label">Services ready</div></div>
-            <div class="cel-stat"><div class="cel-stat-value">5</div><div class="cel-stat-label">Pages created</div></div>
-            <div class="cel-stat"><div class="cel-stat-value">∞</div><div class="cel-stat-label">Bookings possible</div></div>
+            <div class="cel-stat"><div class="cel-stat-v" id="celStatSvcs">6</div><div class="cel-stat-l">Services ready</div></div>
+            <div class="cel-stat"><div class="cel-stat-v">5</div><div class="cel-stat-l">Pages created</div></div>
+            <div class="cel-stat"><div class="cel-stat-v">∞</div><div class="cel-stat-l">Bookings possible</div></div>
         </div>
-        <div class="cel-ctas">
-            <div class="cel-sms-row">
-                <input type="tel" class="cel-sms-input" id="smsInput" placeholder="Your phone number" value="+1 (555) 000-0000">
-                <button class="cel-sms-btn" onclick="sendSmsLink()">Send link</button>
-            </div>
-            <div class="cel-sms-sent" id="smsSent">✓ Link sent to your phone!</div>
-            <div class="cel-divider"><span>or</span></div>
-            <button class="cel-dashboard-btn" onclick="showScreen('screen-dashboard')">See demo dashboard →</button>
+
+        <div class="cel-sect-lbl">Send to your phone</div>
+        <div class="cel-sms-row">
+            <input type="tel" class="cel-sms-in" id="smsInput" placeholder="Your mobile number">
+            <button class="cel-sms-go" onclick="sendSms()">Send link</button>
         </div>
+        <div class="cel-sms-ok" id="smsOk">✓ Link sent to your phone!</div>
+
+        <div class="cel-divider"><span>or</span></div>
+
+        <button class="cel-dash-btn" onclick="showScreen('screen-dashboard')">Go to my dashboard →</button>
+        <button class="cel-restart-btn" onclick="restartFlow()">↩ Start over &amp; create another site</button>
     </div>
 </div>
 
-<!-- ══════════════════════════════════
+<!-- ══════════════════════════════════════
      SCREEN 6: Wix Dashboard
-══════════════════════════════════ -->
+══════════════════════════════════════ -->
 <div class="screen dashboard" id="screen-dashboard">
     <div class="wix-topbar">
         <span class="wix-topbar-logo">Wix</span>
-        <span class="wix-topbar-site">Jane's Beauty Studio ▾</span>
+        <span class="wix-topbar-site" id="dashSiteName">Jane's Beauty Studio ▾</span>
         <div class="wix-topbar-links"><a href="#">Resources</a><a href="#">Community</a><a href="#">Help</a></div>
         <button class="wix-topbar-upgrade">Upgrade</button>
-        <input class="wix-topbar-search" placeholder="Search for tools, apps, help & more..." aria-label="Search">
+        <input class="wix-topbar-search" placeholder="Search for tools, apps, help & more...">
         <div class="wix-topbar-icons">
             <div class="wix-topbar-icon">🔔</div>
             <div class="wix-topbar-icon">✉</div>
             <div class="wix-topbar-icon" style="background:#4e5dff;">✦</div>
         </div>
     </div>
-    <nav class="wix-sidebar" aria-label="Dashboard navigation">
+    <nav class="wix-sidebar">
         <div class="wix-quick-actions">Quick Actions ▾</div>
         <div class="wix-sidebar-section">
             <div class="wix-sidebar-section-title">Get set up for beauty</div>
-            <div class="wix-sidebar-progress">2/5 completed</div>
         </div>
         <div class="wix-sidebar-nav">
-            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">⚙</span><span class="wix-nav-label">Setup</span></a>
             <a class="wix-nav-item active" href="#"><span class="wix-nav-icon">🏠</span><span class="wix-nav-label">Home</span></a>
             <a class="wix-nav-item" href="#"><span class="wix-nav-icon">📅</span><span class="wix-nav-label">Booking Calendar</span><span class="wix-nav-chevron">›</span></a>
             <a class="wix-nav-item" href="#"><span class="wix-nav-icon">💳</span><span class="wix-nav-label">Getting Paid</span><span class="wix-nav-chevron">›</span></a>
             <a class="wix-nav-item" href="#"><span class="wix-nav-icon">📋</span><span class="wix-nav-label">Catalog</span><span class="wix-nav-chevron">›</span></a>
             <a class="wix-nav-item" href="#"><span class="wix-nav-icon">🌐</span><span class="wix-nav-label">Site & Mobile App</span><span class="wix-nav-chevron">›</span></a>
             <a class="wix-nav-item" href="#"><span class="wix-nav-icon">📣</span><span class="wix-nav-label">Marketing</span><span class="wix-nav-chevron">›</span></a>
-            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">✉</span><span class="wix-nav-label">Inbox</span></a>
             <a class="wix-nav-item" href="#"><span class="wix-nav-icon">👥</span><span class="wix-nav-label">Customers & Leads</span><span class="wix-nav-chevron">›</span></a>
             <a class="wix-nav-item" href="#"><span class="wix-nav-icon">📊</span><span class="wix-nav-label">Analytics</span><span class="wix-nav-chevron">›</span></a>
-            <a class="wix-nav-item" href="#"><span class="wix-nav-icon">⚡</span><span class="wix-nav-label">Automations</span></a>
             <a class="wix-nav-item" href="#"><span class="wix-nav-icon">⚙</span><span class="wix-nav-label">Settings</span></a>
         </div>
     </nav>
     <div class="wix-main">
         <div class="wix-main-content">
             <div class="wix-welcome-row">
-                <h1 class="wix-welcome">Welcome to your new home at Wix</h1>
+                <h1 class="wix-welcome" id="dashWelcome">Welcome, Jane!</h1>
                 <button class="wix-design-site-btn">✏ Design Site</button>
             </div>
             <div class="wix-checklist-card">
@@ -648,18 +843,18 @@
                     </div>
                 </div>
                 <div>
-                    <div class="wix-checklist-item"><div class="wix-checklist-dot done"></div><span class="wix-checklist-text done">Site generated from your URL</span></div>
+                    <div class="wix-checklist-item"><div class="wix-checklist-dot done"></div><span class="wix-checklist-text done">Site generated &amp; published</span></div>
                     <div class="wix-checklist-item"><div class="wix-checklist-dot done"></div><span class="wix-checklist-text done">Services set up in Wix Bookings</span></div>
                     <div class="wix-checklist-item"><div class="wix-checklist-dot"></div><span class="wix-checklist-text">Set your working hours</span><button class="wix-checklist-action">Set Hours</button></div>
                     <div class="wix-checklist-item expanded">
-                        <div style="display:flex; align-items:center; gap:14px; width:100%;">
+                        <div style="display:flex;align-items:center;gap:14px;width:100%;">
                             <div class="wix-checklist-dot"></div>
                             <span class="wix-checklist-text" style="font-weight:600;">Connect a custom domain</span>
                         </div>
-                        <p style="font-size:13px; color:#666; margin:8px 0 12px 22px;">Make this recommended domain yours or search for an available one.</p>
-                        <div style="display:flex; gap:8px; margin-left:22px; width:calc(100% - 22px);">
-                            <input type="text" value="janes-beauty.com" style="flex:1; border:1px solid #ddd; padding:8px 12px; border-radius:20px; font-size:13px; outline:none;">
-                            <button style="background:#4e5dff; color:#fff; border:none; padding:8px 18px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer;">Let's Go</button>
+                        <p style="font-size:13px;color:#666;margin:8px 0 12px 22px;">Make this recommended domain yours or search for another.</p>
+                        <div style="display:flex;gap:8px;margin-left:22px;width:calc(100% - 22px);">
+                            <input type="text" value="janes-beauty.com" style="flex:1;border:1px solid #ddd;padding:8px 12px;border-radius:20px;font-size:13px;outline:none;">
+                            <button style="background:#4e5dff;color:#fff;border:none;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;">Let's Go</button>
                         </div>
                     </div>
                     <div class="wix-checklist-item"><div class="wix-checklist-dot"></div><span class="wix-checklist-text">Share your booking link</span><button class="wix-checklist-action">Share Link</button></div>
@@ -670,192 +865,449 @@
 </div>
 
 <script>
-    // ── History-backed navigation ──
-    function showScreen(id, pushHistory = true) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo(0, 0);
-        if (pushHistory) {
-            history.pushState({ screen: id }, '', '#' + id);
-        }
-    }
+// ─────────────────────────────────────
+//  State
+// ─────────────────────────────────────
+const S = {
+    source: 'url',
+    bizName: "Jane's Beauty Studio",
+    template: 'minimal',
+};
 
-    // Handle browser back/forward
-    window.addEventListener('popstate', e => {
-        const id = e.state && e.state.screen;
-        if (id && document.getElementById(id)) {
-            // Restore confirm phase state when going back to screen-url
-            if (id === 'screen-url') {
-                document.getElementById('phase-url').style.display = 'none';
-                document.getElementById('phase-confirm').classList.add('visible');
-                document.getElementById('urlTrust').style.display = 'none';
+const SERVICES = [
+    { n: 'Haircut & Style', p: 'From $65' },
+    { n: 'Balayage',        p: 'From $180' },
+    { n: 'Blowout',         p: '$45' },
+    { n: 'Color Treatment', p: 'From $120' },
+    { n: 'Deep Conditioning', p: '$35' },
+    { n: 'Bridal Styling',  p: 'From $250' },
+];
+
+// ─────────────────────────────────────
+//  Screen navigation
+// ─────────────────────────────────────
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.style.animation = '';
+    });
+    const el = document.getElementById(id);
+    el.classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+function goBack(id) { showScreen(id); }
+
+// ─────────────────────────────────────
+//  Screen 1: URL import
+// ─────────────────────────────────────
+function fetchFromUrl() {
+    const input = document.getElementById('urlInput');
+    const err   = document.getElementById('urlErr');
+    const url   = input.value.trim();
+
+    if (!url) {
+        err.textContent = 'Please enter your website URL to continue.';
+        input.classList.add('has-error');
+        return;
+    }
+    if (!url.match(/^https?:\/\/.+\..+/)) {
+        err.textContent = "This doesn't look like a website URL. Try https://your-salon.com";
+        input.classList.add('has-error');
+        return;
+    }
+    err.textContent = '';
+    input.classList.remove('has-error');
+    input.disabled = true;
+    document.querySelector('.url-go').disabled = true;
+    document.getElementById('urlFetching').classList.add('on');
+
+    setTimeout(() => {
+        S.source = 'url';
+        S.bizName = "Jane's Beauty Studio";
+        document.getElementById('fetchedPill').textContent = '✓ Details imported from your site';
+        document.getElementById('bizName').value = S.bizName;
+        input.disabled = false;
+        document.querySelector('.url-go').disabled = false;
+        document.getElementById('urlFetching').classList.remove('on');
+        showScreen('screen-details');
+    }, 1800);
+}
+
+const SOC_DATA = {
+    instagram: { name: "Jane's Beauty Studio", handle: "@janes_beauty_studio · 2.4k followers", emoji: "💆" },
+    facebook:  { name: "Jane's Beauty Studio", handle: "facebook.com/janesbeauty · 1.8k likes", emoji: "💅" },
+    google:    { name: "Jane's Beauty Studio", handle: "Google Business · 4.8★ · 214 reviews", emoji: "🌟" },
+};
+
+function importFromSocial(platform) {
+    document.querySelectorAll('.soc-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('soc-' + (platform === 'instagram' ? 'ig' : platform === 'facebook' ? 'fb' : 'ggl')).classList.add('active');
+    document.getElementById('socResult').classList.remove('on');
+
+    const d = SOC_DATA[platform];
+    setTimeout(() => {
+        document.getElementById('socAvatar').textContent = d.emoji;
+        document.getElementById('socName').textContent   = d.name;
+        document.getElementById('socHandle').textContent = d.handle;
+        document.getElementById('socResult').classList.add('on');
+        S.source  = platform;
+        S.bizName = d.name;
+    }, 900);
+}
+
+function useImportedBusiness() {
+    document.getElementById('fetchedPill').textContent = '✓ Details imported from ' + S.source.charAt(0).toUpperCase() + S.source.slice(1);
+    document.getElementById('bizName').value = S.bizName;
+    showScreen('screen-details');
+}
+
+function skipToDetails() {
+    S.source = 'manual';
+    document.getElementById('fetchedPill').style.display = 'none';
+    document.getElementById('bizName').value = '';
+    document.getElementById('bizEmail').value = '';
+    showScreen('screen-details');
+}
+
+// ─────────────────────────────────────
+//  Screen 2 → 3
+// ─────────────────────────────────────
+function goToTemplates() {
+    const name  = document.getElementById('bizName').value.trim();
+    const email = document.getElementById('bizEmail').value.trim();
+    if (!name) {
+        document.getElementById('bizName').focus();
+        document.getElementById('bizName').style.borderColor = '#d92020';
+        return;
+    }
+    if (!email || !email.includes('@')) {
+        document.getElementById('bizEmail').focus();
+        document.getElementById('bizEmail').style.borderColor = '#d92020';
+        return;
+    }
+    document.getElementById('bizName').style.borderColor = '';
+    document.getElementById('bizEmail').style.borderColor = '';
+    S.bizName = name;
+
+    // Update template previews with business name
+    const short = name.split(' ').slice(0,3).join(' ');
+    document.getElementById('tp1-name').textContent = name;
+    document.getElementById('tp2-name').textContent = short;
+    document.getElementById('tp3-name').textContent = name.toUpperCase();
+
+    showScreen('screen-template');
+}
+
+// ─────────────────────────────────────
+//  Template selection
+// ─────────────────────────────────────
+function selectTemplate(el, id) {
+    document.querySelectorAll('.tmpl-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    S.template = id;
+}
+
+// ─────────────────────────────────────
+//  Screen 4: Generation
+// ─────────────────────────────────────
+function buildGenHTML() {
+    const n = S.bizName;
+    const short = n.split(' ').slice(0,3).join(' ');
+    const svcsHTML = SERVICES.map(s => `
+        <div class="gp-svc gen-section" id="gsvc${SERVICES.indexOf(s)}">
+            <div class="gp-svc-n">${s.n}</div>
+            <div class="gp-svc-p">${s.p} · ${[45,120,30,90,20,180][SERVICES.indexOf(s)]} min</div>
+        </div>`).join('');
+
+    if (S.template === 'minimal') return `
+        <div class="gp-min">
+            <div class="gp-nav gen-section" id="gNav">
+                <div class="gp-logo">💅</div>
+                <span class="gp-nl">Services</span><span class="gp-nl">About</span><span class="gp-nl">Contact</span>
+                <span class="gp-nb">Book Now</span>
+            </div>
+            <div class="gen-section" id="gHero">
+                <div class="gp-hero">
+                    <div class="gp-hero-img">💆</div>
+                    <h2>${n}</h2>
+                    <p>Premium hair and beauty services · Downtown LA</p>
+                    <div class="gp-cta">Book an Appointment</div>
+                </div>
+            </div>
+            <div class="gen-section" id="gSvcs">
+                <div class="gp-svcs">${svcsHTML}</div>
+            </div>
+        </div>`;
+
+    if (S.template === 'classic') return `
+        <div class="gp-cls">
+            <div class="gen-section" id="gHero">
+                <div class="gp-hero">
+                    <div class="gp-hero-img">💆</div>
+                    <div class="gp-eyebrow">Beauty &amp; Wellness · Since 2016</div>
+                    <h2>${short}</h2>
+                    <div class="gp-div"></div>
+                    <p>Premium hair and beauty in the heart of downtown LA</p>
+                    <div class="gp-cta">Book an Appointment</div>
+                </div>
+            </div>
+            <div class="gen-section" id="gSvcs">
+                <div class="gp-svcs">${svcsHTML.replace(/gp-svc/g,'gp-svc')}</div>
+            </div>
+        </div>`;
+
+    // bold
+    return `
+        <div class="gp-bld">
+            <div class="gp-nav gen-section" id="gNav">
+                <span class="gp-nl">HOME</span><span class="gp-nl">SERVICES</span>
+                <span class="gp-nl">ABOUT</span><span class="gp-nl">BOOK</span>
+            </div>
+            <div class="gen-section" id="gHero">
+                <div class="gp-hero">
+                    <div class="gp-hero-img">💆</div>
+                    <h2>${n.toUpperCase()}</h2>
+                    <p>STUDIO · LA · EST. 2016</p>
+                    <div class="gp-cta">BOOK NOW</div>
+                </div>
+            </div>
+            <div class="gen-section" id="gSvcs">
+                <div class="gp-svcs">${svcsHTML}</div>
+            </div>
+        </div>`;
+}
+
+function buildCelebrationHTML() {
+    const n = S.bizName;
+    const short = n.split(' ').slice(0,3).join(' ');
+    const svcsHTML = SERVICES.map(s => `
+        <div class="cs-svc">
+            <div class="cs-svc-n">${s.n}</div>
+            <div class="cs-svc-p">${s.p}</div>
+        </div>`).join('');
+
+    if (S.template === 'minimal') return `
+        <div class="cs-min">
+            <div class="cs-nav">
+                <div class="cs-logo">💅</div>
+                <span class="cs-nl">Services</span><span class="cs-nl">About</span><span class="cs-nl">Contact</span>
+                <span class="cs-nb">Book Now</span>
+            </div>
+            <div class="cs-hero">
+                <div class="cs-hero-img">💆</div>
+                <h2>${n}</h2>
+                <p>Premium hair and beauty services · Downtown LA</p>
+                <div class="cs-book">Book an Appointment</div>
+            </div>
+            <div class="cs-svcs">${svcsHTML}</div>
+        </div>`;
+
+    if (S.template === 'classic') return `
+        <div class="cs-cls">
+            <div class="cs-hero">
+                <div class="cs-hero-img">💆</div>
+                <div class="cs-eyebrow">Beauty &amp; Wellness · Since 2016</div>
+                <h2>${short}</h2>
+                <div class="cs-div"></div>
+                <p>Premium hair and beauty in the heart of downtown LA</p>
+                <div class="cs-book">Book an Appointment</div>
+            </div>
+            <div class="cs-svcs">${svcsHTML}</div>
+        </div>`;
+
+    return `
+        <div class="cs-bld">
+            <div class="cs-hero">
+                <div class="cs-hero-img">💆</div>
+                <h2>${n.toUpperCase()}</h2>
+                <p>STUDIO · LA · EST. 2016</p>
+                <div class="cs-book">BOOK NOW</div>
+            </div>
+            <div class="cs-svcs">${svcsHTML}</div>
+        </div>`;
+}
+
+function startGeneration() {
+    showScreen('screen-generation');
+    document.getElementById('genSite').innerHTML = buildGenHTML();
+    document.getElementById('genProg').style.width = '0%';
+    document.getElementById('genUrl').classList.remove('live');
+    document.getElementById('genUrl').textContent = 'your-new-site.wixsite.com';
+
+    const slug = S.bizName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+    const liveUrl = slug + '.wixsite.com';
+
+    const stages = [
+        { tag: 'Step 1 of 5', title: 'Scanning your content...', prog: 8,  delay: 0,     reveal: null },
+        { tag: 'Step 2 of 5', title: 'Extracting brand identity', prog: 25, delay: 1800,  reveal: 'gNav' },
+        { tag: 'Step 3 of 5', title: 'Building your homepage',    prog: 45, delay: 3600,  reveal: 'gHero' },
+        { tag: 'Step 4 of 5', title: 'Adding your services',      prog: 65, delay: 5800,  reveal: 'gSvcs' },
+        { tag: 'Step 5 of 5', title: 'Setting up Wix Bookings',   prog: 85, delay: 8000,  reveal: null },
+        { tag: '',            title: 'Your site is ready!',        prog: 100, delay: 10000, reveal: null, live: true },
+    ];
+
+    stages.forEach(({ tag, title, prog, delay, reveal, live }) => {
+        setTimeout(() => {
+            document.getElementById('genTag').textContent   = tag;
+            document.getElementById('genTitle').textContent = title;
+            document.getElementById('genProg').style.width  = prog + '%';
+            if (reveal) {
+                const el = document.getElementById(reveal);
+                if (el) el.classList.add('on');
             }
-            showScreen(id, false);
-        }
+            if (live) {
+                document.getElementById('genUrl').textContent = liveUrl;
+                document.getElementById('genUrl').classList.add('live');
+            }
+        }, delay);
     });
 
-    // Seed initial history entry so the very first back press stays on screen 1
-    history.replaceState({ screen: 'screen-url' }, '', '#screen-url');
-
-    // ── Step 1: fetch site details ──
-    function fetchSiteDetails() {
-        const url = document.getElementById('urlInput').value.trim();
-        const validation = document.getElementById('urlValidation');
-        if (!url) {
-            validation.textContent = 'Please enter your website URL to continue.';
-            validation.className = 'url-validation error';
-            return;
-        }
-        if (!url.match(/^https?:\/\/.+\..+/)) {
-            validation.textContent = 'This doesn\'t look like a website URL. Try https://your-salon.com';
-            validation.className = 'url-validation error';
-            return;
-        }
-        validation.textContent = '';
-        document.querySelector('.url-phase-row').style.opacity = '0.4';
-        document.querySelector('.url-phase-row button').disabled = true;
-        document.getElementById('urlFetching').classList.add('visible');
-        document.getElementById('urlTrust').style.visibility = 'hidden';
-
-        // Simulate fetch — pre-fill with "scraped" data
+    // Reveal service rows one by one
+    SERVICES.forEach((_, i) => {
         setTimeout(() => {
-            document.getElementById('phase-url').style.display = 'none';
-            document.getElementById('urlFetching').classList.remove('visible');
-            document.getElementById('urlTrust').style.display = 'none';
-            document.getElementById('phase-confirm').classList.add('visible');
-        }, 1800);
-    }
-
-    function resetToUrl() {
-        document.getElementById('phase-confirm').classList.remove('visible');
-        document.getElementById('phase-url').style.display = '';
-        document.querySelector('.url-phase-row').style.opacity = '1';
-        document.querySelector('.url-phase-row button').disabled = false;
-        document.getElementById('urlTrust').style.visibility = 'visible';
-        document.getElementById('urlTrust').style.display = '';
-    }
-
-    function goToTemplates() {
-        const email = document.getElementById('emailInput').value.trim();
-        if (!email || !email.includes('@')) {
-            document.getElementById('emailInput').style.borderColor = '#c00';
-            document.getElementById('emailInput').focus();
-            return;
-        }
-        document.getElementById('emailInput').style.borderColor = '';
-        const name = document.getElementById('businessNameInput').value || 'Your Beauty Studio';
-        document.getElementById('genSiteName').textContent = name;
-        // Push a history entry for screen-url (confirm phase) before moving forward,
-        // so back from template returns here correctly
-        history.replaceState({ screen: 'screen-url' }, '', '#screen-url');
-        showScreen('screen-template');
-    }
-
-    // ── Template selection ──
-    function selectTemplate(el) {
-        document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
-    }
-
-    // ── Add service inline form ──
-    function openAddService() {
-        document.getElementById('addServiceBtn').style.display = 'none';
-        document.getElementById('addServiceForm').classList.add('visible');
-        document.getElementById('newServiceName').focus();
-    }
-
-    function cancelAddService() {
-        document.getElementById('addServiceForm').classList.remove('visible');
-        document.getElementById('addServiceBtn').style.display = '';
-        document.getElementById('newServiceName').value = '';
-        document.getElementById('newServicePrice').value = '';
-        document.getElementById('newServiceDuration').value = '';
-    }
-
-    function confirmAddService() {
-        const name = document.getElementById('newServiceName').value.trim();
-        if (!name) { document.getElementById('newServiceName').focus(); return; }
-        const price = document.getElementById('newServicePrice').value.trim() || '—';
-        const duration = document.getElementById('newServiceDuration').value.trim() || '—';
-
-        const row = document.createElement('div');
-        row.className = 'service-item';
-        row.style.animation = 'fadeIn 0.3s ease';
-        row.innerHTML = `
-            <span class="service-name">${name}</span>
-            <input type="text" value="${price}" aria-label="Price">
-            <input type="text" value="${duration}" aria-label="Duration">
-            <button class="service-remove" aria-label="Remove" onclick="this.closest('.service-item').remove()">×</button>
-        `;
-        document.getElementById('serviceList').appendChild(row);
-        cancelAddService();
-    }
-
-    // Allow Enter key in add-service form
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Enter' && document.getElementById('addServiceForm').classList.contains('visible')) {
-            confirmAddService();
-        }
-        if (e.key === 'Escape' && document.getElementById('addServiceForm').classList.contains('visible')) {
-            cancelAddService();
-        }
+            const el = document.getElementById('gsvc' + i);
+            if (el) el.classList.add('on');
+        }, 6200 + i * 250);
     });
 
-    // ── Category pill toggle ──
-    document.querySelectorAll('.service-cat').forEach(cat => {
-        cat.addEventListener('click', () => {
-            document.querySelectorAll('.service-cat').forEach(c => c.classList.remove('selected'));
-            cat.classList.add('selected');
+    // Publishing overlay
+    setTimeout(() => {
+        document.getElementById('genPubOverlay').classList.add('on');
+        document.getElementById('genTag').textContent   = '';
+        document.getElementById('genTitle').textContent = 'Publishing...';
+    }, 11800);
+
+    setTimeout(() => {
+        document.getElementById('pubSpinner').classList.add('done');
+        document.getElementById('pubCheck').classList.add('on');
+        document.getElementById('pubText').textContent = 'Your site is live!';
+        document.getElementById('pubSub').textContent  = liveUrl;
+    }, 13400);
+
+    // Auto-advance to celebration
+    setTimeout(() => {
+        // Populate celebration screen
+        document.getElementById('celSiteFrame').innerHTML = buildCelebrationHTML();
+        document.getElementById('celUrlText').textContent = liveUrl;
+        document.getElementById('celIntroText').textContent =
+            S.bizName + ' is live and ready to take bookings. Send yourself the link to preview it on your phone.';
+        document.getElementById('dashSiteName').textContent = S.bizName + ' ▾';
+        document.getElementById('dashWelcome').textContent  = 'Welcome, ' + S.bizName.split(' ')[0] + '!';
+        showScreen('screen-celebration');
+        launchConfetti();
+    }, 15200);
+}
+
+// ─────────────────────────────────────
+//  SMS
+// ─────────────────────────────────────
+function sendSms() {
+    const inp = document.getElementById('smsInput');
+    if (!inp.value.trim()) { inp.focus(); return; }
+    inp.disabled = true;
+    document.querySelector('.cel-sms-go').textContent = 'Sending...';
+    setTimeout(() => {
+        document.getElementById('smsOk').classList.add('on');
+        document.querySelector('.cel-sms-go').textContent = 'Sent ✓';
+    }, 700);
+}
+
+// ─────────────────────────────────────
+//  Restart
+// ─────────────────────────────────────
+function restartFlow() {
+    // Reset state
+    S.source   = 'url';
+    S.bizName  = "Jane's Beauty Studio";
+    S.template = 'minimal';
+
+    // Reset fields
+    document.getElementById('urlInput').value   = '';
+    document.getElementById('urlInput').disabled = false;
+    document.querySelector('.url-go').disabled  = false;
+    document.getElementById('urlErr').textContent = '';
+    document.getElementById('urlFetching').classList.remove('on');
+    document.getElementById('socResult').classList.remove('on');
+    document.querySelectorAll('.soc-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('fetchedPill').style.display = '';
+    document.getElementById('fetchedPill').textContent = '✓ Details imported';
+    document.getElementById('bizName').value  = "Jane's Beauty Studio";
+    document.getElementById('bizEmail').value = 'jane@janes-beauty-studio.com';
+    document.getElementById('bizPhone').value = '';
+    document.getElementById('bizName').style.borderColor  = '';
+    document.getElementById('bizEmail').style.borderColor = '';
+
+    // Reset template selection
+    document.querySelectorAll('.tmpl-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector('.tmpl-card[data-tmpl="minimal"]').classList.add('selected');
+
+    // Reset gen screen
+    document.getElementById('genPubOverlay').classList.remove('on');
+    document.getElementById('pubSpinner').classList.remove('done');
+    document.getElementById('pubCheck').classList.remove('on');
+    document.getElementById('pubText').textContent = 'Publishing your site...';
+    document.getElementById('pubSub').textContent  = 'Setting up your live URL';
+
+    // Reset SMS
+    document.getElementById('smsInput').value    = '';
+    document.getElementById('smsInput').disabled = false;
+    document.querySelector('.cel-sms-go').textContent = 'Send link';
+    document.getElementById('smsOk').classList.remove('on');
+
+    showScreen('screen-url');
+}
+
+// ─────────────────────────────────────
+//  Confetti
+// ─────────────────────────────────────
+function launchConfetti() {
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx    = canvas.getContext('2d');
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const COLORS = ['#f4a3c0','#c0a3f4','#fde68a','#6ee7b7','#93c5fd','#fb923c'];
+    const pieces = Array.from({ length: 110 }, () => ({
+        x:  Math.random() * canvas.width,
+        y: -10 - Math.random() * 100,
+        r:  4 + Math.random() * 6,
+        d:  2 + Math.random() * 3,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        tilt: Math.random() * Math.PI * 2,
+        tiltSpeed: (Math.random() - 0.5) * 0.1,
+        shape: Math.random() > 0.5 ? 'rect' : 'circle',
+    }));
+
+    let frame = 0;
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.tilt);
+            ctx.fillStyle = p.color;
+            if (p.shape === 'rect') {
+                ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 2);
+            } else {
+                ctx.beginPath();
+                ctx.arc(0, 0, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+            p.y += p.d;
+            p.x += Math.sin(frame * 0.01 + pieces.indexOf(p)) * 0.8;
+            p.tilt += p.tiltSpeed;
         });
-    });
-
-    // ── Site generation ──
-    function startGeneration() {
-        showScreen('screen-generation');
-        document.querySelectorAll('.gen-section').forEach(s => s.classList.remove('revealed'));
-        document.getElementById('genProgressFill').style.width = '0%';
-
-        const stages = [
-            { label: 'Scanning your website',     narration: 'Reading your homepage content and design...', progress: 10,  delay: 0,     reveal: null },
-            { label: 'Extracting brand identity',  narration: 'Found your logo, brand colors, and imagery...', progress: 25, delay: 2000,  reveal: 'genNav' },
-            { label: 'Building your homepage',     narration: 'Recreating your hero section on Wix...',     progress: 40,  delay: 4000,  reveal: 'genHero' },
-            { label: 'Applying your services',     narration: 'Adding your service catalog to the site...',  progress: 60,  delay: 7000,  reveal: 'genServices' },
-            { label: 'Generating pages',           narration: 'Creating About and Contact pages...',         progress: 75,  delay: 10000, reveal: 'genAbout' },
-            { label: 'Setting up Wix Bookings',    narration: 'Online booking is now active on your site...', progress: 90, delay: 13000, reveal: 'genBooking' },
-            { label: 'Your site is ready',         narration: '',                                            progress: 100, delay: 16000, reveal: null },
-        ];
-
-        stages.forEach(({ label, narration, progress, delay, reveal }) => {
-            setTimeout(() => {
-                document.getElementById('genStageLabel').textContent = label;
-                document.getElementById('genProgressFill').style.width = progress + '%';
-                document.getElementById('genNarration').textContent = narration;
-                if (reveal) document.getElementById(reveal).classList.add('revealed');
-            }, delay);
-        });
-
-        setTimeout(() => showScreen('screen-services'), 19000);
+        frame++;
+        if (frame < 320) requestAnimationFrame(draw);
+        else { ctx.clearRect(0, 0, canvas.width, canvas.height); }
     }
+    draw();
+}
 
-    // ── SMS link ──
-    function sendSmsLink() {
-        const input = document.getElementById('smsInput');
-        const phone = input.value.trim();
-        if (!phone) { input.focus(); return; }
-        input.disabled = true;
-        document.querySelector('.cel-sms-btn').disabled = true;
-        document.querySelector('.cel-sms-btn').textContent = 'Sending...';
-        setTimeout(() => {
-            document.getElementById('smsSent').classList.add('visible');
-            document.querySelector('.cel-sms-btn').textContent = 'Sent ✓';
-        }, 800);
-    }
-
-    // ── Add service fade-in animation ──
-    const style = document.createElement('style');
-    style.textContent = '@keyframes fadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }';
-    document.head.appendChild(style);
+// Seed initial history
+history.replaceState({ screen: 'screen-url' }, '', '#screen-url');
 </script>
-
 </body>
 </html>
