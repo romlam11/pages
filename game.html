@@ -475,6 +475,7 @@
   let frame = 0;
   let shake = 0;
   let flashHit = 0;
+  let aimOverride = null; // set by cinematic autopilot
 
   const aliens = [];
   const bullets = [];        // player projectiles
@@ -592,11 +593,6 @@
     if (player.fireCooldown > 0) return;
     player.fireCooldown = 0.075;
 
-    // Targeting: project into world at far depth where the crosshair points
-    const aimX = mouse.x * 0.18;
-    const aimY = mouse.y * 0.18;
-
-    // cannons alternate from bottom corners
     player.cannonToggle = 1 - player.cannonToggle;
     const side = player.cannonToggle === 0 ? -1 : 1;
 
@@ -604,21 +600,36 @@
     const startY = 0.42;
     const startZ = 0.04;
 
+    // Compute 3-D aim point: prefer autopilot's direct world target, else
+    // unproject the screen crosshair position into world space.
+    let aimWorldX, aimWorldY, aimWorldZ;
+    if (aimOverride) {
+      aimWorldX = aimOverride.x;
+      aimWorldY = aimOverride.y;
+      aimWorldZ = Math.max(startZ + 0.1, aimOverride.z);
+    } else {
+      aimWorldZ = 0.85;
+      aimWorldX = mouse.x * 0.18 + (mouse.sx - CX - camOffsetX) * aimWorldZ / FOV;
+      aimWorldY = mouse.y * 0.18 + (mouse.sy - CY - camOffsetY) * aimWorldZ / FOV;
+    }
+
+    const rawDX = aimWorldX - startX;
+    const rawDY = aimWorldY - startY;
+    const rawDZ = aimWorldZ - startZ;
+    const len = Math.hypot(rawDX, rawDY, rawDZ) || 1;
+    const spd = 3.2;
+
     bullets.push({
       x: startX, y: startY, z: startZ,
-      tx: aimX, ty: aimY,
-      // velocity computed each step
-      speed: 3.2,
+      dx: (rawDX / len) * spd,
+      dy: (rawDY / len) * spd,
+      dz: (rawDZ / len) * spd,
       r: 0.02,
       life: 0,
       side,
     });
 
-    // sparks at cannon
-    sparks.push({
-      side, life: 0, dur: 0.15,
-    });
-
+    sparks.push({ side, life: 0, dur: 0.15 });
     player.heat = Math.min(100, player.heat + 5);
     if (player.heat >= 100) player.overheat = true;
   }
@@ -706,7 +717,12 @@
     finalScore.textContent = `SCORE ${String(score).padStart(6,'0')} · WAVE ${String(wave).padStart(2,'0')} · KILLS ${kills}`;
     gameOverEl.style.display = 'flex';
     gameOverEl.style.flexDirection = 'column';
+    // Auto-respawn for endless cinematic run
+    setTimeout(() => { if (state === STATE.GAMEOVER) startGame(); }, 2200);
   }
+
+  // Auto-start for cinematic experience
+  setTimeout(() => { if (state === STATE.MENU) startGame(); }, 1000);
 
   // initial click handler
   let clickHandler = null;
@@ -752,6 +768,45 @@
 
     cross.style.left = mouse.sx + 'px';
     cross.style.top  = mouse.sy + 'px';
+
+    // -----------------------------------------------------------------
+    // CINEMATIC AUTOPILOT — always on
+    // -----------------------------------------------------------------
+    if (state === STATE.PLAYING) {
+      // Pick nearest alien (smallest z = most immediate threat)
+      let nearestAlien = null;
+      let minZ = Infinity;
+      for (const a of aliens) {
+        if (a.z < minZ && a.z > NEAR + 0.05) { minZ = a.z; nearestAlien = a; }
+      }
+
+      if (nearestAlien) {
+        aimOverride = nearestAlien;
+        // Smoothly steer crosshair toward alien's projected screen position
+        const tp = project(nearestAlien.x, nearestAlien.y, nearestAlien.z);
+        const tpx = Math.max(40, Math.min(W - 40, tp.sx));
+        const tpy = Math.max(40, Math.min(H - 40, tp.sy));
+        mouse.sx += (tpx - mouse.sx) * Math.min(1, dt * 8);
+        mouse.sy += (tpy - mouse.sy) * Math.min(1, dt * 8);
+        mouse.tx = (mouse.sx / W - 0.5) * 2;
+        mouse.ty = (mouse.sy / H - 0.5) * 2;
+        mouse.down = true;
+      } else {
+        aimOverride = null;
+        // Cinematic sweep when sky is clear
+        const t2 = now * 0.00028;
+        const swx = Math.sin(t2 * 1.5 + 0.8) * 0.45;
+        const swy = Math.cos(t2 * 0.9 + 0.4) * 0.28;
+        mouse.tx += (swx - mouse.tx) * Math.min(1, dt * 1.3);
+        mouse.ty += (swy - mouse.ty) * Math.min(1, dt * 1.3);
+        mouse.sx = (mouse.tx / 2 + 0.5) * W;
+        mouse.sy = (mouse.ty / 2 + 0.5) * H;
+        mouse.down = false;
+      }
+
+      // Health regeneration — keeps the cinematic run going endlessly
+      player.hp = Math.min(player.maxHp, player.hp + 22 * dt);
+    }
 
     // base speed: faster when firing, slower when many threats nearby
     let targetSpeed = state === STATE.PLAYING ? (mouse.down ? 0.55 : 0.42) : 0.32;
@@ -968,20 +1023,10 @@
     // update bullets
     for (let i = bullets.length - 1; i >= 0; i--) {
       const b = bullets[i];
-      // bullet flies along its aim line; curve from start towards aim target then continues to FAR
       b.life += dt;
-      // simple: interpolate x,y from start->target as z grows
-      // Actually: keep a fixed direction. We'll compute per-step velocity heading to target at z=0.6 then continue
-      const aimReachZ = 0.6;
-      const t = Math.min(1, b.z / aimReachZ);
-      // Direction unit:
-      // We move z forward, x/y blend toward (tx,ty) as t goes from 0→1, then stay at tx,ty
-      const prevZ = b.z;
-      b.z += b.speed * dt;
-      // approximate current x,y
-      const tNow  = Math.min(1, b.z / aimReachZ);
-      b.x = b.x + (b.tx - b.x) * tNow * 0.5;
-      b.y = b.y + (b.ty - b.y) * tNow * 0.5;
+      b.x += b.dx * dt;
+      b.y += b.dy * dt;
+      b.z += b.dz * dt;
 
       // collision with aliens
       let hit = false;
@@ -1100,10 +1145,10 @@
     game.globalCompositeOperation = 'lighter';
     for (const b of bullets) {
       const cur = project(b.x, b.y, b.z);
-      const prevZ = Math.max(NEAR, b.z - b.speed * dt * 1.2);
-      const prevT = Math.min(1, prevZ / 0.6);
-      const prevX = b.x - (b.tx - b.x) * prevT * 0.05;
-      const prevY = b.y - (b.ty - b.y) * prevT * 0.05;
+      const trailT = dt * 1.4;
+      const prevX = b.x - b.dx * trailT;
+      const prevY = b.y - b.dy * trailT;
+      const prevZ = Math.max(NEAR, b.z - b.dz * trailT);
       const prev = project(prevX, prevY, prevZ);
 
       const a = Math.min(1, (b.z / 0.5));
