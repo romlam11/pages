@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="ds/styles.css">
+<style>
+body { margin: 0; background: #e6e4e3; }
+a { color: var(--color-accent); }
+a:hover { color: var(--color-accent-700); }
+</style>
+</helmet>
+<section style="padding: 56px; display: flex; flex-direction: column; gap: 40px">
+  <header style="max-width: 900px">
+    <h6 style="color: var(--color-accent); margin-bottom: 8px">HiBob AI Platform · PM Assignment</h6>
+    <h2 style="margin: 0 0 8px">AI-powered new-hire onboarding — 10 solution directions</h2>
+    <p class="text-muted" style="margin: 0">New hire, manager and HR/People Ops views across desktop web, chat and browser-extension surfaces.</p>
+  </header>
+  <div style="display: flex; flex-wrap: wrap; gap: 64px; align-items: flex-start">
+
+    <div id="1a" data-screen-label="1A Onboarding Copilot" style="width: 1220px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1a" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1A</a>
+        <h5 style="margin: 0">Onboarding Copilot in the home feed</h5>
+        <span class="text-muted" style="font-size: 12px">New hire · desktop web</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md)">
+        <div class="nav">
+          <span class="nav-brand">Bob</span>
+          <a href="#1a" aria-current="page">Home</a><a href="#1a">My tasks</a><a href="#1a">People</a><a href="#1a">Time off</a><a href="#1a">Docs</a>
+          <span style="width: 30px; height: 30px; background: var(--color-neutral-300); display: grid; place-items: center; font-size: 12px; font-weight: 800; font-family: var(--font-heading)">MB</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 0">
+          <div style="padding: 28px; border-right: 2px solid var(--color-divider)">
+            <h6 style="margin-bottom: 4px">Week 1 · Day 3</h6>
+            <h3 style="margin-bottom: 6px">Good morning, Maya</h3>
+            <p class="text-muted" style="font-size: 13px; margin-bottom: 20px">Your plan for today — ordered by what unblocks the most.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <div class="card" style="border-left: none; outline: 2px solid var(--color-accent)">
+                <span class="card-kicker">Do this first — blocks your laptop setup</span>
+                <span class="card-title">Complete security training (25 min)</span>
+                <div class="card-meta"><span>Due today</span><span>·</span><span>IT · assigned by workflow</span></div>
+              </div>
+              <div class="card">
+                <span class="card-title">Submit German tax ID (Steuer-ID)</span>
+                <div class="card-meta"><span>Due Friday</span><span>·</span><span>Payroll needs this before the 15th</span></div>
+              </div>
+              <div class="card">
+                <span class="card-title">Coffee with your buddy, Jonas K.</span>
+                <div class="card-meta"><span>Suggested: Thu 10:00</span><span>·</span><span>Both calendars free</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 14px; min-height: 460px">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <h5 style="margin: 0">Copilot</h5>
+              <span class="tag tag-accent">AI</span>
+            </div>
+            <div style="align-self: flex-end; max-width: 85%; background: var(--color-text); color: var(--color-bg); padding: 10px 12px; font-size: 13px">When does my health insurance start?</div>
+            <div style="max-width: 92%; background: var(--color-surface); padding: 12px; font-size: 13px; line-height: 1.5">
+              Your coverage starts on your first day — it's already active. Your TK membership confirmation arrives by mail within two weeks; nothing to do until then.
+              <div style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap">
+                <span class="tag tag-neutral">Benefits policy · DE</span>
+                <span class="tag tag-neutral">Your enrollment record</span>
+              </div>
+            </div>
+            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px">
+              <div style="display: flex; gap: 6px; flex-wrap: wrap">
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 4px 10px">Who approves my expenses?</button>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 4px 10px">What's my team working on?</button>
+              </div>
+              <div style="display: flex; gap: 8px">
+                <input class="input" placeholder="Ask anything about your new job…">
+                <button class="btn btn-primary">Ask</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1b" data-screen-label="1B Adaptive ramp plan" style="width: 1220px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1b" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1B</a>
+        <h5 style="margin: 0">Adaptive 30/60/90 ramp plan</h5>
+        <span class="text-muted" style="font-size: 12px">New hire · desktop web</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md); padding: 28px">
+        <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 6px">
+          <h3 style="margin: 0">Your ramp plan</h3>
+          <span class="text-muted" style="font-size: 13px">Generated from your role, team and location · reviewed by your manager</span>
+        </div>
+        <div style="background: var(--color-accent-100); color: var(--color-accent-800); padding: 10px 14px; font-size: 13px; margin: 14px 0 24px; display: flex; gap: 10px; align-items: center">
+          <span class="tag tag-outline" style="background: var(--color-bg)">Plan updated</span>
+          Security training moved up — your laptop arrives Thursday and it's a prerequisite.
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-top: 2px solid var(--color-divider)">
+          <div style="padding: 20px 20px 20px 0; border-right: 1px solid var(--color-divider)">
+            <h6 style="margin-bottom: 14px">First week</h6>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <div class="card"><span class="card-title" style="font-size: 15px">Meet your core team (5 intros)</span><div class="card-meta"><span class="tag tag-accent">Auto-scheduled</span></div></div>
+              <div class="card"><span class="card-title" style="font-size: 15px">Security &amp; data training</span><div class="card-meta"><span class="tag tag-accent">Moved up</span></div></div>
+              <div class="card"><span class="card-title" style="font-size: 15px">Payroll &amp; tax forms</span><div class="card-meta"><span>Due Fri</span></div></div>
+            </div>
+          </div>
+          <div style="padding: 20px; border-right: 1px solid var(--color-divider)">
+            <h6 style="margin-bottom: 14px">First month</h6>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <div class="card"><span class="card-title" style="font-size: 15px">Ship a starter task in the design system</span><div class="card-meta"><span class="tag tag-neutral">From your manager</span></div></div>
+              <div class="card"><span class="card-title" style="font-size: 15px">Shadow two customer calls</span><div class="card-meta"><span class="tag tag-neutral">Role-specific</span></div></div>
+            </div>
+          </div>
+          <div style="padding: 20px 0 20px 20px">
+            <h6 style="margin-bottom: 14px">Months 2–3</h6>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+              <div class="card"><span class="card-title" style="font-size: 15px">Own a small feature end-to-end</span><div class="card-meta"><span>Milestone · reviewed at 60 days</span></div></div>
+              <div class="card"><span class="card-title" style="font-size: 15px">90-day check-in with your manager</span><div class="card-meta"><span class="tag tag-accent">Auto-scheduled</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1c" data-screen-label="1C Chat buddy in Slack" style="width: 960px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1c" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1C</a>
+        <h5 style="margin: 0">Onboarding agent in Slack / Teams</h5>
+        <span class="text-muted" style="font-size: 12px">New hire · chat surface</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md); display: grid; grid-template-columns: 210px 1fr">
+        <div style="background: var(--color-neutral-900); color: var(--color-neutral-300); padding: 18px 14px; font-size: 13px; display: flex; flex-direction: column; gap: 8px">
+          <span style="font-family: var(--font-heading); font-weight: 800; color: var(--color-bg); font-size: 15px; margin-bottom: 8px">acme-hq</span>
+          <span># general</span>
+          <span># design</span>
+          <span style="margin-top: 10px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase">Apps</span>
+          <span style="background: var(--color-accent); color: var(--color-bg); padding: 4px 8px; margin: 0 -8px 0 -8px">Bob Onboarding</span>
+        </div>
+        <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; min-height: 420px">
+          <div style="border-bottom: 2px solid var(--color-divider); padding-bottom: 10px">
+            <span style="font-family: var(--font-heading); font-weight: 800">Bob Onboarding</span>
+            <span class="tag tag-accent" style="margin-left: 8px">App</span>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <span style="width: 34px; height: 34px; flex: none; background: var(--color-accent); color: var(--color-bg); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 13px">B</span>
+            <div style="font-size: 14px; line-height: 1.5">
+              <strong>Day 3 check-in.</strong> Two things for today: security training (25 min, blocks laptop setup) and your tax form. Also — you haven't met anyone from Data yet; want me to set up a coffee with Priya?
+              <div style="display: flex; gap: 8px; margin-top: 10px">
+                <button class="btn btn-primary" style="font-size: 12px">Book coffee with Priya</button>
+                <button class="btn btn-secondary" style="font-size: 12px">Show my tasks</button>
+                <button class="btn btn-ghost" style="font-size: 12px">Not now</button>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <span style="width: 34px; height: 34px; flex: none; background: var(--color-neutral-300); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 13px">MB</span>
+            <div style="font-size: 14px">how do I book time off for the 24th?</div>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <span style="width: 34px; height: 34px; flex: none; background: var(--color-accent); color: var(--color-bg); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 13px">B</span>
+            <div style="font-size: 14px; line-height: 1.5">
+              You have 24 vacation days; requests go to Dana for approval. I can file it for you now.
+              <div style="border: 1px solid var(--color-divider); background: var(--color-surface); padding: 12px; margin-top: 10px; display: flex; align-items: center; gap: 14px">
+                <div>
+                  <div style="font-family: var(--font-heading); font-weight: 800; font-size: 14px">Time off · Dec 24</div>
+                  <div class="text-muted" style="font-size: 12px">1 day · Vacation · Approver: Dana R.</div>
+                </div>
+                <button class="btn btn-primary" style="margin-left: auto; font-size: 12px">Submit in Bob</button>
+              </div>
+              <div class="text-muted" style="font-size: 11px; margin-top: 8px">Source: Time-off policy · DE. I never submit without your confirmation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1d" data-screen-label="1D Manager copilot" style="width: 1220px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1d" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1D</a>
+        <h5 style="margin: 0">Manager ramp copilot</h5>
+        <span class="text-muted" style="font-size: 12px">Manager · desktop web</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md); padding: 28px">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px">
+          <span style="width: 44px; height: 44px; background: var(--color-neutral-300); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800">MB</span>
+          <div>
+            <h4 style="margin: 0">Maya Berger — Product Designer</h4>
+            <span class="text-muted" style="font-size: 13px">Day 9 of onboarding · reports to you</span>
+          </div>
+          <button class="btn btn-secondary" style="margin-left: auto">Full plan</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px">
+          <div class="card"><span class="card-kicker">Ramp health</span><span class="card-title" style="font-size: 28px">On track</span><span class="card-body">Ahead on tasks, behind on people</span></div>
+          <div class="card"><span class="card-kicker">Tasks</span><span class="card-title" style="font-size: 28px">8 / 12</span><span class="card-body">2 due this week</span></div>
+          <div class="card" style="outline: 2px solid var(--color-accent)"><span class="card-kicker" >Signal</span><span class="card-title" style="font-size: 28px">Low 1:1 time</span><span class="card-body">No recurring 1:1 on your calendar yet</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
+          <div>
+            <h6 style="margin-bottom: 12px">Signals this week</h6>
+            <div style="display: flex; flex-direction: column">
+              <div style="display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--color-divider); font-size: 13px"><span class="tag tag-accent">Act</span>No recurring 1:1 booked — suggested slot: Tue 11:00</div>
+              <div style="display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--color-divider); font-size: 13px"><span class="tag tag-neutral">Watch</span>Hasn't met anyone outside Design yet</div>
+              <div style="display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--color-divider); font-size: 13px"><span class="tag tag-neutral">Good</span>Finished security training 2 days early</div>
+            </div>
+          </div>
+          <div class="card elev-sm">
+            <span class="card-kicker">Drafted for you</span>
+            <span class="card-title">First 1:1 agenda</span>
+            <span class="card-body" style="line-height: 1.6">1. How the first week actually felt · 2. Starter task: design-system audit — scope &amp; support · 3. Who she still needs to meet (suggest: Priya, Data) · 4. Working style + feedback preferences</span>
+            <div style="display: flex; gap: 8px; margin-top: 4px">
+              <button class="btn btn-primary" style="font-size: 13px">Add to calendar</button>
+              <button class="btn btn-secondary" style="font-size: 13px">Edit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1e" data-screen-label="1E HR cohort console" style="width: 1220px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1e" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1E</a>
+        <h5 style="margin: 0">People Ops cohort console</h5>
+        <span class="text-muted" style="font-size: 12px">HR / People Ops · desktop web</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md); padding: 28px">
+        <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 16px">
+          <h3 style="margin: 0">September cohort</h3>
+          <span class="text-muted" style="font-size: 13px">18 new joiners · 4 countries</span>
+          <button class="btn btn-secondary" style="margin-left: auto; font-size: 13px">Export</button>
+        </div>
+        <div style="background: var(--color-accent-100); padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px">
+          <span class="tag tag-outline" style="background: var(--color-bg)">Pattern detected</span>
+          <span style="font-size: 13px; color: var(--color-accent-800)">4 hires in Berlin are stuck on the payroll form — the Steuer-ID field rejects new-format IDs.</span>
+          <button class="btn btn-primary" style="margin-left: auto; font-size: 13px">Draft fix + comms</button>
+        </div>
+        <table class="table">
+          <thead><tr><th>Name</th><th>Role</th><th>Start</th><th>Stage</th><th>AI status</th><th>Top signal</th></tr></thead>
+          <tbody>
+            <tr><td>Maya Berger</td><td>Product Designer</td><td>Sep 1</td><td>Week 2</td><td><span class="tag tag-neutral">On track</span></td><td>—</td></tr>
+            <tr><td>Tom Adler</td><td>Backend Eng</td><td>Sep 1</td><td>Week 2</td><td><span class="tag tag-accent">Blocked</span></td><td>Payroll form rejected twice</td></tr>
+            <tr><td>Lena Voss</td><td>AE, DACH</td><td>Sep 8</td><td>Week 1</td><td><span class="tag tag-accent">At risk</span></td><td>No manager 1:1 scheduled</td></tr>
+            <tr><td>Omar Haddad</td><td>Data Analyst</td><td>Sep 8</td><td>Week 1</td><td><span class="tag tag-neutral">On track</span></td><td>—</td></tr>
+            <tr><td>Ana Ribeiro</td><td>Support Lead</td><td>Sep 15</td><td>Preboarding</td><td><span class="tag tag-neutral">On track</span></td><td>Docs signed early</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="1f" data-screen-label="1F Org navigator" style="width: 1220px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1f" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1F</a>
+        <h5 style="margin: 0">Who-to-meet org navigator</h5>
+        <span class="text-muted" style="font-size: 12px">New hire · desktop web</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md); padding: 28px">
+        <h3 style="margin-bottom: 4px">People to meet in your first three weeks</h3>
+        <p class="text-muted" style="font-size: 13px; margin-bottom: 20px">Ranked from your team, project ownership and calendar graph — not the org chart alone.</p>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px">
+          <div class="card"><div style="display: flex; gap: 10px; align-items: center"><span style="width: 38px; height: 38px; background: var(--color-neutral-300); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 13px">JK</span><div><span class="card-title" style="display: block">Jonas K.</span><span class="card-meta">Your buddy · Design</span></div></div><span class="card-body">Owns the design system you'll work in first.</span><div style="display: flex; gap: 8px; align-items: center"><span class="tag tag-accent">Week 1</span><button class="btn btn-ghost" style="font-size: 12px">Draft intro</button></div></div>
+          <div class="card"><div style="display: flex; gap: 10px; align-items: center"><span style="width: 38px; height: 38px; background: var(--color-neutral-300); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 13px">PS</span><div><span class="card-title" style="display: block">Priya S.</span><span class="card-meta">Data · Analytics lead</span></div></div><span class="card-body">Runs the metrics your starter task reports into.</span><div style="display: flex; gap: 8px; align-items: center"><span class="tag tag-accent">Week 1</span><button class="btn btn-ghost" style="font-size: 12px">Draft intro</button></div></div>
+          <div class="card"><div style="display: flex; gap: 10px; align-items: center"><span style="width: 38px; height: 38px; background: var(--color-neutral-300); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 13px">DR</span><div><span class="card-title" style="display: block">Dana R.</span><span class="card-meta">Your manager</span></div></div><span class="card-body">1:1 every Tuesday — agenda drafted for you both.</span><div style="display: flex; gap: 8px; align-items: center"><span class="tag tag-accent">Week 1</span><button class="btn btn-ghost" style="font-size: 12px">Draft intro</button></div></div>
+          <div class="card"><div style="display: flex; gap: 10px; align-items: center"><span style="width: 38px; height: 38px; background: var(--color-neutral-300); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 13px">SW</span><div><span class="card-title" style="display: block">Sam W.</span><span class="card-meta">Eng · Frontend</span></div></div><span class="card-body">Pairs with Design on everything you'll ship.</span><div style="display: flex; gap: 8px; align-items: center"><span class="tag tag-neutral">Week 2</span><button class="btn btn-ghost" style="font-size: 12px">Draft intro</button></div></div>
+          <div class="card"><div style="display: flex; gap: 10px; align-items: center"><span style="width: 38px; height: 38px; background: var(--color-neutral-300); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 13px">IN</span><div><span class="card-title" style="display: block">Ines N.</span><span class="card-meta">People Ops · DE</span></div></div><span class="card-body">Your contact for payroll, visa and benefits.</span><div style="display: flex; gap: 8px; align-items: center"><span class="tag tag-neutral">Week 2</span><button class="btn btn-ghost" style="font-size: 12px">Draft intro</button></div></div>
+          <div class="card"><div style="display: flex; gap: 10px; align-items: center"><span style="width: 38px; height: 38px; background: var(--color-neutral-300); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 13px">RC</span><div><span class="card-title" style="display: block">Rita C.</span><span class="card-meta">Product · your PM</span></div></div><span class="card-body">Sets the roadmap your first feature lives on.</span><div style="display: flex; gap: 8px; align-items: center"><span class="tag tag-neutral">Week 3</span><button class="btn btn-ghost" style="font-size: 12px">Draft intro</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1g" data-screen-label="1G Browser extension sidekick" style="width: 1220px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1g" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1G</a>
+        <h5 style="margin: 0">Everywhere sidekick</h5>
+        <span class="text-muted" style="font-size: 12px">New hire · browser extension</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md)">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 2px solid var(--color-divider); background: var(--color-surface)">
+          <span style="display: flex; gap: 5px"><span style="width: 9px; height: 9px; background: var(--color-neutral-400)"></span><span style="width: 9px; height: 9px; background: var(--color-neutral-400)"></span><span style="width: 9px; height: 9px; background: var(--color-neutral-400)"></span></span>
+          <span style="flex: 1; background: var(--color-bg); border: 1px solid var(--color-divider); font-size: 12px; padding: 4px 10px; color: var(--color-neutral-600)">expenses.acme.internal/new-claim</span>
+          <span style="width: 24px; height: 24px; background: var(--color-accent); color: var(--color-bg); display: grid; place-items: center; font-family: var(--font-heading); font-weight: 800; font-size: 12px">B</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 360px">
+          <div style="padding: 28px; display: flex; flex-direction: column; gap: 12px; opacity: 0.5">
+            <div style="height: 22px; width: 40%; background: var(--color-neutral-300)"></div>
+            <div style="height: 12px; width: 70%; background: var(--color-neutral-200)"></div>
+            <div style="height: 36px; width: 55%; background: var(--color-neutral-200); border: 1px solid var(--color-neutral-400)"></div>
+            <div style="height: 36px; width: 55%; background: var(--color-neutral-200); border: 1px solid var(--color-neutral-400)"></div>
+            <div style="height: 12px; width: 45%; background: var(--color-neutral-200)"></div>
+            <div style="height: 30px; width: 120px; background: var(--color-neutral-400)"></div>
+          </div>
+          <div style="border-left: 2px solid var(--color-text); padding: 18px; display: flex; flex-direction: column; gap: 12px; min-height: 340px">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <h5 style="margin: 0">Bob Sidekick</h5>
+              <span class="tag tag-accent">Sees this page</span>
+            </div>
+            <p class="text-muted" style="font-size: 12px; margin: 0">You're on the expense tool for the first time.</p>
+            <div style="background: var(--color-surface); padding: 12px; font-size: 13px; line-height: 1.5">
+              As a new joiner: your corporate card arrives next week. File setup costs (monitor, adapters) under <strong>“New hire equipment”</strong> — up to €300, no receipt threshold €25, approved by Dana automatically.
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <button class="btn btn-secondary" style="font-size: 12px">Open expense policy in Bob</button>
+              <button class="btn btn-secondary" style="font-size: 12px">Ask People Ops instead</button>
+            </div>
+            <div class="text-muted" style="font-size: 11px; margin-top: auto">Reads page context only when you open it. Nothing is stored.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1h" data-screen-label="1H Ask-anything answers" style="width: 1000px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1h" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1H</a>
+        <h5 style="margin: 0">Ask-anything grounded answers</h5>
+        <span class="text-muted" style="font-size: 12px">New hire · desktop web</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md); padding: 32px">
+        <h2 style="margin-bottom: 16px">Ask anything about your new job</h2>
+        <div style="display: flex; gap: 8px; max-width: 640px; margin-bottom: 28px">
+          <input class="input" value="Can I work from Portugal for two weeks in November?">
+          <button class="btn btn-primary">Ask</button>
+        </div>
+        <div style="border-top: 2px solid var(--color-divider); padding-top: 20px; max-width: 760px">
+          <div style="display: flex; gap: 8px; margin-bottom: 12px; align-items: center">
+            <span class="tag tag-accent">Verified · People team</span>
+            <span class="text-muted" style="font-size: 12px">Policy updated 3 weeks ago</span>
+          </div>
+          <p style="font-size: 15px; line-height: 1.6; max-width: 640px">Yes — Germany-based employees can work from any EU country up to 30 days per year. You'll need to log it as “Workation” in Bob at least one week ahead; Dana approves it, and no tax paperwork is needed under 30 days.</p>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 0 20px">
+            <span class="tag tag-neutral">Remote work policy §3</span>
+            <span class="tag tag-neutral">DE employment addendum</span>
+            <span class="tag tag-neutral">Your location record</span>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button class="btn btn-primary" style="font-size: 13px">Log the workation</button>
+            <button class="btn btn-ghost" style="font-size: 13px">Not sure? Ask a human</button>
+          </div>
+        </div>
+        <div style="border-top: 1px solid var(--color-divider); margin-top: 24px; padding-top: 14px">
+          <h6 style="margin-bottom: 10px">People in their first month also asked</h6>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <button class="btn btn-secondary" style="font-size: 12px">When is payday?</button>
+            <button class="btn btn-secondary" style="font-size: 12px">How does the learning budget work?</button>
+            <button class="btn btn-secondary" style="font-size: 12px">Who is my works council rep?</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1i" data-screen-label="1I Adaptive check-in" style="width: 820px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1i" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1I</a>
+        <h5 style="margin: 0">Adaptive weekly check-in</h5>
+        <span class="text-muted" style="font-size: 12px">New hire · desktop web</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md); padding: 32px">
+        <h3 style="margin-bottom: 4px">Week 2 check-in</h3>
+        <p class="text-muted" style="font-size: 13px; margin-bottom: 24px">Three questions, ~2 minutes. Questions adapt to your week — you had 14 meetings, so we're asking about that.</p>
+        <div style="display: flex; flex-direction: column; gap: 22px; max-width: 560px">
+          <div class="field">
+            <label>Overall, this week felt…</label>
+            <div class="seg">
+              <label class="seg-opt"><input type="radio" name="q1">Great</label>
+              <label class="seg-opt"><input type="radio" name="q1" checked>Mostly good</label>
+              <label class="seg-opt"><input type="radio" name="q1">Overwhelming</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Was 14 meetings too many for week 2?</label>
+            <div style="display: flex; gap: 16px">
+              <label class="radio"><input type="radio" name="q2" checked><span class="dot"></span>Yes, too many</label>
+              <label class="radio"><input type="radio" name="q2"><span class="dot"></span>About right</label>
+              <label class="radio"><input type="radio" name="q2"><span class="dot"></span>Want more</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Anything unclear or blocking you?</label>
+            <textarea class="input" placeholder="Optional — only a summary is shared"></textarea>
+          </div>
+          <div class="card">
+            <span class="card-kicker">What your manager sees</span>
+            <span class="card-body" style="font-size: 13px">A short summary, never your raw answers: “Maya is settling in well; meeting load feels heavy — consider trimming week-3 intros.”</span>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button class="btn btn-primary">Submit</button>
+            <button class="btn btn-ghost">Skip this week</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1j" data-screen-label="1J Agent studio" style="width: 1220px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <a href="#1j" style="background: var(--color-accent); color: var(--color-bg); font-family: var(--font-heading); font-weight: 800; font-size: 13px; padding: 3px 8px; text-decoration: none">1J</a>
+        <h5 style="margin: 0">Onboarding agent studio</h5>
+        <span class="text-muted" style="font-size: 12px">HR admin · platform view</span>
+      </div>
+      <div style="border: 2px solid var(--color-text); background: var(--color-bg); box-shadow: var(--shadow-md); padding: 28px">
+        <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 20px">
+          <h3 style="margin: 0">Onboarding Agent</h3>
+          <span class="tag tag-accent">Live · 3 sites</span>
+          <button class="btn btn-secondary" style="margin-left: auto; font-size: 13px">Version history</button>
+          <button class="btn btn-primary" style="font-size: 13px">Publish changes</button>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 380px; gap: 24px">
+          <div>
+            <h6 style="margin-bottom: 12px">Knowledge sources</h6>
+            <div style="display: flex; flex-direction: column">
+              <label style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--color-divider); font-size: 13px; cursor: pointer"><span style="width: 14px; height: 14px; background: var(--color-accent); flex: none"></span>HR policies &amp; handbook<span class="text-muted" style="margin-left: auto; font-size: 11px">142 docs</span></label>
+              <label style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--color-divider); font-size: 13px; cursor: pointer"><span style="width: 14px; height: 14px; background: var(--color-accent); flex: none"></span>Benefits, per country<span class="text-muted" style="margin-left: auto; font-size: 11px">4 locales</span></label>
+              <label style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--color-divider); font-size: 13px; cursor: pointer"><span style="width: 14px; height: 14px; background: var(--color-accent); flex: none"></span>Org &amp; people data<span class="text-muted" style="margin-left: auto; font-size: 11px">Read-only</span></label>
+              <label style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--color-divider); font-size: 13px; cursor: pointer"><span style="width: 14px; height: 14px; border: 1.5px solid var(--color-divider); flex: none"></span>Compensation bands<span class="tag tag-accent" style="margin-left: auto">Excluded</span></label>
+            </div>
+            <h6 style="margin: 20px 0 12px">Actions the agent may take</h6>
+            <div style="display: flex; flex-direction: column">
+              <label style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--color-divider); font-size: 13px; cursor: pointer"><span style="width: 14px; height: 14px; background: var(--color-accent); flex: none"></span>Schedule meetings<span class="text-muted" style="margin-left: auto; font-size: 11px">With confirmation</span></label>
+              <label style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--color-divider); font-size: 13px; cursor: pointer"><span style="width: 14px; height: 14px; background: var(--color-accent); flex: none"></span>Submit time-off requests<span class="text-muted" style="margin-left: auto; font-size: 11px">With confirmation</span></label>
+              <label style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--color-divider); font-size: 13px; cursor: pointer"><span style="width: 14px; height: 14px; border: 1.5px solid var(--color-divider); flex: none"></span>Edit employee records<span class="tag tag-accent" style="margin-left: auto">Never</span></label>
+            </div>
+          </div>
+          <div>
+            <h6 style="margin-bottom: 12px">Guardrails</h6>
+            <div class="field" style="margin-bottom: 14px">
+              <label>Escalate to a human when</label>
+              <input class="input" value="Confidence < 80% · legal, medical or comp topics">
+            </div>
+            <div class="field" style="margin-bottom: 14px">
+              <label>Tone</label>
+              <div class="seg">
+                <label class="seg-opt"><input type="radio" name="tone" checked>Warm</label>
+                <label class="seg-opt"><input type="radio" name="tone">Neutral</label>
+                <label class="seg-opt"><input type="radio" name="tone">Formal</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>Active lifecycle stages</label>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px">
+                <span class="tag tag-accent">Preboarding</span>
+                <span class="tag tag-accent">First 90 days</span>
+                <span class="tag tag-outline">Ongoing (off)</span>
+              </div>
+            </div>
+            <div class="hr" style="margin: 20px 0"></div>
+            <h6 style="margin-bottom: 12px">Last 30 days</h6>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px">
+              <div><div style="font-family: var(--font-heading); font-weight: 800; font-size: 24px">68%</div><div class="text-muted" style="font-size: 11px">Answered without HR</div></div>
+              <div><div style="font-family: var(--font-heading); font-weight: 800; font-size: 24px">31</div><div class="text-muted" style="font-size: 11px">Escalations</div></div>
+              <div><div style="font-family: var(--font-heading); font-weight: 800; font-size: 24px">4.6</div><div class="text-muted" style="font-size: 11px">Hire rating / 5</div></div>
+            </div>
+          </div>
+          <div style="border: 1px solid var(--color-divider); background: var(--color-surface); padding: 16px; display: flex; flex-direction: column; gap: 10px">
+            <h6 style="margin: 0">Preview as new hire</h6>
+            <div style="align-self: flex-end; max-width: 88%; background: var(--color-text); color: var(--color-bg); padding: 8px 10px; font-size: 12px">What's my salary band?</div>
+            <div style="max-width: 92%; background: var(--color-bg); padding: 10px; font-size: 12px; line-height: 1.5">Compensation questions go to your People partner — I've drafted a message to Ines N. for you to send.</div>
+            <span class="text-muted" style="font-size: 11px">Comp bands excluded → agent escalates. Working as configured.</span>
+            <div style="display: flex; gap: 8px; margin-top: auto">
+              <input class="input" placeholder="Test a question…" style="font-size: 12px">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+</body>
+</html>
