@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; height: 100vh; overflow: hidden; font-family: 'Lato', -apple-system, sans-serif; color: #1d1c1d; }
+a { color: #1264a3; }
+a:hover { color: #0b4c8c; }
+button { font-family: 'Lato', -apple-system, sans-serif; }
+@keyframes blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+</style>
+</helmet>
+<div data-screen-label="Slack agent prototype" style="height: 100vh; display: flex; flex-direction: column; background: #fff">
+  <div style="display: flex; align-items: center; gap: 12px; padding: 8px 16px; background: #f4f4f4; border-bottom: 1px solid #e5e5e5; font-size: 12px">
+    <span style="background: #e8317e; color: #fff; font-weight: 900; font-size: 11px; padding: 2px 8px; border-radius: 10px">Prototype</span>
+    <span style="color: #7a7a7a">Onboarding agent in Slack</span>
+    <div style="margin-left: auto; display: flex; gap: 4px; background: #fff; border: 1px solid #ddd; border-radius: 16px; padding: 3px">
+      <sc-for list="{{ stageBtns }}" as="s" hint-placeholder-count="5">
+        <button class="stage" onClick="{{ s.onClick }}" style="cursor: pointer; border: none; border-radius: 12px; font-size: 12px; font-weight: 700; padding: 4px 12px; background: {{ s.bg }}; color: {{ s.fg }}">{{ s.label }}</button>
+      </sc-for>
+    </div>
+    <button style="background: none; border: none; color: #7a7a7a; font-size: 12px; font-weight: 700; cursor: pointer" onClick="{{ onReset }}">Reset</button>
+    <a href="People Ops Console.dc.html" style="font-size: 12px; font-weight: 700; text-decoration: none">People Ops console →</a>
+  </div>
+  <div style="background: #350d36; display: flex; align-items: center; justify-content: center; padding: 6px 16px; gap: 8px">
+    <div style="width: 40%; min-width: 320px; background: #5d3a5e; border-radius: 6px; color: #e6dbe6; font-size: 12px; padding: 5px 10px; display: flex; align-items: center; gap: 6px">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e6dbe6" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Search acme-hq
+    </div>
+  </div>
+  <div style="flex: 1; display: grid; grid-template-columns: 230px 1fr; min-height: 0">
+    <div style="background: #3f0e40; color: #cfc3cf; font-size: 15px; display: flex; flex-direction: column; overflow-y: auto">
+      <div style="padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 6px">
+        <span style="font-weight: 900; color: #fff; font-size: 16px">acme-hq</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M6 9l6 6 6-6z"/></svg>
+        <span style="margin-left: auto; width: 34px; height: 34px; background: #fff; color: #3f0e40; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 15px">✎</span>
+      </div>
+      <div style="padding: 14px 8px; display: flex; flex-direction: column; gap: 1px">
+        <span style="padding: 4px 8px; font-size: 13px; color: #cfc3cf">Channels ▾</span>
+        <span style="padding: 4px 8px 4px 16px; border-radius: 6px"># general</span>
+        <span style="padding: 4px 8px 4px 16px; border-radius: 6px"># design</span>
+        <span style="padding: 4px 8px 4px 16px; border-radius: 6px"># berlin-office</span>
+        <span style="padding: 4px 8px; font-size: 13px; color: #cfc3cf; margin-top: 14px">Direct messages ▾</span>
+        <span style="padding: 4px 8px 4px 16px; border-radius: 6px; display: flex; align-items: center; gap: 8px"><span style="width: 9px; height: 9px; border-radius: 50%; background: #2bac76; flex: none"></span>Dana R.</span>
+        <span style="padding: 4px 8px 4px 16px; border-radius: 6px; display: flex; align-items: center; gap: 8px"><span style="width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #cfc3cf; flex: none"></span>Jonas K.</span>
+        <span style="padding: 4px 8px; font-size: 13px; color: #cfc3cf; margin-top: 14px">Apps ▾</span>
+        <span style="padding: 4px 8px 4px 16px; border-radius: 6px; background: #1164a3; color: #fff; font-weight: 700; display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 18px; border-radius: 4px; background: #e8317e; color: #fff; display: grid; place-items: center; font-size: 10px; font-weight: 900; flex: none">B</span>Bob Onboarding</span>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; min-height: 0; min-width: 0; background: #fff">
+      <div style="padding: 10px 20px 0; border-bottom: 1px solid #ddd">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <span style="width: 24px; height: 24px; border-radius: 4px; background: #e8317e; color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 900">B</span>
+          <span style="font-weight: 900; font-size: 16px">Bob Onboarding</span>
+          <span style="background: #e8e8e8; color: #616061; font-size: 10px; font-weight: 700; padding: 1px 4px; border-radius: 2px">APP</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#616061" stroke-width="2"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+        </div>
+        <div style="display: flex; gap: 18px; margin-top: 10px">
+          <button onClick="{{ onTabMsgs }}" style="cursor: pointer; background: none; border: none; font-size: 13px; font-weight: 700; color: {{ msgTabColor }}; padding: 0 2px 8px; border-bottom: {{ msgTabBorder }}">Messages</button>
+          <button onClick="{{ onTabHome }}" style="cursor: pointer; background: none; border: none; font-size: 13px; font-weight: 700; color: {{ homeTabColor }}; padding: 0 2px 8px; border-bottom: {{ homeTabBorder }}">Home</button>
+          <button style="cursor: pointer; background: none; border: none; font-size: 13px; font-weight: 700; color: #616061; padding: 0 2px 8px; border-bottom: 2px solid transparent" onClick="{{ onTabMsgs }}">About</button>
+        </div>
+      </div>
+      <sc-if value="{{ tabMessages }}" hint-placeholder-val="{{ true }}">
+        <div ref="{{ chatRef }}" style="flex: 1; overflow-y: auto; padding: 16px 0; display: flex; flex-direction: column">
+          <sc-for list="{{ messages }}" as="m" hint-placeholder-count="3">
+            <div style="display: flex; flex-direction: column">
+              <sc-if value="{{ m.isDivider }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; margin: 10px 0; padding: 0 20px">
+                  <span style="flex: 1; height: 1px; background: #ddd"></span>
+                  <span style="border: 1px solid #ddd; border-radius: 24px; padding: 4px 12px; font-size: 12px; font-weight: 700; background: #fff">{{ m.divider }}</span>
+                  <span style="flex: 1; height: 1px; background: #ddd"></span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ m.isMsg }}" hint-placeholder-val="{{ true }}">
+                <div style="display: flex; gap: 10px; padding: 6px 20px" style-hover="background: #f8f8f8">
+                  <span style="width: 36px; height: 36px; flex: none; border-radius: 4px; display: grid; place-items: center; font-weight: 900; font-size: 14px; background: {{ m.avBg }}; color: {{ m.avFg }}">{{ m.initials }}</span>
+                  <div style="font-size: 15px; line-height: 1.46; max-width: 640px; flex: 1; min-width: 0">
+                    <div style="display: flex; gap: 6px; align-items: baseline; flex-wrap: wrap">
+                      <span style="font-weight: 900; font-size: 15px">{{ m.name }}</span>
+                      <sc-if value="{{ m.hasTag }}" hint-placeholder-val="{{ false }}"><span style="background: #e8e8e8; color: #616061; font-size: 10px; font-weight: 700; padding: 1px 4px; border-radius: 2px">APP</span></sc-if>
+                      <span style="font-size: 12px; color: #616061">{{ m.time }}</span>
+                    </div>
+                    <div><sc-if value="{{ m.hasStrong }}" hint-placeholder-val="{{ false }}"><strong>{{ m.strong }}</strong></sc-if> {{ m.text }}</div>
+                    <sc-if value="{{ m.hasSources }}" hint-placeholder-val="{{ false }}">
+                      <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; align-items: center">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#616061" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                        <sc-for list="{{ m.sources }}" as="src" hint-placeholder-count="0"><span style="font-size: 12px; color: #616061">{{ src }}</span></sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ m.hasCard }}" hint-placeholder-val="{{ false }}">
+                      <div style="border-left: 4px solid #e8317e; background: #fff; border-top: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee; border-radius: 0 8px 8px 0; padding: 12px 14px; margin-top: 8px; max-width: 460px">
+                        <sc-if value="{{ m.card.hasKicker }}" hint-placeholder-val="{{ false }}"><div style="font-size: 12px; font-weight: 700; color: #616061; margin-bottom: 2px">{{ m.card.kicker }}</div></sc-if>
+                        <div style="font-weight: 900; font-size: 15px; line-height: 1.35">{{ m.card.title }}</div>
+                        <sc-if value="{{ m.card.hasMeta }}" hint-placeholder-val="{{ false }}"><div style="font-size: 13px; color: #616061; margin-top: 2px">{{ m.card.meta }}</div></sc-if>
+                        <sc-for list="{{ m.card.lines }}" as="ln" hint-placeholder-count="0">
+                          <div style="font-size: 14px; padding: 6px 0 0; border-top: 1px solid #eee; margin-top: 6px">{{ ln }}</div>
+                        </sc-for>
+                        <sc-if value="{{ m.card.hasBtn }}" hint-placeholder-val="{{ false }}"><button style="margin-top: 10px; background: #007a5a; color: #fff; border: none; border-radius: 4px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer" style-hover="background: #148567" onClick="{{ m.card.onClick }}">{{ m.card.btnLabel }}</button></sc-if>
+                        <sc-if value="{{ m.card.isDone }}" hint-placeholder-val="{{ false }}"><div style="margin-top: 8px; font-size: 13px; font-weight: 700; color: #007a5a">✓ {{ m.card.done }}</div></sc-if>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ m.showButtons }}" hint-placeholder-val="{{ false }}">
+                      <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap">
+                        <sc-for list="{{ m.btns }}" as="b" hint-placeholder-count="0">
+                          <button style="font-size: 13px; font-weight: 700; padding: 7px 14px; border-radius: 4px; cursor: pointer; background: {{ b.bg }}; color: {{ b.fg }}; border: {{ b.border }}" onClick="{{ b.onClick }}">{{ b.label }}</button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ m.hasChosen }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top: 6px; font-size: 12px; color: #616061">You picked: <strong>{{ m.chosen }}</strong></div>
+                    </sc-if>
+                    <sc-if value="{{ m.hasNote }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size: 12px; color: #616061; margin-top: 6px; font-style: italic">{{ m.note }}</div>
+                    </sc-if>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+          <sc-if value="{{ typing }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; gap: 10px; padding: 6px 20px">
+              <span style="width: 36px; height: 36px; flex: none; border-radius: 4px; display: grid; place-items: center; font-weight: 900; font-size: 14px; background: #e8317e; color: #fff">B</span>
+              <div style="display: flex; gap: 5px; align-items: center; height: 36px">
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: #9a9a9a; animation: blink 1.2s infinite"></span>
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: #9a9a9a; animation: blink 1.2s infinite 0.2s"></span>
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: #9a9a9a; animation: blink 1.2s infinite 0.4s"></span>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="padding: 0 20px 18px">
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px">
+            <span style="font-size: 11px; color: #9a9a9a; align-self: center">Try:</span>
+            <button class="chip" onClick="{{ onChip1 }}" style="cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 14px; padding: 3px 10px; font-size: 12px; color: #1264a3; font-weight: 700">how do I book time off?</button>
+            <button class="chip" onClick="{{ onChip2 }}" style="cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 14px; padding: 3px 10px; font-size: 12px; color: #1264a3; font-weight: 700">when is payday?</button>
+            <button class="chip" onClick="{{ onChip3 }}" style="cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 14px; padding: 3px 10px; font-size: 12px; color: #1264a3; font-weight: 700">what's my salary band?</button>
+            <button class="chip" onClick="{{ onChip4 }}" style="cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 14px; padding: 3px 10px; font-size: 12px; color: #1264a3; font-weight: 700">can I expense a monitor?</button>
+            <button class="chip" onClick="{{ onChip5 }}" style="cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 14px; padding: 3px 10px; font-size: 12px; color: #1264a3; font-weight: 700">talk to a human</button>
+          </div>
+          <div style="border: 1px solid #8d8d8d; border-radius: 8px; overflow: hidden">
+            <div style="display: flex; align-items: center; gap: 8px; padding: 8px 10px">
+              <span style="width: 24px; height: 24px; border-radius: 50%; background: #f0f0f0; color: #616061; display: grid; place-items: center; font-size: 16px; font-weight: 700; flex: none">+</span>
+              <input value="{{ input }}" onChange="{{ onInput }}" onKeyDown="{{ onKey }}" placeholder="Message Bob Onboarding" style="flex: 1; border: none; outline: none; font-size: 14px; font-family: 'Lato', sans-serif; background: transparent">
+              <button onClick="{{ onSend }}" style="background: {{ sendBg }}; border: none; border-radius: 4px; width: 30px; height: 28px; display: grid; place-items: center; cursor: pointer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ tabHome }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: 1; overflow-y: auto; padding: 24px 28px; background: #fff">
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 720px">
+            <div><div style="font-weight: 900; font-size: 28px">Day 12</div><div style="font-size: 12px; color: #616061">Of your first 90</div></div>
+            <div><div style="font-weight: 900; font-size: 28px">{{ tasksLabel }}</div><div style="font-size: 12px; color: #616061">Tasks done</div></div>
+            <div><div style="font-weight: 900; font-size: 28px">6 / 9</div><div style="font-size: 12px; color: #616061">Key people met</div></div>
+            <div><div style="font-weight: 900; font-size: 28px">14</div><div style="font-size: 12px; color: #616061">Questions answered</div></div>
+          </div>
+          <div style="height: 8px; background: #eee; border-radius: 4px; margin: 16px 0 26px; max-width: 720px; overflow: hidden"><div style="height: 8px; background: #007a5a; width: {{ progressPct }}"></div></div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 980px">
+            <div>
+              <div style="font-weight: 900; font-size: 15px; margin-bottom: 8px">Your tasks</div>
+              <div style="display: flex; flex-direction: column">
+                <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="4">
+                  <div onClick="{{ t.onToggle }}" style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid #eee; font-size: 14px; cursor: pointer; opacity: {{ t.op }}">
+                    <span style="width: 16px; height: 16px; flex: none; border: 1.5px solid #bbb; border-radius: 4px; background: {{ t.boxBg }}; display: grid; place-items: center; color: #fff; font-size: 10px; font-weight: 900">{{ t.check }}</span>
+                    <span>{{ t.label }}</span>
+                    <span style="margin-left: auto; font-size: 12px; color: #616061">{{ t.meta }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-weight: 900; font-size: 15px; margin: 24px 0 8px">Answers you saved</div>
+              <div style="display: flex; flex-direction: column">
+                <div style="padding: 9px 0; border-top: 1px solid #eee; font-size: 14px">🔖 Workation rules — up to 30 days in the EU</div>
+                <div style="padding: 9px 0; border-top: 1px solid #eee; font-size: 14px">🔖 Expensing new-hire equipment — up to €300</div>
+              </div>
+            </div>
+            <div>
+              <div style="font-weight: 900; font-size: 15px; margin-bottom: 8px">Your ramp plan</div>
+              <div style="display: flex; flex-direction: column">
+                <div style="display: flex; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid #eee; font-size: 14px"><span style="flex: 1">Week 1 — setup, intros, training</span><span style="background: #e7f5ec; color: #007a5a; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px">Done</span></div>
+                <div style="display: flex; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid #eee; font-size: 14px"><span style="flex: 1">Weeks 2–4 — design-system audit (starter task)</span><span style="background: #fdf1f6; color: #b02a68; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px">In progress</span></div>
+                <div style="display: flex; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid #eee; font-size: 14px"><span style="flex: 1">Months 2–3 — own a feature end-to-end</span><span style="background: #f0f0f0; color: #616061; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px">Upcoming</span></div>
+              </div>
+              <div style="font-weight: 900; font-size: 15px; margin: 24px 0 8px">Still to meet</div>
+              <div style="border: 1px solid #eee; border-radius: 8px; padding: 14px; max-width: 400px">
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px">
+                  <span style="width: 36px; height: 36px; border-radius: 4px; background: #ecb22e; color: #1d1c1d; display: grid; place-items: center; font-weight: 900; font-size: 13px">PS</span>
+                  <div><div style="font-weight: 900; font-size: 14px">Priya S.</div><div style="font-size: 12px; color: #616061">Data · Analytics lead — owns the metrics your starter task reports into</div></div>
+                </div>
+                <button style="background: #007a5a; color: #fff; border: none; border-radius: 4px; padding: 7px 14px; font-size: 13px; font-weight: 700; cursor: pointer" style-hover="background: #148567" onClick="{{ onMeetPriya }}">Ask the agent to book it</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;typingMs&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 700, &quot;min&quot;: 0, &quot;max&quot;: 1600, &quot;step&quot;: 100, &quot;unit&quot;: &quot;ms&quot;, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Agent&quot;}, &quot;showSources&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Agent&quot;}}">
+class Component extends DCLogic {
+  state = {
+    stage: "pre", tab: "messages", msgs: [], typing: false, input: "",
+    tasks: [
+      { label: "Security & data training", meta: "IT · done day 2", done: true },
+      { label: "Sign contract addendum", meta: "Legal", done: true },
+      { label: "Submit tax ID (Steuer-ID)", meta: "Payroll", done: true },
+      { label: "Emergency contact", meta: "HR", done: true },
+      { label: "Benefits enrollment review", meta: "Optional", done: true },
+      { label: "Book intro: Priya S.", meta: "Suggested by agent", done: false },
+      { label: "Design-system starter task", meta: "From Dana", done: false },
+      { label: "Draft OKRs with Dana", meta: "Week 3", done: false }
+    ]
+  };
+  cache = {}; timers = []; nid = 1;
+
+  componentDidMount() { this.play(this.state.stage); }
+  componentWillUnmount() { this.timers.forEach(clearTimeout); }
+
+  t(fn, ms) { this.timers.push(setTimeout(fn, ms)); }
+  add(m) { this.setState(s => ({ msgs: [...s.msgs, { id: this.nid++, ...m }] })); }
+  typingMs() { return this.props.typingMs ?? 700; }
+
+  pushSeq(list, i = 0) {
+    if (i >= list.length) return;
+    const m = list[i];
+    if (m.from === "user" || m.divider) { this.add(m); this.pushSeq(list, i + 1); return; }
+    this.setState({ typing: true });
+    this.t(() => { this.setState({ typing: false }); this.add(m); this.pushSeq(list, i + 1); }, this.typingMs() + (i ? 300 : 0));
+  }
+
+  scripts() {
+    return {
+      pre: [
+        { divider: "7 days before your start" },
+        { from: "agent", strong: "Hi Maya — welcome to Acme!", text: "I'm your onboarding agent. Until day one I can answer anything about your offer, benefits or first week — and handle the boring setup for you.", note: "I only see HR data you already have access to. Compensation and legal topics always go to a human.", time: "10:02 AM" },
+        { from: "agent", text: "Your day one, so you don't have to dig through email:", card: { kicker: "Monday, Sep 1 · 9:30", title: "Hackescher Markt 4, Berlin — 5th floor", meta: "Ask for Dana R. at reception · bring photo ID" }, time: "10:02 AM" },
+        { from: "agent", text: "Three things I can sort out right now:", buttons: [{ label: "Choose my laptop", action: "hardware", primary: true }, { label: "What should I bring?", action: "bring" }, { label: "Who will I meet in week 1?", action: "meetweek" }], time: "10:03 AM" }
+      ],
+      day1: [
+        { divider: "Day 1 — Monday, Sep 1" },
+        { from: "agent", strong: "Good morning — it's day one.", text: "Here's your schedule. I'll nudge you 10 minutes before each item.", card: { kicker: "Today", title: "Three things, no surprises", lines: ["9:30 — IT setup with Sam W.", "11:00 — Team welcome · Room 5.2", "13:00 — Lunch with Jonas, your buddy"] }, time: "9:02 AM" },
+        { from: "agent", text: "Paperwork: three forms, about 10 minutes total. I pre-filled everything Bob already knows.", card: { kicker: "Tasks · due today", title: "Contract addendum · Tax ID · Emergency contact", btnLabel: "Review & sign", action: "signforms", doneText: "Signed — filed to your record" }, time: "9:03 AM" },
+        { from: "agent", text: "Jonas K. is your onboarding buddy — designer, three years here, sits two desks over. Want me to draft a hello?", buttons: [{ label: "Draft a hello", action: "sayhi", primary: true }, { label: "I'll do it myself", action: "notnow" }], time: "9:05 AM" }
+      ],
+      day3: [
+        { divider: "Day 3 — Wednesday" },
+        { from: "agent", strong: "Day 3 check-in.", text: "Two things for today: security training (25 min — it blocks your laptop setup) and your tax form. Also, you haven't met anyone from Data yet; Priya runs the metrics your starter task reports into.", buttons: [{ label: "Book coffee with Priya", action: "coffee", primary: true }, { label: "Show my tasks", action: "showtasks" }, { label: "Not now", action: "notnow" }], time: "9:00 AM" }
+      ],
+      week2: [
+        { divider: "Week 2 — Friday" },
+        { from: "agent", strong: "Quick pulse — three taps, 20 seconds.", text: "Your answers reach People Ops as a summary, never verbatim.", time: "3:00 PM" },
+        { from: "agent", text: "1 of 3 — Overall, this week felt…", buttons: [{ label: "Great", action: "p1" }, { label: "Mostly good", action: "p1" }, { label: "Overwhelming", action: "p1" }], time: "3:00 PM" }
+      ],
+      day30: [
+        { divider: "Day 30 — one month in" },
+        { from: "agent", strong: "One month in.", text: "Here's your ramp so far — and what changes next.", card: { kicker: "Your first 30 days", title: "12 of 12 tasks · 9 people met · 14 questions answered", meta: "Fastest task completion of your team's last four hires" }, time: "10:00 AM" },
+        { from: "agent", text: "Dana drafted your month-2 focus; I turned it into a plan.", card: { kicker: "Months 2–3", title: "Own the design-system audit end-to-end", lines: ["Weekly demo from Oct 12", "60-day review · Oct 30"], btnLabel: "View full plan in Bob", action: "plan", doneText: "Synced to your Bob profile" }, time: "10:01 AM" },
+        { from: "agent", text: "From here I'll quiet down — no more daily digests. I'm still around for questions, and I'll flag anything that needs you. How did I do this month?", buttons: [{ label: "Helpful", action: "fbgood", primary: true }, { label: "Mixed", action: "fbmixed" }], time: "10:02 AM" }
+      ]
+    };
+  }
+
+  say(replies) { this.pushSeq(replies); }
+
+  run(action, label) {
+    const user = label ? [{ from: "user", text: label, time: "Now" }] : [];
+    const A = {
+      bring: () => this.say([...user, { from: "agent", text: "Just photo ID for the building pass. Contracts and forms are digital — I'll walk you through them on day one. Your laptop and desk gear will be waiting.", sources: ["Day-one checklist · Berlin", "IT provisioning record"], time: "Now" }]),
+      meetweek: () => this.say([...user, { from: "agent", text: "Five intros, all booked around your setup time:", card: { kicker: "Week 1 intros", title: "Dana R. · Jonas K. · Priya S. · Sam W. · Rita C.", meta: "Full profiles appear in Bob on your start date" }, time: "Now" }]),
+      hardware: () => this.say([...user, { from: "agent", text: "Design roles get a choice — both arrive imaged with your team's toolchain:", buttons: [{ label: "MacBook Pro 14\u2033", action: "mac", primary: true }, { label: "ThinkPad X1", action: "win" }], time: "Now" }]),
+      mac: () => this.say([...user, { from: "agent", text: "Ordered.", card: { kicker: "Hardware", title: "MacBook Pro 14\u2033 · M4 Pro · 32 GB", meta: "Arrives at your desk before day one", done: "Confirmed with IT" }, note: "You can change your mind until Wednesday — just tell me.", time: "Now" }]),
+      win: () => this.say([...user, { from: "agent", text: "Ordered.", card: { kicker: "Hardware", title: "ThinkPad X1 Carbon · 32 GB", meta: "Arrives at your desk before day one", done: "Confirmed with IT" }, note: "You can change your mind until Wednesday — just tell me.", time: "Now" }]),
+      signforms: () => this.say([{ from: "agent", text: "All three filed. Payroll is fully set up for the Sep 25 run — nothing else needed from you.", sources: ["Payroll DE · September cycle"], time: "Now" }]),
+      sayhi: () => this.say([...user, { from: "agent", text: "Here's a draft — sound like you?", card: { kicker: "DM to Jonas K.", title: "\u201CHi Jonas! Maya here — new on the design team. Looking forward to lunch. I hear you know the good coffee spots.\u201D", btnLabel: "Send it", action: "sendhi", doneText: "Sent" }, time: "Now" }]),
+      sendhi: () => this.say([{ from: "human", name: "Jonas K.", initials: "JK", text: "Maya! Great to have you. Lunch is on me — and yes, I know all three good espresso machines in the building.", time: "9:12 AM" }]),
+      showtasks: () => this.say([...user, { from: "agent", text: "Ordered by what unblocks the most:", card: { kicker: "Open tasks", title: "2 due this week", lines: ["Security training — 25 min, blocks laptop setup", "Tax ID (Steuer-ID) — payroll needs it by the 15th"] }, buttons: [{ label: "Book coffee with Priya", action: "coffee", primary: true }], time: "Now" }]),
+      coffee: () => this.say([...user, { from: "agent", text: "Priya is free three times this week. Pick one and I'll book 30 minutes plus the café corner:", buttons: [{ label: "Thu 10:00", action: "slot", primary: true }, { label: "Thu 15:30", action: "slot" }, { label: "Fri 11:00", action: "slot" }], time: "Now" }]),
+      slot: () => this.say([...user, { from: "agent", text: "Booked.", card: { kicker: "Calendar", title: "Coffee — Maya + Priya S.", meta: label + " · 30 min · Café corner, 5F", done: "Invite sent to both" }, note: "I added two lines on why you two should meet, so nobody starts cold.", time: "Now" }]),
+      notnow: () => this.say([...user, { from: "agent", text: "No problem — it stays on your list and I won't nag you before Friday.", time: "Now" }]),
+      p1: () => this.say([...user, { from: "agent", text: "2 of 3 — You had 14 meetings this week; a typical week 2 here is 8. Too many?", buttons: [{ label: "Too many", action: "p2", primary: true }, { label: "About right", action: "p2" }, { label: "Want more", action: "p2" }], time: "Now" }]),
+      p2: () => this.say([...user, { from: "agent", text: "3 of 3 — Anything unclear or blocking you?", buttons: [{ label: "Yes — flag something", action: "p3flag" }, { label: "Nothing right now", action: "p3ok" }], time: "Now" }]),
+      p3flag: () => this.say([...user, { from: "agent", text: "Noted — I've flagged it to Ines N. in People Ops; she'll reach out today. Here's exactly what your manager will see:", card: { kicker: "What Dana sees", title: "Week 2 summary", lines: ["Settling in well; meeting load feels heavy", "One flagged blocker — with People Ops"], meta: "Raw answers stay private" }, time: "Now" }, { from: "agent", text: "One more thing: I can ask Dana to move three of next week's intros to week 4 to thin your calendar.", buttons: [{ label: "Trim next week", action: "trim", primary: true }, { label: "Keep as is", action: "keep" }], time: "Now" }]),
+      p3ok: () => this.say([...user, { from: "agent", text: "Thanks. Here's exactly what your manager will see:", card: { kicker: "What Dana sees", title: "Week 2 summary", lines: ["Settling in well; meeting load feels heavy", "No blockers flagged"], meta: "Raw answers stay private" }, time: "Now" }, { from: "agent", text: "One more thing: I can ask Dana to move three of next week's intros to week 4 to thin your calendar.", buttons: [{ label: "Trim next week", action: "trim", primary: true }, { label: "Keep as is", action: "keep" }], time: "Now" }]),
+      trim: () => this.say([...user, { from: "agent", text: "Proposed to Dana with your pulse context attached — she usually replies within a day.", card: { kicker: "Sent", title: "Move 3 intros → week 4", done: "Awaiting Dana's approval" }, time: "Now" }]),
+      keep: () => this.say([...user, { from: "agent", text: "Keeping it as planned. I'll check the load again next Friday.", time: "Now" }]),
+      plan: () => {},
+      fbgood: () => this.say([...user, { from: "agent", text: "Good to hear. I'll pass usage patterns — never your content — to the People team so month one gets better for the next cohort.", time: "Now" }]),
+      fbmixed: () => this.say([...user, { from: "agent", text: "Fair. Tell me what to do less of — your note goes straight to the AI platform team, verbatim this time.", time: "Now" }]),
+      escalate: () => this.say([...user, { from: "agent", text: "That's one for a human. I've pinged Ines N. from People Ops with your question and the context — she's online now.", time: "Now" }, { from: "human", name: "Ines N. · People Ops", initials: "IN", text: "Hi Maya, happy to help — give me two minutes to check your file and I'll get right back to you here.", time: "Now" }])
+    };
+    (A[action] || (() => {}))();
+  }
+
+  clickBtns(mid, b) {
+    this.setState(s => ({ msgs: s.msgs.map(m => m.id === mid ? { ...m, chosen: b.label } : m) }));
+    this.run(b.action, b.label);
+  }
+  clickCard(mid) {
+    const m = this.state.msgs.find(x => x.id === mid);
+    if (!m || !m.card) return;
+    const a = m.card.action;
+    if (m.card.doneText) this.setState(s => ({ msgs: s.msgs.map(x => x.id === mid ? { ...x, card: { ...x.card, done: x.card.doneText, btnLabel: null } } : x) }));
+    if (a) this.run(a);
+  }
+
+  play(stage) {
+    this.timers.forEach(clearTimeout); this.timers = [];
+    this.setState({ msgs: [], typing: false });
+    this.pushSeq(this.scripts()[stage]);
+  }
+  switchStage(id) {
+    if (id === this.state.stage) return;
+    this.cache[this.state.stage] = this.state.msgs;
+    this.timers.forEach(clearTimeout); this.timers = [];
+    if (this.cache[id] && this.cache[id].length) this.setState({ stage: id, msgs: this.cache[id], typing: false, tab: "messages" });
+    else { this.setState({ stage: id, tab: "messages" }); this.play(id); }
+  }
+
+  ask(q) {
+    this.add({ from: "user", text: q, time: "Now" });
+    const L = q.toLowerCase();
+    let r;
+    if (/band|comp\b|raise|salary/.test(L)) r = [{ from: "agent", text: "Compensation questions always go to a human — that's a hard rule I can't override. I've drafted a message to Ines N., your People partner, with your question.", buttons: [{ label: "Send it to Ines", action: "escalate", primary: true }, { label: "Never mind", action: "notnow" }], note: "Guardrail: compensation, legal and medical topics are excluded from my knowledge.", time: "Now" }];
+    else if (/time off|pto|vacation|holiday/.test(L)) r = [{ from: "agent", text: "You have 24 vacation days; requests go to Dana for approval and she usually approves within a day. I can file it for you now.", sources: ["Time-off policy · DE", "Your leave balance"], card: { kicker: "Time off · draft", title: "1 day · Vacation", meta: "Approver: Dana R.", btnLabel: "Submit in Bob", action: "none", doneText: "Submitted — pending Dana's approval" }, note: "I never submit anything without your confirmation.", time: "Now" }];
+    else if (/payday|get paid|payroll|paid\b/.test(L)) r = [{ from: "agent", text: "Payday is the 25th of every month. Your first one is Sep 25 — a full month, since you started on the 1st. Your payslip appears in Bob two days before.", sources: ["Payroll DE · September cycle"], time: "Now" }];
+    else if (/insurance|health|doctor|sick/.test(L)) r = [{ from: "agent", text: "Your health coverage started on day one — it's already active. The TK membership confirmation arrives by mail within two weeks; if you're sick, just tell me and I'll file the first day for you.", sources: ["Benefits policy · DE", "Your enrollment record"], time: "Now" }];
+    else if (/expense|reimburs|monitor|equipment/.test(L)) r = [{ from: "agent", text: "Yes — file setup costs under \u201CNew hire equipment\u201D: up to €300, no receipt needed under €25, auto-approved by Dana. Your corporate card arrives next week.", sources: ["Expense policy §2 · New hires"], buttons: [{ label: "Open expense policy in Bob", action: "notnow" }], time: "Now" }];
+    else if (/laptop|hardware/.test(L)) r = [{ from: "agent", text: "Design roles get a choice — both arrive imaged with your team's toolchain:", buttons: [{ label: "MacBook Pro 14\u2033", action: "mac", primary: true }, { label: "ThinkPad X1", action: "win" }], time: "Now" }];
+    else if (/meet|coffee|priya|buddy|people/.test(L)) r = [{ from: "agent", text: "You've met 6 of the 9 people I'd suggest for month one. The highest-value next intro is Priya S. — she owns the metrics your starter task reports into.", buttons: [{ label: "Book coffee with Priya", action: "coffee", primary: true }, { label: "Not now", action: "notnow" }], time: "Now" }];
+    else if (/human|person|talk|help|hr\b/.test(L)) r = [{ from: "agent", text: "Of course. I've pinged Ines N. from People Ops with your question and the context — she's online now.", time: "Now" }, { from: "human", name: "Ines N. · People Ops", initials: "IN", text: "Hi Maya, happy to help — give me two minutes and I'll get right back to you here.", time: "Now" }];
+    else r = [{ from: "agent", text: "I don't want to guess this one. Want me to ask People Ops? They usually answer within the hour — and I'll learn the answer for the next person who asks.", buttons: [{ label: "Ask People Ops", action: "escalate", primary: true }, { label: "Never mind", action: "notnow" }], time: "Now" }];
+    this.pushSeq(r);
+  }
+
+  handleSend() {
+    const q = this.state.input.trim();
+    if (!q) return;
+    this.setState({ input: "" });
+    this.ask(q);
+  }
+
+  componentDidUpdate() { if (this.chatEl) this.chatEl.scrollTop = this.chatEl.scrollHeight; }
+
+  avatar(m) {
+    if (m.from === "agent") return ["#e8317e", "#fff", "B"];
+    if (m.from === "user") return ["#36c5f0", "#fff", "MB"];
+    const map = { JK: ["#ecb22e", "#1d1c1d"], IN: ["#611f69", "#fff"] };
+    const c = map[m.initials] || ["#611f69", "#fff"];
+    return [c[0], c[1], m.initials];
+  }
+
+  renderVals() {
+    const showSources = this.props.showSources ?? true;
+    const stages = [["pre", "Preboarding"], ["day1", "Day 1"], ["day3", "Day 3"], ["week2", "Week 2"], ["day30", "Day 30"]];
+    const messages = this.state.msgs.map(m => {
+      const isDivider = !!m.divider;
+      const [avBg, avFg, initials] = this.avatar(m);
+      const card = m.card ? {
+        kicker: m.card.kicker || "", hasKicker: !!m.card.kicker,
+        title: m.card.title || "", meta: m.card.meta || "", hasMeta: !!m.card.meta,
+        lines: m.card.lines || [],
+        btnLabel: m.card.btnLabel || "", hasBtn: !!m.card.btnLabel && !m.card.done,
+        done: m.card.done || "", isDone: !!m.card.done,
+        onClick: () => this.clickCard(m.id)
+      } : { lines: [] };
+      return {
+        isDivider, divider: m.divider || "", isMsg: !isDivider,
+        name: m.from === "user" ? "Maya Berger" : m.from === "human" ? m.name : "Bob Onboarding",
+        initials, avBg, avFg,
+        hasTag: m.from === "agent", time: m.time || "Now",
+        hasStrong: !!m.strong, strong: m.strong || "", text: m.text || "",
+        hasSources: showSources && !!(m.sources && m.sources.length), sources: (m.sources || []).map((s, i) => (i ? "· " : "") + s),
+        hasCard: !!m.card, card,
+        showButtons: !!(m.buttons && !m.chosen),
+        btns: (m.buttons || []).map(b => ({
+          label: b.label,
+          bg: b.primary ? "#007a5a" : "#fff", fg: b.primary ? "#fff" : "#1d1c1d",
+          border: b.primary ? "1px solid #007a5a" : "1px solid #bbb",
+          onClick: () => this.clickBtns(m.id, b)
+        })),
+        hasChosen: !!m.chosen, chosen: m.chosen || "",
+        hasNote: !!m.note, note: m.note || ""
+      };
+    });
+    const done = this.state.tasks.filter(t => t.done).length;
+    return {
+      stageBtns: stages.map(([id, label]) => ({
+        label,
+        bg: id === this.state.stage ? "#e8317e" : "transparent",
+        fg: id === this.state.stage ? "#fff" : "#616061",
+        onClick: () => this.switchStage(id)
+      })),
+      onReset: () => { this.cache = {}; this.play(this.state.stage); },
+      tabMessages: this.state.tab === "messages", tabHome: this.state.tab === "home",
+      onTabMsgs: () => this.setState({ tab: "messages" }),
+      onTabHome: () => this.setState({ tab: "home" }),
+      msgTabBorder: this.state.tab === "messages" ? "2px solid #1264a3" : "2px solid transparent",
+      homeTabBorder: this.state.tab === "home" ? "2px solid #1264a3" : "2px solid transparent",
+      msgTabColor: this.state.tab === "messages" ? "#1d1c1d" : "#616061",
+      homeTabColor: this.state.tab === "home" ? "#1d1c1d" : "#616061",
+      messages, typing: this.state.typing,
+      chatRef: el => { this.chatEl = el; },
+      input: this.state.input,
+      onInput: e => this.setState({ input: e.target.value }),
+      onKey: e => { if (e.key === "Enter") this.handleSend(); },
+      onSend: () => this.handleSend(),
+      sendBg: this.state.input.trim() ? "#007a5a" : "#dddddd",
+      onChip1: () => this.ask("how do I book time off?"),
+      onChip2: () => this.ask("when is payday?"),
+      onChip3: () => this.ask("what's my salary band?"),
+      onChip4: () => this.ask("can I expense a monitor?"),
+      onChip5: () => this.ask("talk to a human"),
+      tasks: this.state.tasks.map((t, i) => ({
+        label: t.label, meta: t.meta,
+        boxBg: t.done ? "#007a5a" : "#fff",
+        check: t.done ? "✓" : "",
+        op: t.done ? 0.55 : 1,
+        onToggle: () => this.setState(s => ({ tasks: s.tasks.map((x, j) => j === i ? { ...x, done: !x.done } : x) }))
+      })),
+      tasksLabel: done + " / " + this.state.tasks.length,
+      progressPct: Math.round(done / this.state.tasks.length * 100) + "%",
+      onMeetPriya: () => { this.setState({ tab: "messages" }); this.run("coffee", "Book coffee with Priya"); }
+    };
+  }
+}
+</script>
+</body>
+</html>

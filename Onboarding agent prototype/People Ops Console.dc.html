@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; min-height: 100vh; font-family: 'Mulish', -apple-system, sans-serif; color: #3d3d3d; background: #fff; }
+a { color: #e8317e; }
+a:hover { color: #c02063; }
+button { font-family: 'Mulish', -apple-system, sans-serif; }
+</style>
+</helmet>
+<div data-screen-label="People Ops console — Bob" style="min-height: 100vh; display: flex; flex-direction: column; background: #fff">
+  <div style="display: flex; align-items: center; gap: 12px; padding: 8px 16px; background: #f4f4f4; border-bottom: 1px solid #e5e5e5; font-size: 12px">
+    <span style="background: #e8317e; color: #fff; font-weight: 800; font-size: 11px; padding: 2px 8px; border-radius: 10px">Prototype</span>
+    <span style="color: #7a7a7a">People Ops onboarding console, inside Bob</span>
+    <a href="Slack Agent Prototype.dc.html" style="margin-left: auto; font-weight: 700; text-decoration: none">Slack agent prototype →</a>
+  </div>
+  <div style="display: flex; align-items: center; gap: 16px; padding: 10px 20px; background: #7c1141">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="#fff" opacity="0.9"><circle cx="3" cy="3" r="1.6"/><circle cx="9" cy="3" r="1.6"/><circle cx="15" cy="3" r="1.6"/><circle cx="3" cy="9" r="1.6"/><circle cx="9" cy="9" r="1.6"/><circle cx="15" cy="9" r="1.6"/><circle cx="3" cy="15" r="1.6"/><circle cx="9" cy="15" r="1.6"/><circle cx="15" cy="15" r="1.6"/></svg>
+    <span style="background: #e8317e; color: #fff; font-weight: 800; font-size: 14px; padding: 4px 10px; border-radius: 6px">Bob</span>
+    <div style="flex: 1; max-width: 520px; margin: 0 auto; display: flex; align-items: center; gap: 8px; background: #6a0d36; border-radius: 20px; padding: 7px 14px; color: #d9a8c0; font-size: 13px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d9a8c0" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Search for people or areas in Bob
+    </div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" opacity="0.9"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+    <span style="color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px">✦ Companion</span>
+    <span style="background: #fff; border-radius: 16px; padding: 3px 4px 3px 10px; display: flex; align-items: center; gap: 6px">
+      <span style="color: #e8317e; font-weight: 800; font-size: 13px">HiBob</span>
+      <span style="width: 24px; height: 24px; border-radius: 50%; background: #7c1141; color: #fff; display: grid; place-items: center; font-size: 10px; font-weight: 800">ZC</span>
+    </span>
+  </div>
+  <div style="flex: 1; display: flex; min-height: 0">
+    <div style="width: 56px; background: #560b2c; display: flex; flex-direction: column; align-items: center; padding: 10px 0; gap: 4px; flex: none">
+      <span style="width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; color: #d9a8c0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+      <span style="width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; background: #fff; color: #7c1141"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      <span style="width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; color: #d9a8c0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+      <span style="width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; color: #d9a8c0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>
+      <span style="width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; color: #d9a8c0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg></span>
+      <span style="width: 40px; height: 40px; display: grid; place-items: center; border-radius: 8px; color: #d9a8c0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
+    </div>
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; background: #fafafa">
+      <div style="padding: 24px 28px 0; background: #fff">
+        <div style="display: flex; align-items: center; gap: 14px">
+          <div>
+            <h1 style="margin: 0; font-size: 22px; font-weight: 800; color: #2e2e2e">Onboarding — September cohort</h1>
+            <span style="font-size: 13px; color: #8a8a8a">18 new joiners · 4 countries · agent live since Aug 18</span>
+          </div>
+          <button style="margin-left: auto; background: #fff; border: 1px solid #d9d9d9; border-radius: 20px; padding: 8px 18px; font-size: 13px; font-weight: 700; color: #3d3d3d; cursor: pointer" style-hover="border-color: #e8317e; color: #e8317e" onClick="{{ onToggleStudio }}">{{ studioBtnLabel }}</button>
+        </div>
+        <div style="display: flex; gap: 26px; margin-top: 18px">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+            <button onClick="{{ t.onClick }}" style="cursor: pointer; background: none; border: none; font-size: 14px; font-weight: 700; color: {{ t.color }}; padding: 0 0 12px; border-bottom: {{ t.border }}; display: flex; gap: 8px; align-items: center">{{ t.label }}<sc-if value="{{ t.hasBadge }}" hint-placeholder-val="{{ false }}"><span style="background: #e63946; color: #fff; font-size: 11px; font-weight: 800; min-width: 18px; height: 18px; border-radius: 9px; display: grid; place-items: center; padding: 0 5px">{{ t.badge }}</span></sc-if></button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="border-bottom: 1px solid #e5e5e5"></div>
+
+      <sc-if value="{{ studioOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="padding: 22px 28px; overflow-y: auto">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px">
+            <h2 style="margin: 0; font-size: 18px; font-weight: 800; color: #2e2e2e">Onboarding Agent</h2>
+            <span style="background: #e7f5ec; color: #1e7d43; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px">● Live · 3 sites</span>
+            <button style="margin-left: auto; background: #fff; border: 1px solid #d9d9d9; border-radius: 20px; padding: 8px 16px; font-size: 12px; font-weight: 700; color: #3d3d3d; cursor: pointer" onClick="{{ noop }}">Version history</button>
+            <sc-if value="{{ pubIdle }}" hint-placeholder-val="{{ true }}"><button style="background: #e8317e; color: #fff; border: none; border-radius: 20px; padding: 8px 18px; font-size: 12px; font-weight: 700; cursor: pointer" style-hover="background: #c02063" onClick="{{ onPublish }}">Publish changes</button></sc-if>
+            <sc-if value="{{ pubDone }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; font-weight: 800; color: #1e7d43">✓ Published to 3 sites</span></sc-if>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 380px; gap: 16px; align-items: start">
+            <div style="display: flex; flex-direction: column; gap: 16px">
+              <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px 18px">
+                <div style="font-size: 13px; font-weight: 800; color: #2e2e2e; margin-bottom: 10px">Knowledge sources</div>
+                <div style="display: flex; flex-direction: column">
+                  <sc-for list="{{ srcRows }}" as="r" hint-placeholder-count="4">
+                    <div onClick="{{ r.onToggle }}" style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid #f1f1f1; font-size: 13px; cursor: {{ r.cursor }}">
+                      <span style="width: 16px; height: 16px; flex: none; border: 1.5px solid {{ r.boxBorder }}; border-radius: 4px; background: {{ r.boxBg }}; display: grid; place-items: center; color: #fff; font-size: 10px; font-weight: 900">{{ r.check }}</span>
+                      <span>{{ r.label }}</span>
+                      <span style="margin-left: auto; flex: none"><span style="background: {{ r.metaBg }}; color: {{ r.metaFg }}; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px">{{ r.meta }}</span></span>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ compOn }}" hint-placeholder-val="{{ false }}">
+                  <div style="background: #fdeaea; border: 1px solid #f2c1c1; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #a32626; margin-top: 10px">⚠ Compensation bands are marked sensitive. Enabling them lets the agent answer salary questions — most customers keep this excluded and route comp to a human.</div>
+                </sc-if>
+              </div>
+              <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px 18px">
+                <div style="font-size: 13px; font-weight: 800; color: #2e2e2e; margin-bottom: 10px">Actions the agent may take</div>
+                <div style="display: flex; flex-direction: column">
+                  <sc-for list="{{ actRows }}" as="r" hint-placeholder-count="4">
+                    <div onClick="{{ r.onToggle }}" style="display: flex; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid #f1f1f1; font-size: 13px; cursor: {{ r.cursor }}">
+                      <span style="width: 16px; height: 16px; flex: none; border: 1.5px solid {{ r.boxBorder }}; border-radius: 4px; background: {{ r.boxBg }}; display: grid; place-items: center; color: #fff; font-size: 10px; font-weight: 900">{{ r.check }}</span>
+                      <span>{{ r.label }}</span>
+                      <span style="margin-left: auto; flex: none"><span style="background: {{ r.metaBg }}; color: {{ r.metaFg }}; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px">{{ r.meta }}</span></span>
+                    </div>
+                  </sc-for>
+                </div>
+                <p style="font-size: 11px; color: #a0a0a0; margin: 10px 0 0">Every action is confirmed by the employee before it runs, and every run lands in the audit log.</p>
+              </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px">
+              <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px 18px">
+                <div style="font-size: 13px; font-weight: 800; color: #2e2e2e; margin-bottom: 10px">Guardrails</div>
+                <div style="font-size: 12px; font-weight: 700; color: #6a6a6a; margin-bottom: 6px">Escalate to a human when</div>
+                <input value="Confidence &lt; 80% · legal, medical or comp topics" style="width: 100%; box-sizing: border-box; border: 1px solid #d9d9d9; border-radius: 8px; padding: 9px 12px; font-size: 13px; font-family: 'Mulish', sans-serif; color: #3d3d3d" onChange="{{ noop }}">
+                <div style="font-size: 12px; font-weight: 700; color: #6a6a6a; margin: 14px 0 6px">Tone</div>
+                <div style="display: flex; gap: 6px">
+                  <sc-for list="{{ toneBtns }}" as="t" hint-placeholder-count="3">
+                    <button onClick="{{ t.onClick }}" style="cursor: pointer; border: 1px solid {{ t.border }}; background: {{ t.bg }}; color: {{ t.fg }}; border-radius: 16px; padding: 6px 16px; font-size: 12px; font-weight: 700">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+                <div style="font-size: 12px; font-weight: 700; color: #6a6a6a; margin: 14px 0 6px">Active lifecycle stages</div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap">
+                  <span style="background: #fdf1f6; color: #b02a68; border: 1px solid #f3c4d8; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 14px">Preboarding ✓</span>
+                  <span style="background: #fdf1f6; color: #b02a68; border: 1px solid #f3c4d8; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 14px">First 90 days ✓</span>
+                  <span style="background: #fff; color: #8a8a8a; border: 1px solid #ddd; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 14px">Ongoing · off</span>
+                </div>
+              </div>
+              <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px 18px">
+                <div style="font-size: 13px; font-weight: 800; color: #2e2e2e; margin-bottom: 12px">Last 30 days</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px">
+                  <div><div style="font-weight: 800; font-size: 22px; color: #2e2e2e">68%</div><div style="font-size: 11px; color: #8a8a8a">Answered without HR</div></div>
+                  <div><div style="font-weight: 800; font-size: 22px; color: #2e2e2e">31</div><div style="font-size: 11px; color: #8a8a8a">Escalations</div></div>
+                  <div><div style="font-weight: 800; font-size: 22px; color: #2e2e2e">4.6</div><div style="font-size: 11px; color: #8a8a8a">Hire rating / 5</div></div>
+                </div>
+                <div style="height: 1px; background: #f1f1f1; margin: 12px 0"></div>
+                <div style="font-size: 12px; color: #8a8a8a">Every answer, source and action is in the <a href="#" onClick="{{ noop }}" style="font-weight: 700">audit log</a> · evaluation runs nightly on a 200-question sample.</div>
+              </div>
+            </div>
+            <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px">
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div style="font-size: 13px; font-weight: 800; color: #2e2e2e">Preview as new hire</div>
+                <span style="background: #f0f0f0; color: #6a6a6a; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 8px">Sandbox</span>
+              </div>
+              <div style="align-self: flex-end; max-width: 88%; background: #7c1141; color: #fff; padding: 8px 12px; border-radius: 12px 12px 2px 12px; font-size: 12px">What's my salary band?</div>
+              <div style="max-width: 92%; background: #fafafa; border: 1px solid #ececec; padding: 10px 12px; border-radius: 12px 12px 12px 2px; font-size: 12px; line-height: 1.5">{{ previewAnswer }}</div>
+              <span style="font-size: 11px; color: {{ previewNoteColor }}">{{ previewNote }}</span>
+              <input placeholder="Test a question…" style="margin-top: auto; width: 100%; box-sizing: border-box; border: 1px solid #d9d9d9; border-radius: 8px; padding: 9px 12px; font-size: 12px; font-family: 'Mulish', sans-serif" onChange="{{ noop }}">
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ tabOverview }}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: 1fr {{ panelCol }}; min-height: 0; flex: 1">
+          <div style="padding: 22px 28px; min-width: 0">
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 18px">
+              <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 14px 16px"><div style="font-size: 11px; font-weight: 700; color: #8a8a8a; text-transform: uppercase; letter-spacing: 0.04em">Joiners</div><div style="font-size: 26px; font-weight: 800; color: #2e2e2e; margin: 2px 0">18</div><div style="font-size: 12px; color: #8a8a8a">3 start next week</div></div>
+              <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 14px 16px"><div style="font-size: 11px; font-weight: 700; color: #8a8a8a; text-transform: uppercase; letter-spacing: 0.04em">On track</div><div style="font-size: 26px; font-weight: 800; color: #1e7d43; margin: 2px 0">13</div><div style="font-size: 12px; color: #8a8a8a">72% of cohort</div></div>
+              <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 14px 16px"><div style="font-size: 11px; font-weight: 700; color: #8a8a8a; text-transform: uppercase; letter-spacing: 0.04em">At risk</div><div style="font-size: 26px; font-weight: 800; color: #b07714; margin: 2px 0">3</div><div style="font-size: 12px; color: #8a8a8a">People signals</div></div>
+              <div style="background: #fff; border: 1.5px solid #e8317e; border-radius: 12px; padding: 14px 16px"><div style="font-size: 11px; font-weight: 700; color: #8a8a8a; text-transform: uppercase; letter-spacing: 0.04em">Blocked</div><div style="font-size: 26px; font-weight: 800; color: #c22f2f; margin: 2px 0">2</div><div style="font-size: 12px; color: #8a8a8a">1 shared root cause</div></div>
+              <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 14px 16px"><div style="font-size: 11px; font-weight: 700; color: #8a8a8a; text-transform: uppercase; letter-spacing: 0.04em">Agent deflection</div><div style="font-size: 26px; font-weight: 800; color: #2e2e2e; margin: 2px 0">68%</div><div style="font-size: 12px; color: #8a8a8a">Answered without HR</div></div>
+            </div>
+            <sc-if value="{{ patternNew }}" hint-placeholder-val="{{ true }}">
+              <div style="background: #fdf1f6; border: 1px solid #f3c4d8; border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 14px">
+                <span style="background: #e8317e; color: #fff; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px; flex: none">✦ Pattern detected</span>
+                <span style="font-size: 13px; color: #6b2447">4 Berlin hires are stuck on the payroll form — the Steuer-ID field rejects new-format IDs. Escalations spiked 3× this week.</span>
+                <button style="margin-left: auto; flex: none; background: #e8317e; color: #fff; border: none; border-radius: 20px; padding: 9px 18px; font-size: 13px; font-weight: 700; cursor: pointer" style-hover="background: #c02063" onClick="{{ onPatternDraft }}">Draft fix + comms</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ patternDraft }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #fff; border: 1.5px solid #e8317e; border-radius: 12px; padding: 18px; margin-bottom: 18px">
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 12px">
+                  <span style="background: #e8317e; color: #fff; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px">✦ Drafted for you</span>
+                  <span style="font-size: 12px; color: #8a8a8a">Review before anything is sent — the agent never acts on its own here.</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px">
+                  <div style="background: #fafafa; border: 1px solid #ececec; border-radius: 10px; padding: 14px"><div style="font-size: 11px; font-weight: 800; color: #8a8a8a; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px">Message to the 4 affected hires</div><div style="font-size: 13px; line-height: 1.55">“Known issue on the payroll form: new-format Steuer-IDs are rejected. Enter it without spaces for now — payroll will confirm within a day. Sorry for the friction; you've done nothing wrong.”</div></div>
+                  <div style="background: #fafafa; border: 1px solid #ececec; border-radius: 10px; padding: 14px"><div style="font-size: 11px; font-weight: 800; color: #8a8a8a; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px">Ticket to Payroll Eng</div><div style="font-size: 13px; line-height: 1.55">Bug: Steuer-ID validation rejects the 2025 new-format IDs. 4 hires affected in the Sep cohort; workaround communicated. Severity: blocks payroll setup before the 15th.</div></div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 14px">
+                  <button style="background: #e8317e; color: #fff; border: none; border-radius: 20px; padding: 9px 18px; font-size: 13px; font-weight: 700; cursor: pointer" style-hover="background: #c02063" onClick="{{ onPatternSend }}">Send to 4 hires + file ticket</button>
+                  <button style="background: none; border: none; color: #8a8a8a; font-size: 13px; font-weight: 700; cursor: pointer" onClick="{{ onPatternCancel }}">Discard</button>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ patternSent }}" hint-placeholder-val="{{ false }}">
+              <div style="background: #e7f5ec; border: 1px solid #bfe3cd; border-radius: 12px; padding: 12px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; font-size: 13px; color: #1e6b3d">
+                <span style="font-weight: 800">✓ Done</span>
+                Message sent to 4 hires · ticket PAY-482 filed · the agent now answers this question with the workaround.
+              </div>
+            </sc-if>
+            <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; overflow: hidden">
+              <div style="display: grid; grid-template-columns: 1.4fr 1.2fr 0.7fr 0.9fr 1fr 1.6fr; gap: 12px; padding: 12px 18px; font-size: 11px; font-weight: 800; color: #8a8a8a; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid #ececec">
+                <span>Name</span><span>Role</span><span>Start</span><span>Stage</span><span>Status</span><span>Top signal</span>
+              </div>
+              <sc-for list="{{ hires }}" as="h" hint-placeholder-count="6">
+                <div onClick="{{ h.onSelect }}" style="display: grid; grid-template-columns: 1.4fr 1.2fr 0.7fr 0.9fr 1fr 1.6fr; gap: 12px; padding: 13px 18px; font-size: 13px; align-items: center; cursor: pointer; border-bottom: 1px solid #f1f1f1; background: {{ h.rowBg }}" style-hover="background: #fdf6f9">
+                  <span style="font-weight: 700; color: #2e2e2e; display: flex; align-items: center; gap: 8px"><span style="width: 26px; height: 26px; border-radius: 50%; background: #f3d6e3; color: #7c1141; display: grid; place-items: center; font-size: 10px; font-weight: 800; flex: none">{{ h.initials }}</span>{{ h.name }}</span>
+                  <span>{{ h.role }}</span><span>{{ h.start }}</span><span>{{ h.stage }}</span>
+                  <span><span style="background: {{ h.pillBg }}; color: {{ h.pillFg }}; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px">{{ h.status }}</span></span>
+                  <span style="color: #8a8a8a; font-size: 12px">{{ h.signal }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <p style="font-size: 12px; color: #8a8a8a; margin: 10px 2px 0">Status is derived from task pace, people met and pulse summaries — click a row for the evidence behind it.</p>
+          </div>
+          <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+            <div style="padding: 22px 28px 22px 0">
+              <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); padding: 20px; display: flex; flex-direction: column; gap: 16px">
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <span style="width: 44px; height: 44px; border-radius: 50%; background: #f3d6e3; color: #7c1141; display: grid; place-items: center; font-weight: 800; font-size: 14px">{{ sel.initials }}</span>
+                  <div style="min-width: 0">
+                    <div style="font-size: 16px; font-weight: 800; color: #2e2e2e">{{ sel.name }}</div>
+                    <span style="font-size: 12px; color: #8a8a8a">{{ sel.role }} · {{ sel.stage }} · Manager: {{ sel.manager }}</span>
+                  </div>
+                  <button style="margin-left: auto; background: none; border: none; color: #8a8a8a; font-size: 13px; font-weight: 700; cursor: pointer" onClick="{{ onClose }}">✕</button>
+                </div>
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px"><span style="font-weight: 800; color: #2e2e2e">Ramp progress</span><span style="color: #8a8a8a">{{ sel.tasks }} tasks · {{ sel.met }} people met</span></div>
+                  <div style="height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden"><div style="height: 8px; background: #e8317e; border-radius: 4px; width: {{ sel.pct }}"></div></div>
+                </div>
+                <div>
+                  <div style="font-size: 12px; font-weight: 800; color: #2e2e2e; margin-bottom: 8px">Why this status</div>
+                  <div style="display: flex; flex-direction: column">
+                    <sc-for list="{{ sel.evidence }}" as="ev" hint-placeholder-count="3">
+                      <div style="display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid #f1f1f1; font-size: 13px; align-items: baseline"><span style="background: {{ ev.bg }}; color: {{ ev.fg }}; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 8px; flex: none">{{ ev.kind }}</span><span>{{ ev.text }}</span></div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="background: #fdf1f6; border: 1px solid #f3c4d8; border-radius: 10px; padding: 14px">
+                  <div style="font-size: 11px; font-weight: 800; color: #b02a68; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px">✦ Suggested next step</div>
+                  <div style="font-size: 13px; line-height: 1.5; margin-bottom: 10px">{{ sel.suggestion }}</div>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                    <sc-if value="{{ sel.actionPending }}" hint-placeholder-val="{{ true }}"><button style="background: #e8317e; color: #fff; border: none; border-radius: 20px; padding: 8px 16px; font-size: 12px; font-weight: 700; cursor: pointer" style-hover="background: #c02063" onClick="{{ sel.onAct }}">{{ sel.actionLabel }}</button></sc-if>
+                    <sc-if value="{{ sel.actionDone }}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; font-weight: 800; color: #1e7d43; align-self: center">✓ {{ sel.doneLabel }}</span></sc-if>
+                    <button style="background: #fff; border: 1px solid #d9d9d9; border-radius: 20px; padding: 8px 16px; font-size: 12px; font-weight: 700; color: #3d3d3d; cursor: pointer" onClick="{{ noop }}">Message {{ sel.first }}</button>
+                  </div>
+                </div>
+                <p style="font-size: 11px; color: #a0a0a0; margin: 0">Pulse answers appear only as summaries. Raw conversations with the agent are never shown to HR or managers.</p>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ tabEscalations }}" hint-placeholder-val="{{ false }}">
+        <div style="padding: 22px 28px; max-width: 860px">
+          <p style="font-size: 13px; color: #8a8a8a; margin: 0 0 16px">Questions the agent wouldn't answer alone — comp topics, low confidence, or policy gaps. Approving a draft sends it and teaches the agent when policy allows.</p>
+          <div style="display: flex; flex-direction: column; gap: 14px">
+            <sc-for list="{{ escalations }}" as="e" hint-placeholder-count="3">
+              <div style="background: #fff; border: 1px solid {{ e.border }}; border-radius: 12px; padding: 18px">
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px">
+                  <span style="width: 30px; height: 30px; flex: none; border-radius: 50%; background: #f3d6e3; color: #7c1141; display: grid; place-items: center; font-size: 10px; font-weight: 800">{{ e.initials }}</span>
+                  <span style="font-weight: 800; font-size: 13px; color: #2e2e2e">{{ e.from }}</span>
+                  <span style="font-size: 12px; color: #8a8a8a">{{ e.meta }}</span>
+                  <span style="margin-left: auto; background: {{ e.reasonBg }}; color: {{ e.reasonFg }}; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px">{{ e.reason }}</span>
+                </div>
+                <div style="font-size: 14px; color: #2e2e2e; margin-bottom: 12px">“{{ e.q }}”</div>
+                <sc-if value="{{ e.pending }}" hint-placeholder-val="{{ true }}">
+                  <div style="background: #fafafa; border: 1px solid #ececec; border-radius: 10px; padding: 12px 14px; font-size: 13px; line-height: 1.55">
+                    <div style="font-size: 11px; font-weight: 800; color: #b02a68; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px">✦ Agent draft</div>
+                    {{ e.draft }}
+                    <div style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap"><sc-for list="{{ e.sources }}" as="s" hint-placeholder-count="0"><span style="background: #f0f0f0; color: #6a6a6a; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px">{{ s }}</span></sc-for></div>
+                  </div>
+                  <div style="display: flex; gap: 10px; margin-top: 12px">
+                    <button style="background: #e8317e; color: #fff; border: none; border-radius: 20px; padding: 8px 18px; font-size: 12px; font-weight: 700; cursor: pointer" style-hover="background: #c02063" onClick="{{ e.onApprove }}">Approve &amp; send</button>
+                    <button style="background: #fff; border: 1px solid #d9d9d9; border-radius: 20px; padding: 8px 18px; font-size: 12px; font-weight: 700; color: #3d3d3d; cursor: pointer" onClick="{{ e.onSelf }}">Answer myself</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ e.done }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size: 12px; font-weight: 800; color: #1e7d43">✓ {{ e.doneText }}</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ tabGaps }}" hint-placeholder-val="{{ false }}">
+        <div style="padding: 22px 28px; max-width: 860px">
+          <p style="font-size: 13px; color: #8a8a8a; margin: 0 0 16px">Questions the agent couldn't ground in any source, clustered across the cohort. Answer once — every future hire gets it instantly, with your name as the verified source.</p>
+          <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; overflow: hidden">
+            <sc-for list="{{ gaps }}" as="g" hint-placeholder-count="3">
+              <div style="display: flex; gap: 14px; align-items: center; padding: 16px 18px; border-bottom: 1px solid #f1f1f1">
+                <div style="min-width: 0; flex: 1">
+                  <div style="font-size: 14px; font-weight: 700; color: #2e2e2e">“{{ g.q }}”</div>
+                  <div style="font-size: 12px; color: #8a8a8a; margin-top: 2px">Asked {{ g.count }} · {{ g.who }}</div>
+                </div>
+                <sc-if value="{{ g.pending }}" hint-placeholder-val="{{ true }}"><button style="flex: none; background: #fff; border: 1px solid #d9d9d9; border-radius: 20px; padding: 8px 16px; font-size: 12px; font-weight: 700; color: #3d3d3d; cursor: pointer" style-hover="border-color: #e8317e; color: #e8317e" onClick="{{ g.onAdd }}">Write answer</button></sc-if>
+                <sc-if value="{{ g.added }}" hint-placeholder-val="{{ false }}"><span style="flex: none; font-size: 12px; font-weight: 800; color: #1e7d43">✓ In the knowledge base</span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background: #fdf1f6; border: 1px solid #f3c4d8; border-radius: 12px; padding: 16px 18px; margin-top: 18px; max-width: 560px">
+            <div style="font-size: 11px; font-weight: 800; color: #b02a68; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px">Last 30 days</div>
+            <div style="font-size: 13px; line-height: 1.5">12 gaps closed · agent deflection rose from 54% to 68% · median HR response time on escalations: 41 min.</div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
+class Component extends DCLogic {
+  state = {
+    tab: "overview", sel: null, pattern: "new", acted: {},
+    studio: false, pub: "idle", tone: "Warm",
+    src: [
+      { label: "HR policies & handbook", meta: "142 docs", on: true },
+      { label: "Benefits, per country", meta: "4 locales", on: true },
+      { label: "Org & people data", meta: "Read-only", on: true },
+      { label: "Compensation bands", meta: "Excluded", on: false, sensitive: true }
+    ],
+    acts: [
+      { label: "Schedule meetings", meta: "With confirmation", on: true },
+      { label: "Submit time-off requests", meta: "With confirmation", on: true },
+      { label: "Send nudges to managers", meta: "With confirmation", on: false },
+      { label: "Edit employee records", meta: "Never", on: false, lock: true }
+    ],
+    esc: [
+      { id: 1, from: "Tom Adler", initials: "TA", meta: "Day 9 · via Slack agent · 2h ago", reason: "Known bug", tone: "bad", q: "My payroll form got rejected again — what am I doing wrong?", draft: "Nothing on your side — the form currently rejects new-format Steuer-IDs. Enter it without spaces for now; payroll confirms within a day. This is our bug, not your mistake.", sources: ["Payroll DE", "Ticket PAY-482"], status: "pending" },
+      { id: 2, from: "Lena Voss", initials: "LV", meta: "Day 4 · via Slack agent · 3h ago", reason: "Low confidence", tone: "warn", q: "Can I take unpaid leave in my first month for a family matter?", draft: "Policy allows unpaid leave from month one with manager approval; during probation it needs People Ops sign-off too. Given the circumstances I'd suggest approving — want me to loop in her manager?", sources: ["Leave policy §4 · DE", "Probation addendum"], status: "pending" },
+      { id: 3, from: "Maya Berger", initials: "MB", meta: "Day 12 · via Slack agent · 5h ago", reason: "Comp — excluded", tone: "neutral", q: "What's my salary band and when is the first review?", draft: "Comp topics are excluded from the agent by policy. Draft reply: your band details are in your offer letter; first review lands with the March cycle. Happy to walk through it in a call this week.", sources: ["Guardrail: compensation"], status: "pending" }
+    ],
+    gaps: [
+      { q: "Does the learning budget cover conference travel?", count: "4× this month", who: "3 roles, 2 countries", added: false },
+      { q: "How do works council elections affect new joiners?", count: "2× this month", who: "Berlin office", added: false },
+      { q: "Can I keep my old pension plan from my previous employer?", count: "2× this month", who: "DE hires", added: false }
+    ]
+  };
+  hires = [
+    { name: "Maya Berger", initials: "MB", first: "Maya", role: "Product Designer", start: "Sep 1", stage: "Week 2", manager: "Dana R.", status: "On track", tone: "ok", signal: "—", pct: 75, tasks: "9 / 12", met: "6 / 9",
+      evidence: [{ kind: "Good", tone: "ok", text: "Fastest task pace in the cohort" }, { kind: "Watch", tone: "warn", text: "Pulse: meeting load felt heavy in week 2" }, { kind: "Good", tone: "ok", text: "Manager approved trimming week-3 intros" }],
+      suggestion: "Nothing needed — the meeting-load fix is with her manager. Check back after the day-30 summary.", actionLabel: "Snooze until day 30", doneLabel: "Snoozed" },
+    { name: "Tom Adler", initials: "TA", first: "Tom", role: "Backend Eng", start: "Sep 1", stage: "Week 2", manager: "Chris P.", status: "Blocked", tone: "bad", signal: "Payroll form rejected twice", pct: 45, tasks: "5 / 11", met: "4 / 8",
+      evidence: [{ kind: "Act", tone: "bad", text: "Steuer-ID form rejected twice — known bug PAY-482" }, { kind: "Watch", tone: "warn", text: "Asked the agent about it twice; escalated today" }, { kind: "Good", tone: "ok", text: "Everything else on pace" }],
+      suggestion: "Send the workaround now — payroll cutoff is the 15th. The drafted comms on the Overview tab covers him.", actionLabel: "Send workaround", doneLabel: "Workaround sent" },
+    { name: "Lena Voss", initials: "LV", first: "Lena", role: "AE, DACH", start: "Sep 8", stage: "Week 1", manager: "Miri S.", status: "At risk", tone: "warn", signal: "No manager 1:1 scheduled", pct: 30, tasks: "3 / 10", met: "1 / 7",
+      evidence: [{ kind: "Act", tone: "bad", text: "No recurring 1:1 on the manager's calendar" }, { kind: "Act", tone: "bad", text: "Met 1 of 7 suggested people in week 1" }, { kind: "Watch", tone: "warn", text: "Asked about unpaid leave — escalation open" }],
+      suggestion: "Nudge Miri S. to book the 1:1 — the agent drafted a note with two free slots that work for both.", actionLabel: "Send nudge to Miri", doneLabel: "Nudge sent" },
+    { name: "Omar Haddad", initials: "OH", first: "Omar", role: "Data Analyst", start: "Sep 8", stage: "Week 1", manager: "Priya S.", status: "On track", tone: "ok", signal: "—", pct: 40, tasks: "4 / 10", met: "3 / 7",
+      evidence: [{ kind: "Good", tone: "ok", text: "On pace for week 1" }, { kind: "Good", tone: "ok", text: "1:1 cadence booked through month 1" }],
+      suggestion: "Nothing needed.", actionLabel: "Snooze", doneLabel: "Snoozed" },
+    { name: "Ana Ribeiro", initials: "AR", first: "Ana", role: "Support Lead", start: "Sep 15", stage: "Preboarding", manager: "Noa F.", status: "On track", tone: "ok", signal: "Docs signed early", pct: 20, tasks: "2 / 4", met: "0 / 6",
+      evidence: [{ kind: "Good", tone: "ok", text: "Signed all preboarding docs 5 days early" }, { kind: "Good", tone: "ok", text: "Hardware confirmed for day one" }],
+      suggestion: "Nothing needed.", actionLabel: "Snooze", doneLabel: "Snoozed" },
+    { name: "Jan Kowalski", initials: "JK", first: "Jan", role: "QA Engineer", start: "Sep 15", stage: "Preboarding", manager: "Chris P.", status: "At risk", tone: "warn", signal: "Visa paperwork pending", pct: 10, tasks: "1 / 5", met: "0 / 6",
+      evidence: [{ kind: "Act", tone: "bad", text: "Blue-card appointment not yet booked — start date at risk" }, { kind: "Watch", tone: "warn", text: "Relocation partner waiting on documents" }],
+      suggestion: "Escalate to the relocation partner today; the agent prepared the document checklist for Jan.", actionLabel: "Escalate to relocation", doneLabel: "Escalated" }
+  ];
+  pill(tone) {
+    return { ok: ["#e7f5ec", "#1e7d43"], warn: ["#fdf3e1", "#9a6b15"], bad: ["#fdeaea", "#c22f2f"], neutral: ["#f0f0f0", "#6a6a6a"] }[tone] || ["#f0f0f0", "#6a6a6a"];
+  }
+  renderVals() {
+    const s = this.state;
+    const pendingEsc = s.esc.filter(e => e.status === "pending").length;
+    const tabs = [["overview", "Overview", 0], ["esc", "Escalations", pendingEsc], ["gaps", "Knowledge gaps", 0]].map(([id, label, badge]) => ({
+      label, hasBadge: badge > 0, badge: String(badge),
+      color: s.tab === id && !s.studio ? "#e8317e" : "#6a6a6a",
+      border: s.tab === id && !s.studio ? "3px solid #e8317e" : "3px solid transparent",
+      onClick: () => this.setState({ tab: id, studio: false })
+    }));
+    const row = (r, list) => ({
+      label: r.label, cursor: r.lock ? "not-allowed" : "pointer",
+      check: r.on ? "✓" : "", boxBg: r.on ? "#e8317e" : "#fff", boxBorder: r.on ? "#e8317e" : "#ccc",
+      meta: r.sensitive ? (r.on ? "Sensitive · on" : "Excluded") : r.meta,
+      metaBg: r.lock ? "#fdeaea" : r.sensitive ? (r.on ? "#fdeaea" : "#f0f0f0") : "#f0f0f0",
+      metaFg: r.lock ? "#c22f2f" : r.sensitive ? (r.on ? "#c22f2f" : "#6a6a6a") : "#6a6a6a",
+      onToggle: () => { if (r.lock) return; this.setState(st => ({ [list]: st[list].map(x => x.label === r.label ? { ...x, on: !x.on } : x), pub: "idle" })); }
+    });
+    const compOn = s.src[3].on;
+    const selH = s.sel === null ? null : this.hires[s.sel];
+    return {
+      noop: e => { if (e && e.preventDefault) e.preventDefault(); },
+      tabs,
+      studioOpen: s.studio, studioBtnLabel: s.studio ? "← Back to cohort" : "Agent studio",
+      onToggleStudio: () => this.setState(st => ({ studio: !st.studio })),
+      pubIdle: s.pub === "idle", pubDone: s.pub === "done",
+      onPublish: () => this.setState({ pub: "done" }),
+      srcRows: s.src.map(r => row(r, "src")),
+      actRows: s.acts.map(r => row(r, "acts")),
+      compOn,
+      toneBtns: ["Warm", "Neutral", "Formal"].map(t => ({
+        label: t,
+        bg: s.tone === t ? "#e8317e" : "#fff", fg: s.tone === t ? "#fff" : "#6a6a6a",
+        border: s.tone === t ? "#e8317e" : "#d9d9d9",
+        onClick: () => this.setState({ tone: t, pub: "idle" })
+      })),
+      previewAnswer: compOn
+        ? "Your role is banded at L3 Design (€68–82k in Berlin). Your current placement is in your offer letter — the next review lands with the March cycle."
+        : "Compensation questions go to your People partner — I've drafted a message to Ines N. for you to send.",
+      previewNote: compOn
+        ? "⚠ Comp bands enabled → the agent now answers this directly. Publish to make it live."
+        : "Comp bands excluded → agent escalates. Working as configured.",
+      previewNoteColor: compOn ? "#c22f2f" : "#8a8a8a",
+      tabOverview: s.tab === "overview" && !s.studio, tabEscalations: s.tab === "esc" && !s.studio, tabGaps: s.tab === "gaps" && !s.studio,
+      panelCol: s.sel === null ? "0px" : "400px",
+      patternNew: s.pattern === "new", patternDraft: s.pattern === "draft", patternSent: s.pattern === "sent",
+      onPatternDraft: () => this.setState({ pattern: "draft" }),
+      onPatternSend: () => this.setState({ pattern: "sent" }),
+      onPatternCancel: () => this.setState({ pattern: "new" }),
+      hires: this.hires.map((h, i) => {
+        const [bg, fg] = this.pill(h.tone);
+        return {
+          name: h.name, initials: h.initials, role: h.role, start: h.start, stage: h.stage, status: h.status,
+          pillBg: bg, pillFg: fg, signal: h.signal,
+          rowBg: s.sel === i ? "#fdf1f6" : "#fff",
+          onSelect: () => this.setState({ sel: i })
+        };
+      }),
+      hasSelection: s.sel !== null,
+      sel: selH ? {
+        name: selH.name, initials: selH.initials, first: selH.first, role: selH.role, stage: selH.stage, manager: selH.manager,
+        pct: selH.pct + "%", tasks: selH.tasks, met: selH.met,
+        evidence: selH.evidence.map(ev => { const [bg, fg] = this.pill(ev.tone); return { kind: ev.kind, text: ev.text, bg, fg }; }),
+        suggestion: selH.suggestion, actionLabel: selH.actionLabel, doneLabel: selH.doneLabel,
+        actionPending: !s.acted[s.sel], actionDone: !!s.acted[s.sel],
+        onAct: () => this.setState(st => ({ acted: { ...st.acted, [st.sel]: true } }))
+      } : { evidence: [] },
+      onClose: () => this.setState({ sel: null }),
+      escalations: s.esc.map(e => {
+        const [bg, fg] = this.pill(e.tone);
+        return {
+          from: e.from, initials: e.initials, meta: e.meta, reason: e.reason, reasonBg: bg, reasonFg: fg,
+          q: e.q, draft: e.draft, sources: e.sources,
+          border: e.status === "pending" ? "#dcdcdc" : "#ececec",
+          pending: e.status === "pending", done: e.status !== "pending",
+          doneText: e.status === "sent" ? "Sent to " + e.from.split(" ")[0] + " — the agent learned this answer" : "Marked as handled directly — nothing was taught to the agent",
+          onApprove: () => this.setState(st => ({ esc: st.esc.map(x => x.id === e.id ? { ...x, status: "sent" } : x) })),
+          onSelf: () => this.setState(st => ({ esc: st.esc.map(x => x.id === e.id ? { ...x, status: "self" } : x) }))
+        };
+      }),
+      gaps: s.gaps.map((g, i) => ({
+        q: g.q, count: g.count, who: g.who, pending: !g.added, added: g.added,
+        onAdd: () => this.setState(st => ({ gaps: st.gaps.map((x, j) => j === i ? { ...x, added: true } : x) }))
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
