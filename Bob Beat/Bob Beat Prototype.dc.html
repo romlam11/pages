@@ -16,35 +16,42 @@
     body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
     a { color: #f7a56a; } a:hover { color: #fbd0a8; }
     * { box-sizing: border-box; }
-    ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 8px; }
+    ::-webkit-scrollbar { width: 8px; height: 6px; } ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 8px; }
   </style>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wqy4o8g0yk");
+  </script>
 </helmet>
 
 <div data-screen-label="Bob Beat prototype" style="min-height: 100vh; position: relative; overflow: hidden; background: linear-gradient(180deg, #5c0e2f 0%, #6c1038 60%, #7a1440 100%); color: #fbf3f2;">
   <div style="position: absolute; top: -260px; right: -180px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle at 42% 30%, #f6a447 0%, #f26a48 30%, #e9375f 62%, rgba(233,55,95,0) 72%); opacity: .55; pointer-events: none;"></div>
   <div style="position: absolute; bottom: -420px; right: 80px; width: 640px; height: 640px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #ff5b8a 0%, #e8305f 45%, rgba(232,48,95,0) 72%); opacity: .45; pointer-events: none;"></div>
 
-  <div style="position: relative; display: flex; flex-direction: column; min-height: 100vh; padding: 0 40px 32px;">
+  <div style="position: relative; display: flex; flex-direction: column; min-height: 100vh; padding: 0 clamp(14px, 4vw, 40px) 32px;">
 
-    <div style="display: flex; align-items: center; justify-content: space-between; height: 72px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; min-height: 64px; padding: 10px 0; gap: 12px; flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 12px;">
         <div style="width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff;">B</div>
         <div style="font-weight: 700; font-size: 17px; letter-spacing: -0.01em;">Bob Beat</div>
         <div style="font-size: 13px; color: rgba(255,255,255,.6);">Prototype · V1: preboarding → day 14</div>
       </div>
-      <div style="font-size: 13px; color: rgba(255,255,255,.6);">One hire: Maya Levi, product designer at Kestrel</div>
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}"><div style="font-size: 13px; color: rgba(255,255,255,.6);">One hire: Maya Levi, product designer at Kestrel</div></sc-if>
     </div>
 
-    <div style="display: flex; align-items: stretch; gap: 6px; margin: 8px 0 22px;">
+    <div style="display: flex; align-items: stretch; gap: 6px; margin: 4px 0 22px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch;">
       <sc-for list="{{ moments }}" as="m" hint-placeholder-count="7">
         <sc-if value="{{ m.active }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ m.onSelect }}" style="flex: 1; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); backdrop-filter: blur(6px);">
+          <div onClick="{{ m.onSelect }}" style="flex: 1 0 118px; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); backdrop-filter: blur(6px);">
             <div style="font-size: 12px; font-weight: 600; color: #f9b58a; letter-spacing: .02em;">{{ m.day }}</div>
             <div style="font-size: 14px; font-weight: 600; margin-top: 3px; color: #fff;">{{ m.label }}</div>
           </div>
         </sc-if>
         <sc-if value="{{ m.inactive }}" hint-placeholder-val="{{ true }}">
-          <div onClick="{{ m.onSelect }}" style="flex: 1; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); transition: background .15s;" style-hover="background: rgba(255,255,255,.1);">
+          <div onClick="{{ m.onSelect }}" style="flex: 1 0 118px; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); transition: background .15s;" style-hover="background: rgba(255,255,255,.1);">
             <div style="font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .02em;">{{ m.day }}</div>
             <div style="font-size: 14px; font-weight: 500; margin-top: 3px; color: rgba(255,255,255,.75);">{{ m.label }}</div>
           </div>
@@ -52,10 +59,10 @@
       </sc-for>
     </div>
 
-    <div style="display: flex; gap: 36px; flex: 1; align-items: flex-start;">
+    <div style="display: flex; gap: 28px 36px; flex: 1; align-items: flex-start; flex-wrap: wrap;">
 
       <sc-if value="{{ showGuide }}" hint-placeholder-val="{{ true }}">
-      <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 6px; width: 300px; flex-shrink: 0;">
+      <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 6px; flex: 1 1 280px; max-width: 320px; min-width: 0;">
         <div>
           <div style="font-size: 12px; font-weight: 600; color: #f9b58a; letter-spacing: .06em; text-transform: uppercase;">{{ current.day }}</div>
           <div style="font-size: 26px; font-weight: 700; line-height: 1.2; margin-top: 6px; letter-spacing: -0.02em; text-wrap: pretty;">{{ current.title }}</div>
@@ -107,10 +114,11 @@
       </div>
       </sc-if>
 
-      <div style="display: flex; justify-content: center; align-items: flex-start; min-width: 0; flex: 1;">
+      <div style="display: flex; justify-content: center; align-items: flex-start; min-width: 0; flex: 999 1 min(560px, 100%);">
 
         <sc-if value="{{ isSlack }}" hint-placeholder-val="{{ true }}">
-          <div style="width: 100%; max-width: 1000px; height: 640px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 40px 90px rgba(40,0,20,.45), 0 0 0 1px rgba(255,255,255,.1); display: grid; grid-template-columns: 224px minmax(0, 1fr); color: #1d1c1d; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+          <div style="width: 100%; max-width: 1000px; height: min(640px, calc(100vh - 140px)); min-height: 480px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 40px 90px rgba(40,0,20,.45), 0 0 0 1px rgba(255,255,255,.1); display: grid; grid-template-columns: {{ slackCols }}; color: #1d1c1d; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+            <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
             <div style="background: #3a0a1f; color: rgba(255,255,255,.72); display: flex; flex-direction: column; font-size: 14px;">
               <div style="height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,.1); color: #fff; font-weight: 700; font-size: 16px;">Kestrel <span style="font-size: 11px; opacity: .6;">▾</span></div>
               <div style="padding: 14px 8px; display: flex; flex-direction: column; gap: 2px;">
@@ -129,16 +137,22 @@
                 <div style="color: #fff; font-weight: 600; font-size: 13.5px;">{{ viewer.name }}</div>
               </div>
             </div>
+            </sc-if>
 
-            <div style="display: flex; flex-direction: column; min-width: 0; height: 640px;">
+            <div style="display: flex; flex-direction: column; min-width: 0; height: 100%; min-height: 0;">
               <div style="height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-bottom: 1px solid #e8e3e5; flex-shrink: 0;">
                 <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #fff;">B</div>
                 <div style="font-weight: 700; font-size: 15px;">Bob Beat</div>
                 <div style="font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 3px; background: #ece7e9; color: #5f5a5c; letter-spacing: .04em;">APP</div>
                 <div style="font-size: 13px; color: #6f6a6c; margin-left: 4px;">Onboarding agent</div>
+                <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6f6a6c;">
+                    <div style="width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; background: {{ viewer.bg }};">{{ viewer.initials }}</div>
+                  </div>
+                </sc-if>
               </div>
 
-              <div style="flex: 1; overflow-y: auto; padding: 18px 20px 8px; display: flex; flex-direction: column; gap: 18px;">
+              <div style="flex: 1; overflow-y: auto; padding: 18px clamp(12px, 2vw, 20px) 8px; display: flex; flex-direction: column; gap: 18px;">
                 <sc-for list="{{ messages }}" as="m" hint-placeholder-count="3">
                   <div style="display: flex; gap: 12px; align-items: flex-start;">
                     <div style="width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #fff; background: {{ m.bg }};">{{ m.initials }}</div>
@@ -154,7 +168,7 @@
                         <div style="margin-top: 10px; max-width: 600px; border: 1px solid #e3dde0; border-radius: 10px; padding: 14px 16px 12px; background: #fff;">
                           <div style="font-size: 13.5px; font-weight: 700; color: #1d1c1d; margin-bottom: 6px;">{{ m.card.title }}</div>
                           <sc-for list="{{ m.card.rows }}" as="r" hint-placeholder-count="3">
-                            <div style="display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid #f1edef;">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid #f1edef; flex-wrap: wrap;">
                               <sc-if value="{{ r.checkable }}" hint-placeholder-val="{{ false }}">
                                 <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}">
                                   <div onClick="{{ r.onClick }}" style="width: 20px; height: 20px; border-radius: 50%; background: #2e9e5b; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0;">✓</div>
@@ -212,22 +226,22 @@
 
         <sc-if value="{{ isPhone }}" hint-placeholder-val="{{ false }}">
           <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ phoneW }}" height="{{ phoneH }}" hint-size="350px,720px">
-            <div style="height: 100%; display: flex; flex-direction: column; background: #f1e9e6; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1d1c1d;">
-              <div style="padding: 58px 14px 10px; background: #fbf8f7; border-bottom: 1px solid #e6dfdc; display: flex; align-items: center; gap: 10px;">
-                <div style="font-size: 18px; color: #6b1235;">‹</div>
+            <div style="height: 100%; display: flex; flex-direction: column; background: #e5ddd5; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1d1c1d;">
+              <div style="padding: 58px 14px 10px; background: #075e54; color: #fff; display: flex; align-items: center; gap: 10px;">
+                <div style="font-size: 20px; color: #fff; line-height: 1;">‹</div>
                 <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: #fff;">B</div>
                 <div>
-                  <div style="font-weight: 700; font-size: 15px;">Bob Beat</div>
-                  <div style="font-size: 12px; color: #7a7476;">Kestrel · Onboarding</div>
+                  <div style="font-weight: 700; font-size: 15px; color: #fff;">Bob Beat</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,.75);">Kestrel · Business account</div>
                 </div>
               </div>
               <div style="flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 8px;">
-                <div style="align-self: center; font-size: 11px; font-weight: 600; color: #6f6a6c; background: #e6dcd8; padding: 4px 10px; border-radius: 8px; margin-bottom: 4px;">{{ phoneDate }}</div>
+                <div style="align-self: center; font-size: 11px; font-weight: 600; color: #5b6a72; background: #dbe8ee; padding: 4px 10px; border-radius: 8px; margin-bottom: 4px;">{{ phoneDate }}</div>
                 <sc-for list="{{ messages }}" as="m" hint-placeholder-count="3">
                   <sc-if value="{{ m.out }}" hint-placeholder-val="{{ false }}">
-                    <div style="align-self: flex-end; max-width: 80%; background: #f9d6de; border-radius: 14px 14px 4px 14px; padding: 8px 12px; font-size: 14px; line-height: 1.4; box-shadow: 0 1px 0 rgba(0,0,0,.05);">
+                    <div style="align-self: flex-end; max-width: 80%; background: #dcf8c6; border-radius: 14px 14px 4px 14px; padding: 8px 12px; font-size: 14px; line-height: 1.4; box-shadow: 0 1px 0 rgba(0,0,0,.05);">
                       <div>{{ m.text }}</div>
-                      <div style="font-size: 10.5px; color: #8a7a80; text-align: right; margin-top: 3px;">{{ m.time }}</div>
+                      <div style="font-size: 10.5px; color: #6f8a70; text-align: right; margin-top: 3px;">{{ m.time }} ✓✓</div>
                     </div>
                   </sc-if>
                   <sc-if value="{{ m.inn }}" hint-placeholder-val="{{ true }}">
@@ -239,7 +253,7 @@
                           <sc-for list="{{ m.card.rows }}" as="r" hint-placeholder-count="3">
                             <div style="display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f3eff1;">
                               <sc-if value="{{ r.checkable }}" hint-placeholder-val="{{ false }}">
-                                <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><div style="width: 16px; height: 16px; border-radius: 50%; background: #2e9e5b; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">✓</div></sc-if>
+                                <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><div style="width: 16px; height: 16px; border-radius: 50%; background: #25d366; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">✓</div></sc-if>
                                 <sc-if value="{{ r.notDone }}" hint-placeholder-val="{{ true }}"><div onClick="{{ r.onClick }}" style="width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #b9b1b5; flex-shrink: 0; cursor: pointer;"></div></sc-if>
                               </sc-if>
                               <div style="flex: 1; min-width: 0;">
@@ -249,7 +263,7 @@
                               <sc-if value="{{ r.hasValue }}" hint-placeholder-val="{{ true }}"><div style="font-size: 11.5px; color: #6f6a6c; white-space: nowrap;">{{ r.value }}</div></sc-if>
                               <sc-if value="{{ r.hasButton }}" hint-placeholder-val="{{ false }}">
                                 <sc-if value="{{ r.selected }}" hint-placeholder-val="{{ false }}"><div style="font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; background: #fbe4ea; border: 1px solid #f2436c; color: #a01c46;">{{ r.selectedLabel }}</div></sc-if>
-                                <sc-if value="{{ r.unselected }}" hint-placeholder-val="{{ true }}"><div onClick="{{ r.onClick }}" style="font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; background: #6b1235; color: #fff; cursor: pointer;">{{ r.button }}</div></sc-if>
+                                <sc-if value="{{ r.unselected }}" hint-placeholder-val="{{ true }}"><div onClick="{{ r.onClick }}" style="font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; background: #128c7e; color: #fff; cursor: pointer;">{{ r.button }}</div></sc-if>
                               </sc-if>
                             </div>
                           </sc-for>
@@ -261,9 +275,9 @@
                   </sc-if>
                 </sc-for>
               </div>
-              <div style="padding: 8px 12px 40px; background: #fbf8f7; border-top: 1px solid #e6dfdc; display: flex; align-items: center; gap: 8px;">
-                <div style="flex: 1; background: #fff; border: 1px solid #e1dadd; border-radius: 999px; padding: 9px 14px; font-size: 14px; color: #9a9496;">Message</div>
-                <div style="width: 36px; height: 36px; border-radius: 50%; background: #6b1235; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px;">↑</div>
+              <div style="padding: 8px 12px 40px; background: #f0f0f0; display: flex; align-items: center; gap: 8px;">
+                <div style="flex: 1; background: #fff; border-radius: 999px; padding: 9px 14px; font-size: 14px; color: #9a9496;">Message</div>
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px;">↑</div>
               </div>
             </div>
           </x-import>
@@ -291,8 +305,11 @@ class Component extends DCLogic {
       if (e.key === 'ArrowLeft') this.go(-1);
     };
     window.addEventListener('keydown', this._key);
+    this._resize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('resize', this._resize);
+    this._resize();
   }
-  componentWillUnmount() { window.removeEventListener('keydown', this._key); }
+  componentWillUnmount() { window.removeEventListener('keydown', this._key); window.removeEventListener('resize', this._resize); }
   set(patch) {
     this.setState(patch, () => {
       try { localStorage.setItem('bobbeat.proto', JSON.stringify(this.state)); } catch (e) {}
@@ -486,6 +503,8 @@ class Component extends DCLogic {
     const cur = list[idx];
     const persona = cur.personas.includes(this.state.persona) ? this.state.persona : cur.personas[0];
     const viewer = P[persona];
+    const vw = this.state.vw || (typeof window !== 'undefined' ? window.innerWidth : 1280);
+    const isMobile = vw < 760;
     const dmsBy = { maya: ['Eli Baron', 'Noa Adler'], manager: ['Maya Levi', 'Noa Adler', 'Dana K.'], buddy: ['Maya Levi', 'Eli Baron'] };
     return {
       moments: list.map((m, i) => Object.assign({}, m, { active: i === idx, inactive: i !== idx, onSelect: () => this.set({ moment: i, persona: null }) })),
@@ -495,7 +514,9 @@ class Component extends DCLogic {
       dms: dmsBy[persona],
       isSlack: cur.device === 'slack',
       isPhone: cur.device === 'phone',
-      phoneW: 340, phoneH: 720,
+      isMobile, isDesktop: !isMobile,
+      slackCols: isMobile ? 'minmax(0, 1fr)' : '224px minmax(0, 1fr)',
+      phoneW: Math.min(340, vw - 32), phoneH: isMobile ? 640 : 720,
       phoneDate: cur.phoneDate || '',
       messages: this.screen(cur.id, persona),
       goPrev: () => this.go(-1),
