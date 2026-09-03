@@ -8,617 +8,501 @@
 <body>
 <x-dc>
 <helmet>
+  <title>Bob Beat · Prototype</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    html, body { margin:0; padding:0; background:#F4F4F7; }
-    a { color:#16163F; } a:hover { color:#EE164F; }
-    * { box-sizing:border-box; }
-    button { font-family:inherit; }
-    @keyframes bbpulse { 0% { box-shadow:0 0 0 0 rgba(238,22,79,0.45); } 100% { box-shadow:0 0 0 14px rgba(238,22,79,0); } }
+    html, body { margin: 0; padding: 0; background: #5a0d2e; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: #f7a56a; } a:hover { color: #fbd0a8; }
+    * { box-sizing: border-box; }
+    ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 8px; }
   </style>
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "wqy4o8g0yk");
-  </script>
 </helmet>
-<div style="min-height:100vh; background:#F4F4F7; color:#16163F; font-family:'IBM Plex Sans', sans-serif; display:flex; flex-direction:column; text-wrap:pretty;">
 
-  <div style="display:flex; align-items:baseline; justify-content:space-between; padding:28px 48px 0 48px; gap:24px;">
-    <div style="display:flex; align-items:baseline; gap:16px;">
-      <div style="font-family:Sora, sans-serif; font-weight:600; font-size:26px; letter-spacing:-0.02em;">Bob Beat</div>
-      <div style="font-family:'IBM Plex Mono', monospace; font-size:13px; color:#6B6B85;">interactive walkthrough</div>
+<div data-screen-label="Bob Beat prototype" style="min-height: 100vh; position: relative; overflow: hidden; background: linear-gradient(180deg, #5c0e2f 0%, #6c1038 60%, #7a1440 100%); color: #fbf3f2;">
+  <div style="position: absolute; top: -260px; right: -180px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle at 42% 30%, #f6a447 0%, #f26a48 30%, #e9375f 62%, rgba(233,55,95,0) 72%); opacity: .55; pointer-events: none;"></div>
+  <div style="position: absolute; bottom: -420px; right: 80px; width: 640px; height: 640px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #ff5b8a 0%, #e8305f 45%, rgba(232,48,95,0) 72%); opacity: .45; pointer-events: none;"></div>
+
+  <div style="position: relative; display: flex; flex-direction: column; min-height: 100vh; padding: 0 40px 32px;">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; height: 72px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff;">B</div>
+        <div style="font-weight: 700; font-size: 17px; letter-spacing: -0.01em;">Bob Beat</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,.6);">Prototype · V1: preboarding → day 14</div>
+      </div>
+      <div style="font-size: 13px; color: rgba(255,255,255,.6);">One hire: Maya Levi, product designer at Kestrel</div>
     </div>
-  </div>
 
-  <div style="padding:18px 48px 0 48px;">
-    <div style="position:relative; display:grid; grid-template-columns:repeat(9, 1fr); align-items:start;">
-      <div style="position:absolute; left:5.5%; right:5.5%; top:9px; height:2px; background:#D9D9E3;"></div>
-      <div style="position:absolute; left:33.33%; top:-2px; bottom:2px; width:0; border-left:1px dashed #B4B4C4;"></div>
-      <sc-for list="{{ beats }}" as="b" hint-placeholder-count="9">
-        <button onClick="{{ b.go }}" style="background:none; border:none; cursor:pointer; padding:0; display:flex; flex-direction:column; align-items:center; gap:5px; position:relative; color:#16163F; opacity:{{ b.opacity }}; transition:opacity .2s;">
-          <div style="width:20px; height:20px; border-radius:50%; background:{{ b.nodeBg }}; border:2px solid {{ b.nodeBorder }}; animation:{{ b.anim }};"></div>
-          <div style="display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; justify-content:center; line-height:1.2;">
-            <span style="font-family:'IBM Plex Mono', monospace; font-size:11.5px; font-weight:500;">{{ b.dayLabel }}</span>
-            <span style="font-size:12px; color:#3D3D5C;">{{ b.short }}</span>
-            <sc-if value="{{ b.product }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; color:#EE164F;">★</span></sc-if>
+    <div style="display: flex; align-items: stretch; gap: 6px; margin: 8px 0 22px;">
+      <sc-for list="{{ moments }}" as="m" hint-placeholder-count="7">
+        <sc-if value="{{ m.active }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ m.onSelect }}" style="flex: 1; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); backdrop-filter: blur(6px);">
+            <div style="font-size: 12px; font-weight: 600; color: #f9b58a; letter-spacing: .02em;">{{ m.day }}</div>
+            <div style="font-size: 14px; font-weight: 600; margin-top: 3px; color: #fff;">{{ m.label }}</div>
           </div>
-        </button>
+        </sc-if>
+        <sc-if value="{{ m.inactive }}" hint-placeholder-val="{{ true }}">
+          <div onClick="{{ m.onSelect }}" style="flex: 1; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); transition: background .15s;" style-hover="background: rgba(255,255,255,.1);">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .02em;">{{ m.day }}</div>
+            <div style="font-size: 14px; font-weight: 500; margin-top: 3px; color: rgba(255,255,255,.75);">{{ m.label }}</div>
+          </div>
+        </sc-if>
       </sc-for>
     </div>
-  </div>
 
-  <div style="padding:24px 48px 0 48px; display:flex; justify-content:space-between; align-items:flex-end; gap:40px;">
-    <div style="display:flex; flex-direction:column; gap:9px; max-width:1100px;">
-      <sc-if value="{{ cur.product }}" hint-placeholder-val="{{ false }}"><div style="font-family:'IBM Plex Mono', monospace; font-size:13px; color:#EE164F;"><span style="background:#FDE9EF; padding:3px 10px; border-radius:999px;">the agent acts on someone other than Maya</span></div></sc-if>
-      <h1 style="margin:0; font-family:Sora, sans-serif; font-weight:500; font-size:30px; line-height:1.15; letter-spacing:-0.02em;">{{ cur.headline }}</h1>
-      <p style="margin:0; font-size:16px; line-height:1.45; color:#3D3D5C;">{{ cur.sub }}</p>
-    </div>
-    <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
-      <span style="font-family:'IBM Plex Mono', monospace; font-size:13px; color:#6B6B85; margin-right:8px;">{{ counter }}</span>
-      <button onClick="{{ prev }}" style="width:40px; height:40px; border-radius:50%; border:1px solid #16163F; background:#fff; cursor:pointer; font-size:16px; color:#16163F;" style-hover="background:#16163F; color:#fff;">←</button>
-      <button onClick="{{ toggle }}" style="height:40px; padding:0 16px; border-radius:999px; border:1px solid #16163F; background:{{ playBg }}; color:{{ playFg }}; cursor:pointer; font-family:'IBM Plex Mono', monospace; font-size:13px;">{{ playLabel }}</button>
-      <button onClick="{{ next }}" style="width:40px; height:40px; border-radius:50%; border:1px solid #16163F; background:#16163F; color:#fff; cursor:pointer; font-size:16px;" style-hover="background:#EE164F; border-color:#EE164F;">→</button>
-    </div>
-  </div>
+    <div style="display: flex; gap: 36px; flex: 1; align-items: flex-start;">
 
-  <div style="padding:22px 48px 0 48px; overflow-x:auto;">
-  <div style="display:grid; grid-template-columns:repeat(2, minmax(0,320px)) minmax(0,1fr); gap:24px; align-items:start; min-width:1120px;">
-
-    <!-- New hire -->
-    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
-      <div style="display:flex; align-items:center; gap:12px; padding:0 4px; min-height:44px; min-width:0;">
-        <div style="width:40px; height:40px; border-radius:50%; background:#16163F; color:#fff; display:flex; align-items:center; justify-content:center; font-family:Sora, sans-serif; font-weight:600; font-size:14px; flex:0 0 40px; flex-shrink:0; overflow:hidden;">MC</div>
-        <div style="display:flex; flex-direction:column; gap:2px; min-width:0; overflow:hidden;"><div style="font-family:Sora, sans-serif; font-weight:600; font-size:15px; white-space:nowrap;">Maya Chen</div><div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6B6B85; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">New hire · Product designer</div></div>
-        <div style="margin-left:auto; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:{{ maya.pillFg }}; background:{{ maya.pillBg }}; padding:4px 9px; border-radius:999px; white-space:nowrap; flex:0 0 auto;">{{ maya.channelLabel }}</div>
-      </div>
-      <div style="border-radius:40px; border:10px solid #16163F; background:{{ maya.bg }}; height:600px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 50px rgba(22,22,63,0.16); outline:{{ maya.outline }}; outline-offset:6px; transition:outline-color .3s;">
-        <div style="background:{{ maya.headerBg }}; color:{{ maya.headerFg }}; padding:10px 14px 10px 14px; display:flex; flex-direction:column; gap:10px; border-bottom:1px solid {{ maya.headerLine }};">
-          <div style="display:flex; justify-content:center;"><div style="width:88px; height:24px; border-radius:12px; background:#16163F;"></div></div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:18px; opacity:0.8;">‹</span>
-            <div style="width:30px; height:30px; border-radius:50%; background:#EE164F; color:#fff; display:flex; align-items:center; justify-content:center; font-family:Sora, sans-serif; font-weight:600; font-size:11px;">BB</div>
-            <div style="display:flex; flex-direction:column; min-width:0;"><div style="display:flex; align-items:center; gap:6px;"><span style="font-weight:600; font-size:14px; line-height:1.2;">Bob Beat</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:10px; opacity:0.78;">{{ maya.headerSub }}</div></div>
+      <sc-if value="{{ showGuide }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 6px; width: 300px; flex-shrink: 0;">
+        <div>
+          <div style="font-size: 12px; font-weight: 600; color: #f9b58a; letter-spacing: .06em; text-transform: uppercase;">{{ current.day }}</div>
+          <div style="font-size: 26px; font-weight: 700; line-height: 1.2; margin-top: 6px; letter-spacing: -0.02em; text-wrap: pretty;">{{ current.title }}</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; font-size: 14px; line-height: 1.5;">
+          <div>
+            <div style="font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px;">Noticed</div>
+            <div style="color: rgba(255,255,255,.9); text-wrap: pretty;">{{ current.noticed }}</div>
+          </div>
+          <div>
+            <div style="font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px;">Did</div>
+            <div style="color: rgba(255,255,255,.9); text-wrap: pretty;">{{ current.did }}</div>
           </div>
         </div>
-        <div ref="{{ mayaRef }}" style="flex:1; overflow:auto; padding:14px 12px; display:flex; flex-direction:column; gap:8px;">
-          <sc-if value="{{ maya.active }}" hint-placeholder-val="{{ true }}">
-            <sc-for list="{{ maya.messages }}" as="m" hint-placeholder-count="3">
-              <div style="display:flex; flex-direction:column; opacity:{{ m.op }}; transform:translateY({{ m.ty }}); transition:opacity .35s ease, transform .35s ease;">
-                <sc-if value="{{ m.isSys }}" hint-placeholder-val="{{ false }}"><div style="align-self:center; text-align:center; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#6B6B85; background:rgba(22,22,63,0.06); padding:4px 10px; border-radius:8px; max-width:92%; line-height:1.4;">{{ m.text }}</div></sc-if>
-                <sc-if value="{{ m.isHandoff }}" hint-placeholder-val="{{ false }}">
-                  <div style="background:#EDE7DE; border-radius:12px; padding:10px; display:flex; flex-direction:column; gap:6px;">
-                    <div style="font-family:'IBM Plex Mono', monospace; font-size:10px; color:#6B6B85;">{{ m.label }}</div>
-                    <div style="background:#fff; border-radius:10px 10px 10px 3px; padding:7px 10px; font-size:13px; line-height:1.4; align-self:flex-start;">{{ m.text }}</div>
-                  </div>
-                  <div style="align-self:center; margin-top:8px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#EE164F;">→ channel handoff · personal number to Slack</div>
-                </sc-if>
-                <sc-if value="{{ m.isBubble }}" hint-placeholder-val="{{ false }}">
-                  <div style="align-self:{{ m.align }}; background:{{ m.bubbleBg }}; border-radius:{{ m.radius }}; padding:7px 10px; max-width:88%; font-size:13px; line-height:1.4; box-shadow:0 1px 1px rgba(0,0,0,0.08); display:flex; flex-direction:column; gap:6px;">
-                    <sc-if value="{{ m.hasText }}" hint-placeholder-val="{{ true }}"><div>{{ m.text }}</div></sc-if>
-                    <sc-if value="{{ m.hasCard }}" hint-placeholder-val="{{ false }}">
-                      <div style="border:1px solid #D9D9E3; border-radius:8px; background:#fff; padding:8px 10px; display:flex; flex-direction:column; gap:6px;">
-                        <div style="font-family:Sora, sans-serif; font-weight:600; font-size:12px;">{{ m.title }}</div>
-                        <sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="2">
-                          <div style="display:flex; justify-content:space-between; gap:8px; font-size:12px; line-height:1.35; border-top:1px solid #EEEEF3; padding-top:5px;"><span style="display:flex; gap:6px; align-items:flex-start;"><span style="width:7px; height:7px; border-radius:50%; background:{{ r.dot }}; margin-top:5px; flex-shrink:0;"></span><span>{{ r.k }}</span></span><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:{{ r.vColor }}; text-align:right; min-width:0; max-width:52%; overflow-wrap:anywhere;">{{ r.v }}</span></div>
-                        </sc-for>
+
+        <div>
+          <div style="font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px;">Viewing as</div>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <sc-for list="{{ personas }}" as="p" hint-placeholder-count="2">
+              <sc-if value="{{ p.active }}" hint-placeholder-val="{{ true }}">
+                <div onClick="{{ p.onSelect }}" style="display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; background: #fbf3f2; color: #5a0d2e; cursor: pointer;">
+                  <div style="width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; background: {{ p.bg }};">{{ p.initials }}</div>
+                  <div style="font-size: 13px; font-weight: 600;">{{ p.name }}</div>
+                  <div style="font-size: 12px; color: rgba(90,13,46,.6);">{{ p.role }}</div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ p.inactive }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ p.onSelect }}" style="display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); color: #fbf3f2; cursor: pointer;" style-hover="background: rgba(255,255,255,.12);">
+                  <div style="width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; background: {{ p.bg }};">{{ p.initials }}</div>
+                  <div style="font-size: 13px; font-weight: 600;">{{ p.name }}</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,.55);">{{ p.role }}</div>
+                </div>
+              </sc-if>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ current.hasTip }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; background: rgba(245,138,60,.12); border: 1px solid rgba(245,138,60,.3); font-size: 13.5px; line-height: 1.45; color: #ffd9bd;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #f58a3c; margin-top: 6px; flex-shrink: 0;"></div>
+            <div>{{ current.tip }}</div>
+          </div>
+        </sc-if>
+
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <div onClick="{{ goPrev }}" style="padding: 9px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); font-size: 13px; font-weight: 600; cursor: pointer; color: #fbf3f2; user-select: none;" style-hover="background: rgba(255,255,255,.1);">← Previous</div>
+          <div onClick="{{ goNext }}" style="padding: 9px 16px; border-radius: 999px; background: #fbf3f2; color: #5a0d2e; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none;" style-hover="background: #fff;">{{ nextLabel }}</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <div style="display: flex; justify-content: center; align-items: flex-start; min-width: 0; flex: 1;">
+
+        <sc-if value="{{ isSlack }}" hint-placeholder-val="{{ true }}">
+          <div style="width: 100%; max-width: 1000px; height: 640px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 40px 90px rgba(40,0,20,.45), 0 0 0 1px rgba(255,255,255,.1); display: grid; grid-template-columns: 224px minmax(0, 1fr); color: #1d1c1d; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+            <div style="background: #3a0a1f; color: rgba(255,255,255,.72); display: flex; flex-direction: column; font-size: 14px;">
+              <div style="height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,.1); color: #fff; font-weight: 700; font-size: 16px;">Kestrel <span style="font-size: 11px; opacity: .6;">▾</span></div>
+              <div style="padding: 14px 8px; display: flex; flex-direction: column; gap: 2px;">
+                <div style="padding: 4px 8px; font-size: 12.5px; color: rgba(255,255,255,.5);">Channels</div>
+                <div style="padding: 5px 8px; border-radius: 6px;"># design</div>
+                <div style="padding: 5px 8px; border-radius: 6px;"># checkout</div>
+                <div style="padding: 5px 8px; border-radius: 6px;"># onboarding</div>
+                <div style="padding: 4px 8px; margin-top: 12px; font-size: 12.5px; color: rgba(255,255,255,.5);">Direct messages</div>
+                <div style="padding: 5px 8px; border-radius: 6px; background: rgba(255,255,255,.16); color: #fff; font-weight: 600; display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #3fbf72; display: inline-block;"></span>Bob Beat</div>
+                <sc-for list="{{ dms }}" as="d" hint-placeholder-count="2">
+                  <div style="padding: 5px 8px; border-radius: 6px; display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.4); display: inline-block;"></span>{{ d }}</div>
+                </sc-for>
+              </div>
+              <div style="margin-top: auto; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; gap: 10px;">
+                <div style="width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; background: {{ viewer.bg }};">{{ viewer.initials }}</div>
+                <div style="color: #fff; font-weight: 600; font-size: 13.5px;">{{ viewer.name }}</div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; min-width: 0; height: 640px;">
+              <div style="height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-bottom: 1px solid #e8e3e5; flex-shrink: 0;">
+                <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #fff;">B</div>
+                <div style="font-weight: 700; font-size: 15px;">Bob Beat</div>
+                <div style="font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 3px; background: #ece7e9; color: #5f5a5c; letter-spacing: .04em;">APP</div>
+                <div style="font-size: 13px; color: #6f6a6c; margin-left: 4px;">Onboarding agent</div>
+              </div>
+
+              <div style="flex: 1; overflow-y: auto; padding: 18px 20px 8px; display: flex; flex-direction: column; gap: 18px;">
+                <sc-for list="{{ messages }}" as="m" hint-placeholder-count="3">
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #fff; background: {{ m.bg }};">{{ m.initials }}</div>
+                    <div style="min-width: 0; flex: 1;">
+                      <div style="display: flex; align-items: baseline; gap: 8px;">
+                        <div style="font-weight: 700; font-size: 15px;">{{ m.name }}</div>
+                        <sc-if value="{{ m.isApp }}" hint-placeholder-val="{{ true }}"><div style="font-size: 10px; font-weight: 700; padding: 1px 4px; border-radius: 3px; background: #ece7e9; color: #5f5a5c;">APP</div></sc-if>
+                        <div style="font-size: 12px; color: #8a8486;">{{ m.time }}</div>
                       </div>
-                    </sc-if>
-                    <sc-if value="{{ m.hasActions }}" hint-placeholder-val="{{ false }}">
-                      <div style="display:flex; gap:6px; flex-wrap:wrap; padding-top:2px;">
-                        <sc-for list="{{ m.actions }}" as="a" hint-placeholder-count="1"><button style="border:1px solid #16163F; background:{{ a.bg }}; color:{{ a.fg }}; border-radius:6px; padding:4px 9px; font-size:11.5px; font-weight:500; cursor:pointer;">{{ a.label }}</button></sc-for>
-                      </div>
-                    </sc-if>
-                  </div>
-                </sc-if>
-                <sc-if value="{{ m.isRow }}" hint-placeholder-val="{{ false }}">
-                  <div style="display:flex; gap:9px; align-items:flex-start;">
-                    <div style="width:30px; height:30px; border-radius:7px; background:{{ m.avBg }}; color:#fff; display:flex; align-items:center; justify-content:center; font-family:Sora, sans-serif; font-weight:600; font-size:10.5px; flex-shrink:0;">{{ m.av }}</div>
-                    <div style="display:flex; flex-direction:column; gap:5px; flex:1; min-width:0;">
-                      <div style="display:flex; gap:8px; align-items:baseline;"><span style="font-weight:600; font-size:13px;">{{ m.name }}</span><span style="font-family:'IBM Plex Mono', monospace; font-size:10px; color:#6B6B85;">{{ m.time }}</span></div>
-                      <sc-if value="{{ m.hasText }}" hint-placeholder-val="{{ true }}"><div style="font-size:13px; line-height:1.4;">{{ m.text }}</div></sc-if>
+                      <div style="font-size: 15px; line-height: 1.5; margin-top: 2px; color: #1d1c1d; text-wrap: pretty; max-width: 640px;">{{ m.text }}</div>
+
                       <sc-if value="{{ m.hasCard }}" hint-placeholder-val="{{ false }}">
-                        <div style="border:1px solid #D9D9E3; border-left:3px solid #EE164F; border-radius:8px; background:#fff; padding:8px 10px; display:flex; flex-direction:column; gap:6px;">
-                          <div style="font-family:Sora, sans-serif; font-weight:600; font-size:12px;">{{ m.title }}</div>
-                          <sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="2">
-                            <div style="display:flex; justify-content:space-between; gap:8px; font-size:12px; line-height:1.35; border-top:1px solid #EEEEF3; padding-top:5px;"><span style="display:flex; gap:6px; align-items:flex-start;"><span style="width:7px; height:7px; border-radius:50%; background:{{ r.dot }}; margin-top:5px; flex-shrink:0;"></span><span>{{ r.k }}</span></span><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:{{ r.vColor }}; text-align:right; min-width:0; max-width:52%; overflow-wrap:anywhere;">{{ r.v }}</span></div>
+                        <div style="margin-top: 10px; max-width: 600px; border: 1px solid #e3dde0; border-radius: 10px; padding: 14px 16px 12px; background: #fff;">
+                          <div style="font-size: 13.5px; font-weight: 700; color: #1d1c1d; margin-bottom: 6px;">{{ m.card.title }}</div>
+                          <sc-for list="{{ m.card.rows }}" as="r" hint-placeholder-count="3">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid #f1edef;">
+                              <sc-if value="{{ r.checkable }}" hint-placeholder-val="{{ false }}">
+                                <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}">
+                                  <div onClick="{{ r.onClick }}" style="width: 20px; height: 20px; border-radius: 50%; background: #2e9e5b; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0;">✓</div>
+                                </sc-if>
+                                <sc-if value="{{ r.notDone }}" hint-placeholder-val="{{ true }}">
+                                  <div onClick="{{ r.onClick }}" style="width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #b9b1b5; cursor: pointer; flex-shrink: 0;" style-hover="border-color: #6b1235;"></div>
+                                </sc-if>
+                              </sc-if>
+                              <div style="flex: 1; min-width: 0;">
+                                <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}">
+                                  <div style="font-size: 14px; font-weight: 500; color: #8a8486; text-decoration: line-through;">{{ r.label }}</div>
+                                </sc-if>
+                                <sc-if value="{{ r.notDone }}" hint-placeholder-val="{{ true }}">
+                                  <div style="font-size: 14px; font-weight: 500; color: #1d1c1d;">{{ r.label }}</div>
+                                </sc-if>
+                                <sc-if value="{{ r.hasSub }}" hint-placeholder-val="{{ false }}"><div style="font-size: 12.5px; color: #7a7476; margin-top: 1px; line-height: 1.4;">{{ r.sub }}</div></sc-if>
+                              </div>
+                              <sc-if value="{{ r.hasValue }}" hint-placeholder-val="{{ true }}"><div style="font-size: 13px; color: #6f6a6c; white-space: nowrap;">{{ r.value }}</div></sc-if>
+                              <sc-if value="{{ r.hasButton }}" hint-placeholder-val="{{ false }}">
+                                <sc-if value="{{ r.selected }}" hint-placeholder-val="{{ false }}">
+                                  <div style="font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 7px; background: #fbe4ea; border: 1px solid #f2436c; color: #a01c46; white-space: nowrap;">{{ r.selectedLabel }}</div>
+                                </sc-if>
+                                <sc-if value="{{ r.unselected }}" hint-placeholder-val="{{ true }}">
+                                  <div onClick="{{ r.onClick }}" style="font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 7px; background: #fff; border: 1px solid #cfc7cb; color: #1d1c1d; cursor: pointer; white-space: nowrap;" style-hover="background: #f6f2f4;">{{ r.button }}</div>
+                                </sc-if>
+                              </sc-if>
+                            </div>
                           </sc-for>
-                        </div>
-                      </sc-if>
-                      <sc-if value="{{ m.hasActions }}" hint-placeholder-val="{{ false }}">
-                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                          <sc-for list="{{ m.actions }}" as="a" hint-placeholder-count="1"><button style="border:1px solid #16163F; background:{{ a.bg }}; color:{{ a.fg }}; border-radius:6px; padding:4px 9px; font-size:11.5px; font-weight:500; cursor:pointer;">{{ a.label }}</button></sc-for>
+                          <sc-if value="{{ m.card.hasFooter }}" hint-placeholder-val="{{ false }}"><div style="font-size: 12.5px; color: #7a7476; margin-top: 10px;">{{ m.card.footer }}</div></sc-if>
+                          <sc-if value="{{ m.card.hasButtons }}" hint-placeholder-val="{{ false }}">
+                            <div style="display: flex; gap: 8px; margin-top: 12px;">
+                              <sc-for list="{{ m.card.buttons }}" as="b" hint-placeholder-count="2">
+                                <sc-if value="{{ b.primary }}" hint-placeholder-val="{{ true }}">
+                                  <div onClick="{{ b.onClick }}" style="font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 7px; background: #6b1235; color: #fff; cursor: pointer;" style-hover="background: #7f1741;">{{ b.label }}</div>
+                                </sc-if>
+                                <sc-if value="{{ b.secondary }}" hint-placeholder-val="{{ false }}">
+                                  <div onClick="{{ b.onClick }}" style="font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 7px; background: #fff; border: 1px solid #cfc7cb; color: #1d1c1d; cursor: pointer;" style-hover="background: #f6f2f4;">{{ b.label }}</div>
+                                </sc-if>
+                              </sc-for>
+                            </div>
+                          </sc-if>
                         </div>
                       </sc-if>
                     </div>
                   </div>
-                </sc-if>
+                </sc-for>
               </div>
-            </sc-for>
-          </sc-if>
-          <sc-if value="{{ maya.isQuiet }}" hint-placeholder-val="{{ false }}">
-            <div style="margin:auto 0; text-align:center; display:flex; flex-direction:column; gap:8px; padding:0 14px;">
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6B6B85;">nothing today</div>
-              <div style="font-size:13px; line-height:1.45; color:#3D3D5C;">{{ maya.quiet }}</div>
-            </div>
-          </sc-if>
-        </div>
-        <div style="padding:8px 12px 18px 12px; background:{{ maya.headerBg }}; border-top:1px solid {{ maya.headerLine }};"><div style="height:34px; border-radius:17px; background:{{ maya.inputBg }}; display:flex; align-items:center; padding:0 14px; font-size:13px; color:#6B6B85;">Message</div></div>
-      </div>
-    </div>
 
-    <!-- Manager -->
-    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
-      <div style="display:flex; align-items:center; gap:12px; padding:0 4px; min-height:44px; min-width:0;">
-        <div style="width:40px; height:40px; border-radius:50%; background:{{ mgr.whoBg }}; color:#fff; display:flex; align-items:center; justify-content:center; font-family:Sora, sans-serif; font-weight:600; font-size:14px; flex:0 0 40px; flex-shrink:0; overflow:hidden;">{{ mgr.whoAv }}</div>
-        <div style="display:flex; flex-direction:column; gap:2px; min-width:0; overflow:hidden;"><div style="font-family:Sora, sans-serif; font-weight:600; font-size:15px; white-space:nowrap;">{{ mgr.whoName }}</div><div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6B6B85; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ mgr.whoRole }}</div></div>
-        <div style="margin-left:auto; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:{{ mgr.pillFg }}; background:{{ mgr.pillBg }}; padding:4px 9px; border-radius:999px; white-space:nowrap; flex:0 0 auto;">{{ mgr.channelLabel }}</div>
-      </div>
-      <div style="border-radius:40px; border:10px solid #16163F; background:{{ mgr.bg }}; height:600px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 50px rgba(22,22,63,0.16); outline:{{ mgr.outline }}; outline-offset:6px; transition:outline-color .3s;">
-        <div style="background:{{ mgr.headerBg }}; color:{{ mgr.headerFg }}; padding:10px 14px; display:flex; flex-direction:column; gap:10px; border-bottom:1px solid {{ mgr.headerLine }};">
-          <div style="display:flex; justify-content:center;"><div style="width:88px; height:24px; border-radius:12px; background:#16163F;"></div></div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:18px; opacity:0.8;">‹</span>
-            <div style="width:30px; height:30px; border-radius:50%; background:#EE164F; color:#fff; display:flex; align-items:center; justify-content:center; font-family:Sora, sans-serif; font-weight:600; font-size:11px;">BB</div>
-            <div style="display:flex; flex-direction:column; min-width:0;"><div style="display:flex; align-items:center; gap:6px;"><span style="font-weight:600; font-size:14px; line-height:1.2;">Bob Beat</span></div><div style="font-family:'IBM Plex Mono', monospace; font-size:10px; opacity:0.78;">{{ mgr.headerSub }}</div></div>
-          </div>
-        </div>
-        <div ref="{{ mgrRef }}" style="flex:1; overflow:auto; padding:14px 12px; display:flex; flex-direction:column; gap:14px;">
-          <sc-if value="{{ mgr.active }}" hint-placeholder-val="{{ true }}">
-            <sc-for list="{{ mgr.messages }}" as="m" hint-placeholder-count="2">
-              <div style="display:flex; flex-direction:column; opacity:{{ m.op }}; transform:translateY({{ m.ty }}); transition:opacity .35s ease, transform .35s ease;">
-                <sc-if value="{{ m.isSys }}" hint-placeholder-val="{{ false }}"><div style="display:flex; align-items:center; gap:10px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#6B6B85;"><span style="flex:1; height:1px; background:#EEEEF3;"></span><span style="text-align:center; line-height:1.4;">{{ m.text }}</span><span style="flex:1; height:1px; background:#EEEEF3;"></span></div></sc-if>
-                <sc-if value="{{ m.isRow }}" hint-placeholder-val="{{ true }}">
-                  <div style="display:flex; gap:10px; align-items:flex-start;">
-                    <div style="width:34px; height:34px; border-radius:8px; background:{{ m.avBg }}; color:#fff; display:flex; align-items:center; justify-content:center; font-family:Sora, sans-serif; font-weight:600; font-size:11px; flex-shrink:0;">{{ m.av }}</div>
-                    <div style="display:flex; flex-direction:column; gap:6px; flex:1; min-width:0;">
-                      <div style="display:flex; gap:8px; align-items:baseline;"><span style="font-weight:600; font-size:13.5px;">{{ m.name }}</span><span style="font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#6B6B85;">{{ m.time }}</span></div>
-                      <sc-if value="{{ m.hasText }}" hint-placeholder-val="{{ true }}"><div style="font-size:13.5px; line-height:1.45;">{{ m.text }}</div></sc-if>
-                      <sc-if value="{{ m.hasCard }}" hint-placeholder-val="{{ false }}">
-                        <div style="border:1px solid #D9D9E3; border-left:3px solid #EE164F; border-radius:8px; background:#fff; padding:10px 12px; display:flex; flex-direction:column; gap:7px;">
-                          <div style="font-family:Sora, sans-serif; font-weight:600; font-size:12.5px;">{{ m.title }}</div>
-                          <sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="3">
-                            <div style="display:flex; justify-content:space-between; gap:10px; font-size:12.5px; line-height:1.35; border-top:1px solid #EEEEF3; padding-top:6px;"><span style="display:flex; gap:7px; align-items:flex-start;"><span style="width:7px; height:7px; border-radius:50%; background:{{ r.dot }}; margin-top:5px; flex-shrink:0;"></span><span>{{ r.k }}</span></span><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:{{ r.vColor }}; text-align:right; min-width:0; max-width:46%; overflow-wrap:anywhere;">{{ r.v }}</span></div>
-                          </sc-for>
-                        </div>
-                      </sc-if>
-                      <sc-if value="{{ m.hasActions }}" hint-placeholder-val="{{ false }}">
-                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                          <sc-for list="{{ m.actions }}" as="a" hint-placeholder-count="2"><button style="border:1px solid #16163F; background:{{ a.bg }}; color:{{ a.fg }}; border-radius:6px; padding:5px 10px; font-size:12px; font-weight:500; cursor:pointer;">{{ a.label }}</button></sc-for>
-                        </div>
-                      </sc-if>
-                    </div>
-                  </div>
-                </sc-if>
+              <div style="padding: 10px 20px 16px; flex-shrink: 0;">
+                <div style="border: 1px solid #d5cfd2; border-radius: 10px; padding: 10px 14px; font-size: 14px; color: #9a9496; display: flex; justify-content: space-between; align-items: center;">Message Bob Beat <span style="font-size: 12px; color: #b5aeb1;">↵</span></div>
               </div>
-            </sc-for>
-          </sc-if>
-          <sc-if value="{{ mgr.isQuiet }}" hint-placeholder-val="{{ false }}">
-            <div style="margin:auto 0; text-align:center; display:flex; flex-direction:column; gap:8px; padding:0 24px;">
-              <div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6B6B85;">nothing today</div>
-              <div style="font-size:13.5px; line-height:1.45; color:#3D3D5C;">{{ mgr.quiet }}</div>
             </div>
-          </sc-if>
-        </div>
-        <div style="padding:8px 12px 18px 12px; background:{{ mgr.headerBg }}; border-top:1px solid {{ mgr.headerLine }};"><div style="height:34px; border-radius:8px; background:{{ mgr.inputBg }}; display:flex; align-items:center; padding:0 12px; font-size:13px; color:#6B6B85;">Message Bob Beat</div></div>
-      </div>
-    </div>
-
-    <!-- People Ops -->
-    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
-      <div style="display:flex; align-items:center; gap:12px; padding:0 4px; min-height:44px; min-width:0;">
-        <div style="width:40px; height:40px; border-radius:50%; background:#6B6B85; color:#fff; display:flex; align-items:center; justify-content:center; font-family:Sora, sans-serif; font-weight:600; font-size:14px; flex:0 0 40px; flex-shrink:0; overflow:hidden;">RA</div>
-        <div style="display:flex; flex-direction:column; gap:2px; min-width:0; overflow:hidden;"><div style="font-family:Sora, sans-serif; font-weight:600; font-size:15px; white-space:nowrap;">Ruth Adler</div><div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6B6B85; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">People Ops · runs 5 onboardings</div></div>
-        <div style="margin-left:auto; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:{{ ops.pillFg }}; background:{{ ops.pillBg }}; padding:4px 9px; border-radius:999px; white-space:nowrap; flex:0 0 auto;">{{ ops.channelLabel }}</div>
-      </div>
-      <div style="border-radius:12px; border:1px solid #D9D9E3; background:#fff; height:600px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 12px 30px rgba(22,22,63,0.08); outline:{{ ops.outline }}; outline-offset:4px; transition:outline-color .3s;">
-        <div style="display:flex; align-items:center; gap:10px; padding:12px 16px; border-bottom:1px solid #EEEEF3;">
-          <div style="display:flex; gap:6px;"><span style="width:10px; height:10px; border-radius:50%; background:#D9D9E3;"></span><span style="width:10px; height:10px; border-radius:50%; background:#D9D9E3;"></span><span style="width:10px; height:10px; border-radius:50%; background:#D9D9E3;"></span></div>
-          <div style="font-size:13px; font-weight:600; margin-left:8px;">People Ops console</div>
-          <div style="margin-left:auto; font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6B6B85;">Onboarding · Bob</div>
-        </div>
-        <div style="flex:1; overflow:auto; padding:16px; display:flex; flex-direction:column; gap:20px;">
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:baseline;"><div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#EE164F;">EXCEPTIONS · needs a human</div><div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6B6B85;">{{ ops.excCount }}</div></div>
-            <sc-for list="{{ ops.exceptions }}" as="e" hint-placeholder-count="1">
-              <div style="border:1px solid #D9D9E3; border-radius:8px; padding:10px 12px; display:flex; flex-direction:column; gap:6px; background:{{ e.bg }}; opacity:{{ e.op }}; transition:opacity .35s ease;">
-                <div style="display:flex; justify-content:space-between; gap:8px; align-items:baseline;"><span style="font-weight:600; font-size:13px;">{{ e.name }}</span><span style="font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#6B6B85; text-align:right;">{{ e.meta }}</span></div>
-                <div style="font-size:12.5px; line-height:1.4; color:#3D3D5C;">{{ e.issue }}</div>
-                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;"><span style="font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#6B6B85;">recommended</span><button style="border:1px solid #16163F; background:#16163F; color:#fff; border-radius:6px; padding:4px 10px; font-size:11.5px; font-weight:500; cursor:pointer;">{{ e.action }}</button></div>
-              </div>
-            </sc-for>
           </div>
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:baseline;"><div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6B6B85;">ON PATH · unattended</div><div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#6B6B85;">{{ ops.pathCount }}</div></div>
-            <sc-for list="{{ ops.onPath }}" as="p" hint-placeholder-count="4">
-              <div style="display:flex; gap:10px; align-items:flex-start; padding:9px 10px; border-radius:8px; background:{{ p.bg }}; border:1px solid {{ p.border }};">
-                <span style="width:9px; height:9px; border-radius:50%; background:{{ p.dot }}; margin-top:5px; flex-shrink:0;"></span>
-                <div style="display:flex; flex-direction:column; gap:2px; flex:1; min-width:0;">
-                  <div style="display:flex; justify-content:space-between; gap:8px; align-items:baseline;"><span style="font-weight:{{ p.weight }}; font-size:13px;">{{ p.name }}</span><span style="font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:#6B6B85;">{{ p.day }}</span></div>
-                  <div style="font-size:12px; color:#3D3D5C; line-height:1.4;">{{ p.status }}</div>
+        </sc-if>
+
+        <sc-if value="{{ isPhone }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ phoneW }}" height="{{ phoneH }}" hint-size="350px,720px">
+            <div style="height: 100%; display: flex; flex-direction: column; background: #f1e9e6; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1d1c1d;">
+              <div style="padding: 58px 14px 10px; background: #fbf8f7; border-bottom: 1px solid #e6dfdc; display: flex; align-items: center; gap: 10px;">
+                <div style="font-size: 18px; color: #6b1235;">‹</div>
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: #fff;">B</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 15px;">Bob Beat</div>
+                  <div style="font-size: 12px; color: #7a7476;">Kestrel · Onboarding</div>
                 </div>
               </div>
-            </sc-for>
-          </div>
-          <sc-if value="{{ ops.hasNote }}" hint-placeholder-val="{{ false }}">
-            <div style="margin-top:auto; border-top:1px solid #D9D9E3; padding-top:12px; font-size:13px; line-height:1.45; color:#16163F;"><span style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:#EE164F; margin-right:8px;">NOTE</span>{{ ops.note }}</div>
-          </sc-if>
-        </div>
+              <div style="flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="align-self: center; font-size: 11px; font-weight: 600; color: #6f6a6c; background: #e6dcd8; padding: 4px 10px; border-radius: 8px; margin-bottom: 4px;">{{ phoneDate }}</div>
+                <sc-for list="{{ messages }}" as="m" hint-placeholder-count="3">
+                  <sc-if value="{{ m.out }}" hint-placeholder-val="{{ false }}">
+                    <div style="align-self: flex-end; max-width: 80%; background: #f9d6de; border-radius: 14px 14px 4px 14px; padding: 8px 12px; font-size: 14px; line-height: 1.4; box-shadow: 0 1px 0 rgba(0,0,0,.05);">
+                      <div>{{ m.text }}</div>
+                      <div style="font-size: 10.5px; color: #8a7a80; text-align: right; margin-top: 3px;">{{ m.time }}</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ m.inn }}" hint-placeholder-val="{{ true }}">
+                    <div style="align-self: flex-start; max-width: 84%; background: #fff; border-radius: 14px 14px 14px 4px; padding: 8px 12px; font-size: 14px; line-height: 1.4; box-shadow: 0 1px 0 rgba(0,0,0,.05);">
+                      <div style="text-wrap: pretty;">{{ m.text }}</div>
+                      <sc-if value="{{ m.hasCard }}" hint-placeholder-val="{{ false }}">
+                        <div style="margin-top: 8px; border-top: 1px solid #efe9eb; padding-top: 6px;">
+                          <div style="font-size: 12.5px; font-weight: 700; margin-bottom: 2px;">{{ m.card.title }}</div>
+                          <sc-for list="{{ m.card.rows }}" as="r" hint-placeholder-count="3">
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f3eff1;">
+                              <sc-if value="{{ r.checkable }}" hint-placeholder-val="{{ false }}">
+                                <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><div style="width: 16px; height: 16px; border-radius: 50%; background: #2e9e5b; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">✓</div></sc-if>
+                                <sc-if value="{{ r.notDone }}" hint-placeholder-val="{{ true }}"><div onClick="{{ r.onClick }}" style="width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #b9b1b5; flex-shrink: 0; cursor: pointer;"></div></sc-if>
+                              </sc-if>
+                              <div style="flex: 1; min-width: 0;">
+                                <div style="font-size: 13px; font-weight: 500;">{{ r.label }}</div>
+                                <sc-if value="{{ r.hasSub }}" hint-placeholder-val="{{ false }}"><div style="font-size: 11.5px; color: #7a7476; line-height: 1.35;">{{ r.sub }}</div></sc-if>
+                              </div>
+                              <sc-if value="{{ r.hasValue }}" hint-placeholder-val="{{ true }}"><div style="font-size: 11.5px; color: #6f6a6c; white-space: nowrap;">{{ r.value }}</div></sc-if>
+                              <sc-if value="{{ r.hasButton }}" hint-placeholder-val="{{ false }}">
+                                <sc-if value="{{ r.selected }}" hint-placeholder-val="{{ false }}"><div style="font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; background: #fbe4ea; border: 1px solid #f2436c; color: #a01c46;">{{ r.selectedLabel }}</div></sc-if>
+                                <sc-if value="{{ r.unselected }}" hint-placeholder-val="{{ true }}"><div onClick="{{ r.onClick }}" style="font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; background: #6b1235; color: #fff; cursor: pointer;">{{ r.button }}</div></sc-if>
+                              </sc-if>
+                            </div>
+                          </sc-for>
+                          <sc-if value="{{ m.card.hasFooter }}" hint-placeholder-val="{{ false }}"><div style="font-size: 11.5px; color: #7a7476; margin-top: 6px;">{{ m.card.footer }}</div></sc-if>
+                        </div>
+                      </sc-if>
+                      <div style="font-size: 10.5px; color: #9a9496; text-align: right; margin-top: 3px;">{{ m.time }}</div>
+                    </div>
+                  </sc-if>
+                </sc-for>
+              </div>
+              <div style="padding: 8px 12px 40px; background: #fbf8f7; border-top: 1px solid #e6dfdc; display: flex; align-items: center; gap: 8px;">
+                <div style="flex: 1; background: #fff; border: 1px solid #e1dadd; border-radius: 999px; padding: 9px 14px; font-size: 14px; color: #9a9496;">Message</div>
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: #6b1235; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px;">↑</div>
+              </div>
+            </div>
+          </x-import>
+        </sc-if>
+
       </div>
     </div>
   </div>
-
-  </div>
-
-  <sc-if value="{{ showBackstage }}" hint-placeholder-val="{{ true }}">
-    <div style="padding:28px 48px 48px 48px; display:flex; flex-direction:column; gap:12px;">
-      <div style="font-family:'IBM Plex Mono', monospace; font-size:12px; color:#6B6B85;">BEHIND THE SCENES · what the agent did, and the guardrail it kept</div>
-      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;">
-        <sc-for list="{{ cur.backstage }}" as="s" hint-placeholder-count="3">
-          <div style="border-top:2px solid {{ s.line }}; padding-top:10px; display:flex; flex-direction:column; gap:6px;">
-            <div style="font-family:'IBM Plex Mono', monospace; font-size:11px; color:{{ s.line }};">{{ s.tag }}</div>
-            <div style="font-size:14px; line-height:1.45; color:#3D3D5C;">{{ s.text }}</div>
-          </div>
-        </sc-for>
-      </div>
-    </div>
-  </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;autoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Playback&quot;},&quot;stepSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:8,&quot;min&quot;:4,&quot;max&quot;:20,&quot;step&quot;:1,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Playback&quot;},&quot;showBackstage&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;showGuide&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Demo&quot;}}">
 class Component extends DCLogic {
-  state = { beat: 0, shown: 0, playing: false };
-  mayaRef = React.createRef();
-  mgrRef = React.createRef();
-
-  A = (text, x) => Object.assign({ from: 'agent', text }, x || {});
-  M = (text, x) => Object.assign({ from: 'me', text }, x || {});
-  S = (text) => ({ from: 'sys', text });
-  H = (label, text) => ({ from: 'handoff', label, text });
-  r = (k, v, st) => ({ k, v, st: st || 'info' });
-
-  beats = [
-    { day: -21, dayLabel: 'Day −21', date: 'Mon 14 Sep', short: 'Welcome', product: false,
-      headline: 'Paperwork done early. Access already being chased.',
-      sub: 'Maya opted in at offer-accept. Behind the first message, her access manifest is derived from what tenured designers hold, and every request is opened and chased.',
-      maya: { mode: 'personal', messages: [
-        this.S('You opted in at offer-accept to hear from Bob Beat before your start. Reply STOP any time.'),
-        this.A('Hi Maya, I\u2019m Bob Beat, Helio\u2019s onboarding companion. I\u2019ll be with you from now to day 90, mostly quietly.'),
-        this.A('Between now and 5 Oct: three forms (about ten minutes), your laptop ships on 1 Oct, and Daniel will send your first-week plan the week before.'),
-        this.A('', { title: 'Paperwork \u00b7 3 items', rows: [this.r('Tax form', 'open', 'open'), this.r('Bank details', 'open', 'open'), this.r('Emergency contact', 'open', 'open')], actions: ['Open forms'] }),
-        this.M('Done, all three.'),
-        this.A('Thanks. That\u2019s everything until next week. If anything comes up before then, just ask.')
-      ] },
-      mgr: { quiet: 'Nothing needed from Daniel yet. The agent is building Maya\u2019s access manifest without him.' },
-      buddy: { quiet: 'No buddy chosen yet. Three candidates go to Daniel on day \u22127.' },
-      ops: { maya: { day: 'starts in 21d', status: 'Pre-boarding \u00b7 forms done \u00b7 7 access requests open' } },
-      backstage: [
-        { tag: 'ACTION', text: 'Diffed tenured designers\u2019 access into a 7-item manifest: SSO, design tool, design-system repo, issue tracker, VPN, calendar, docs.' },
-        { tag: 'ACTION', text: 'Opened 7 provisioning requests with IT. Chased daily; escalates at T\u22127 and T\u22122.' },
-        { tag: 'GUARDRAIL', text: 'Nothing privileged is auto-granted. Success means \u201clogged in and used\u201d, never \u201cticket closed\u201d.' }
-      ] },
-
-    { day: -7, dayLabel: 'Day −7', date: 'Mon 28 Sep', short: 'Draft plan', product: false,
-      headline: 'The manager edits two lines. The agent does the rest.',
-      sub: 'A draft 30/60/90 and a buddy already picked. Daniel keeps the judgement calls \u2014 two edits and a name he could have changed \u2014 and the agent keeps the paperwork.',
-      maya: { mode: 'personal', quiet: 'Nothing for Maya this week. Her forms are done; her laptop ships 1 Oct.' },
-      mgr: { messages: [
-        this.A('Maya starts in 7 days. I drafted her 30/60/90 from the product-designer template and your last two hires. Edit anything; your edits are the plan.', { time: '08:30' }),
-        this.A('', { time: '08:30', title: 'Draft 30/60/90 \u00b7 Maya Chen', rows: [
-          this.r('Days 1\u201330 \u00b7 ship a one-line fix on day 1; own empty-state spacing tokens by week 3'),
-          this.r('Days 31\u201360 \u00b7 lead one feature end to end, Noa reviewing'),
-          this.r('Days 61\u201390 \u00b7 independent on the core loop; present at design crit'),
-          this.r('Buddy \u00b7 Noa Levi, senior product designer', 'chosen \u00b7 closest peer, lightest load', 'done')
-        ], actions: ['Approve', 'Edit', 'Change buddy'] }),
-        this.S('Daniel edited 2 lines \u00b7 kept Noa as buddy \u00b7 approved 09:14'),
-        this.A('Approved. I\u2019ll book Noa, put week one on Maya\u2019s calendar, and send you five things on Sunday evening.', { time: '09:14' })
-      ] },
-      buddy: { quiet: 'Noa was chosen this morning. Her briefing goes out Sunday, with the plan Daniel approved.' },
-      ops: { maya: { day: 'starts in 7d', status: 'Plan approved \u00b7 2 edits captured \u00b7 6 of 7 access granted' } },
-      backstage: [
-        { tag: 'ACTION', text: 'Plan drafted from the role template plus Daniel\u2019s last two hires. Two edits captured; they become People Ops\u2019 signal for where the default is wrong.' },
-        { tag: 'ACTION', text: 'Buddy candidates ranked on team proximity, tenure and current load.' },
-        { tag: 'CHASE', text: '6 of 7 access requests fulfilled. Design-system repo still pending; IT chased at T\u22127.' }
-      ] },
-
-    { day: -1, dayLabel: 'Day −1', date: 'Sun 4 Oct', short: 'Sunday nudge', product: false,
-      headline: 'Five actions, one message, live state.',
-      sub: 'One Sunday message to the manager, each item rendered done or not-done from Bob. Her buddy is briefed the same evening.',
-      maya: { mode: 'personal', messages: [
-        this.A('Big day tomorrow, Maya \u2014 we\u2019re all looking forward to having you. Here\u2019s how it starts: 9:30 laptop pickup at reception, 11:00 coffee with Noa (your buddy, she\u2019s lovely), 14:00 team intro.'),
-        this.A('Your whole first week is already on your calendar, so there\u2019s nothing to prepare. Just show up.'),
-        this.A('One last thing: from tomorrow I\u2019ll message you on your work account instead of here. See you on the other side.'),
-        this.M('Can\u2019t wait. See you tomorrow!')
-      ] },
-      mgr: { messages: [
-        this.A('Maya starts tomorrow. Five things, rendered from live state. Three are already done.', { time: 'Sun 18:00' }),
-        this.A('', { time: 'Sun 18:00', title: 'Sunday \u00b7 5 actions', rows: [
-          this.r('Week-one calendar', 'done \u00b7 6 sessions', 'done'),
-          this.r('Expectations 1:1', 'not booked', 'flag'),
-          this.r('First task', 'assigned \u00b7 empty-state tokens', 'done'),
-          this.r('Buddy', 'Noa briefed \u00b7 Mon 11:00', 'done'),
-          this.r('Team intro post', 'draft ready, not posted', 'flag')
-        ], actions: ['Book 1:1 Tue 10:00', 'Post intro Mon 09:00'] }),
-        this.S('Daniel tapped both \u00b7 21:40 \u00b7 re-nudge Monday 07:00 only if something slips')
-      ] },
-      buddy: { messages: [
-        this.A('Hi Noa. Daniel asked you to be Maya Chen\u2019s buddy. She starts tomorrow as a product designer.', { time: 'Sun 18:05' }),
-        this.A('What it involves: about eight meetings over ninety days, and being the person who says what isn\u2019t written down. I\u2019ve told your manager this counts as work.', { time: 'Sun 18:05' }),
-        this.A('', { time: 'Sun 18:05', title: 'Booked for you', rows: [this.r('Mon 11:00 \u00b7 coffee with Maya, Kitchen 3', 'on calendar', 'done'), this.r('If a fortnight passes without a meeting, I\u2019ll suggest slots', 'auto')] }),
-        this.M('Sounds good. Looking forward to it.', { time: 'Sun 19:20' })
-      ] },
-      ops: { maya: { day: 'starts tomorrow', status: '5 of 5 manager actions done \u00b7 buddy briefed' } },
-      backstage: [
-        { tag: 'ACTION', text: 'One message, no attachments. One-click completion for anything the agent can do itself.' },
-        { tag: 'GUARDRAIL', text: 'Hard cap: one consolidated message a week, always rendered with live state, never a generic reminder.' },
-        { tag: 'CHASE', text: '7 of 7 access granted. Verification of actual use begins on day 1.' }
-      ] },
-
-    { day: 1, dayLabel: 'Day 1', date: 'Mon 5 Oct', short: 'Channel handoff', product: false,
-      headline: 'Access verified in use, not just granted. A fix shipped before lunch.',
-      sub: 'The agent moves from Maya\u2019s personal number to her work account. Week one is already on her calendar.',
-      maya: { mode: 'work', messages: [
-        this.H('Personal messaging \u00b7 07:58', 'Morning Maya. I\u2019m moving to Slack from here; your work account is live. See you there.'),
-        this.A('Welcome. Access check: 6 of 7 verified in use. You\u2019ve logged into everything except the design-system repo. I\u2019m watching that one.', { time: '09:41' }),
-        this.A('', { time: '09:41', title: 'Today', rows: [this.r('9:30 laptop pickup', 'done', 'done'), this.r('11:00 coffee with Noa', 'Kitchen 3'), this.r('14:00 team intro', 'Room B'), this.r('First task \u00b7 fix empty-state spacing tokens', '~2h \u00b7 Daniel\u2019s pick', 'open')] }),
-        this.A('One rule I work by: I look for process problems, never people problems. Nothing I notice goes anywhere near your performance review.', { time: '09:42' }),
-        this.S('12:40 \u00b7 Maya\u2019s first PR merged'),
-        this.A('Your fix is merged. Day one, before lunch.', { time: '12:41' })
-      ] },
-      mgr: { messages: [
-        this.A('Maya\u2019s day one: 6 of 7 access verified in use, first task assigned, first PR merged 12:40. Design-system repo access is granted but unverified; I\u2019ll confirm or escalate by Wednesday.', { time: '17:30' })
-      ] },
-      buddy: { messages: [
-        this.A('Coffee with Maya at 11:00, Kitchen 3. She\u2019s already been through the access checklist, so skip that part.', { time: '10:45' })
-      ] },
-      ops: { maya: { day: 'day 1', status: '6 of 7 access in use \u00b7 first contribution logged' } },
-      backstage: [
-        { tag: 'IDENTITY', text: 'Personal number before she\u2019s an employee, corporate channels after. The handoff follows the identity change.' },
-        { tag: 'GUARDRAIL', text: 'Access verified by observed login, not by ticket status.' },
-        { tag: 'ARMED', text: 'Stall detectors on: no first contribution by day 5 \u00b7 access unused by day 3 \u00b7 no buddy meeting by day 10.' }
-      ] },
-
-    { day: 3, dayLabel: 'Day 3', date: 'Wed 7 Oct', short: 'Unused access', product: true, moved: 'mgr',
-      headline: 'Granted but never used. The agent doesn\u2019t ask Maya. It moves IT and her manager.',
-      sub: 'A new hire too new to make a fuss would sit on this for days. The agent frames it as a permissions problem and tells her it\u2019s handled.',
-      maya: { mode: 'work', messages: [
-        this.A('Your design-system repo access was granted Monday but isn\u2019t working. You shouldn\u2019t have to chase this. I\u2019ve flagged IT and Daniel; nothing for you to do. I\u2019ll tell you when it\u2019s verified.', { time: '08:50' }),
-        this.M('Oh. I thought I was doing something wrong. Thanks.', { time: '09:02' }),
-        this.A('You weren\u2019t. It\u2019s a permissions-group mismatch on their side.', { time: '09:02' }),
-        this.S('15:10 \u00b7 access verified in use'),
-        this.A('Design-system repo is working now.', { time: '15:10' })
-      ] },
-      mgr: { messages: [
-        this.A('Process flag. Maya\u2019s design-system repo access: granted day \u22126, zero logins in 3 days. Pattern matches a permissions-group mismatch. IT ticket reopened and escalated; Sam owns it. If it isn\u2019t verified in use by tomorrow 12:00, I\u2019ll escalate to People Ops.', { time: '08:50', actions: ['Got it', 'Message Sam'] }),
-        this.S('Daniel \u00b7 \u201cthanks\u201d \u00b7 08:52'),
-        this.S('15:10 \u00b7 Maya logged in \u00b7 verified in use \u00b7 closed'),
-        this.A('Cleared. 2 days 7 hours from grant to first use; Maya didn\u2019t file anything.', { time: '15:11' })
-      ] },
-      buddy: { quiet: 'Not a buddy problem. The agent moved IT and the manager instead.' },
-      ops: { maya: { day: 'day 3', status: '1 blocker cleared without Maya \u00b7 manager level, not escalated' } },
-      backstage: [
-        { tag: 'SIGNAL', text: 'Access granted, unused for 3 days. Framed as \u201cpermissions mismatch\u201d, never \u201chire hasn\u2019t started using tools\u201d.' },
-        { tag: 'LADDER', text: 'Self-service first, manager at 48h, People Ops after a further 72h. Never skip a level.' },
-        { tag: 'METRIC', text: 'Blocker time-to-clear: 2d 7h. Cleared without the new hire involved.' }
-      ] },
-
-    { day: 10, dayLabel: 'Day 10', date: 'Wed 14 Oct', short: 'Buddy stall', product: true, moved: 'buddy',
-      headline: 'No buddy meeting since day 1. The agent offers Noa two slots; she takes one.',
-      sub: 'Cadence is the intervention. Nobody has to remember: the agent notices the gap and goes straight to Noa, who picks a slot in one tap. Daniel is not involved.',
-      maya: { mode: 'work', messages: [
-        this.A('Noa booked Thursday 11:30 with you. If you want something to bring: the three things that confused you most this week is a good start.', { time: '11:20' }),
-        this.M('Perfect, I have a list already.', { time: '11:26' })
-      ] },
-      mgr: { asBuddy: true },
-      buddy: { messages: [
-        this.A('You and Maya met once, on day 1, ten days ago. Two slots this week that are free for you both:', { time: '09:00', actions: ['Wed 14:00', 'Thu 11:30'] }),
-        this.S('Noa picked Thu 11:30 \u00b7 booked \u00b7 Maya notified'),
-        this.M('Thanks for the nudge. The week got away from me.', { time: '11:19' }),
-        this.A('That\u2019s what I\u2019m for. Next check-in from me in two weeks, only if needed.', { time: '11:19' })
-      ] },
-      ops: { maya: { day: 'day 10', status: 'Buddy cadence restored \u00b7 on path' } },
-      backstage: [
-        { tag: 'SIGNAL', text: 'Zero buddy meetings between day 1 and day 10.' },
-        { tag: 'EVIDENCE', text: 'Microsoft, HBR 2019: 56% of hires helped at one buddy meeting, 86% at four to eight, 97% above eight. Dose\u2013response is the finding.' },
-        { tag: 'ACTION', text: 'Noa\u2019s buddy load surfaced to her own manager so it counts as work.' }
-      ] },
-
-    { day: 26, dayLabel: 'Day 26', date: 'Fri 30 Oct', short: 'A question routed', product: false,
-      headline: 'A policy question it won\u2019t answer. It asks the owner what to share, and delivers what she approves.',
-      sub: 'Day 26 is a deliberate refusal. The agent proposes the documents, Ruth approves them, and Maya gets them in the same thread she asked in.',
-      maya: { mode: 'work', messages: [
-        this.M('Hey, how does parental leave work here? My partner and I are planning.', { time: '14:12' }),
-        this.A('That\u2019s a policy question with details I shouldn\u2019t guess at; eligibility and pay vary. The owner is Ruth Adler in People Ops. I\u2019ve asked her which documents to send you \u2014 back shortly. Nothing else about this leaves this chat.', { time: '14:12' }),
-        this.S('14:21 \u00b7 Ruth approved what to share'),
-        this.A('Ruth approved these for you. She\u2019s happy to talk it through whenever you want.', { time: '14:21', title: 'Parental leave \u00b7 approved by Ruth Adler', rows: [this.r('Parental leave policy', 'v4 \u00b7 Aug 2026', 'done'), this.r('Eligibility & pay summary', '1 page', 'done'), this.r('Leave request form', 'when you\u2019re ready', 'done')], actions: ['Open documents', 'Message Ruth'] }),
-        this.M('Perfect, thank you.', { time: '14:24' })
-      ] },
-      mgr: { asOps: true },
-      opsChat: { messages: [
-        this.A('Maya Chen (day 26, design) asked how parental leave works here. I didn\u2019t answer; eligibility and pay aren\u2019t mine to interpret. Here\u2019s what I\u2019d send her \u2014 your call.', { time: '14:12', title: 'Suggested to share \u00b7 Maya Chen', rows: [this.r('Parental leave policy', 'v4 \u00b7 Aug 2026'), this.r('Eligibility & pay summary', '1 page'), this.r('Leave request form', 'not yet needed', 'open'), this.r('Her manager', 'not notified', 'done')], actions: ['Approve all', 'Edit selection'] }),
-        this.M('Send all three, the form saves her asking later. Add that she can call me.', { time: '14:20' }),
-        this.A('Approved and sent. I\u2019ve told her you\u2019re happy to talk it through. Nothing about this reaches Daniel or her record.', { time: '14:21' })
-      ] },
-      buddy: { quiet: 'Nothing for Noa. Next buddy meeting is on the calendar for Tuesday.' },
-      ops: { routed: { name: 'Maya Chen', meta: 'day 26 \u00b7 routed to you', issue: 'Policy question: parental leave. 3 documents suggested by the agent, approved by you, sent to Maya.', action: 'Message Maya' }, maya: { day: 'day 26', status: '1 question routed \u00b7 on path' } },
-      backstage: [
-        { tag: 'GUARDRAIL', text: 'Structured Bob-data answers only. Everything else is routed visibly to a named human.' },
-        { tag: 'METRIC', text: 'Routing rate is kept healthy, not minimal. A low number means the agent is overreaching.' },
-        { tag: 'PRIVACY', text: 'The question stays between Maya, the agent and Ruth. It does not reach the manager.' }
-      ] },
-
-    { day: 58, dayLabel: 'Day 58', date: 'Tue 1 Dec', short: 'Review load', product: true, moved: 'mgr',
-      headline: 'Her review load hasn\u2019t dropped against a tenured-peer baseline. Surfaced as a process observation, not a verdict.',
-      sub: 'The \u201cpermanent junior\u201d pattern: nobody notices, the person plateaus. Comparing to peers makes it visible for the first time. Maya never sees this.',
-      maya: { mode: 'work', quiet: 'Individual-level data stays with the manager. Maya sees nothing today.' },
-      mgr: { messages: [
-        this.A('Process observation, review distribution. Maya\u2019s inbound review load in weeks 5\u20138 is about 6 a week; tenured designers on the team average 2. New hires\u2019 load usually falls by week 6 and hers hasn\u2019t. Worth a look at how reviews are routed. This is about the process, not Maya\u2019s performance, and it stays with you.', { time: '08:30', title: 'Reviews received per week \u00b7 weeks 5\u20138', rows: [this.r('Maya', '6 \u00b7 7 \u00b7 6 \u00b7 6', 'flag'), this.r('Tenured designers (avg)', '2 \u00b7 2 \u00b7 3 \u00b7 2', 'done')], actions: ['Adjust review rota', 'Dismiss'] }),
-        this.S('Daniel moved two recurring reviews to Yael \u00b7 \u201cgood catch\u201d \u00b7 10:05')
-      ] },
-      buddy: { quiet: 'Nothing for Noa. Buddy meetings so far: 6.' },
-      ops: { maya: { day: 'day 58', status: '1 observation, manager-handled \u00b7 on path' }, note: 'Cohort view: 0 of 5 current hires share this signal. Not a program defect. Individual detail stays with the manager.' },
-      backstage: [
-        { tag: 'SIGNAL', text: 'Review load never dropping relative to tenured peers. Nobody is assigned to notice this.' },
-        { tag: 'GUARDRAIL', text: 'Never routed into performance management. Individual-level data stays with the manager; People Ops sees cohort level only.' },
-        { tag: 'FRAMING', text: 'Every signal is a process problem (\u201chow reviews are routed\u201d), never a person problem (\u201cthe hire is behind\u201d).' }
-      ] },
-
-    { day: 90, dayLabel: 'Day 90', date: 'Mon 4 Jan', short: 'Evidence pack', product: false,
-      headline: 'Evidence pack assembled for the readiness review. Her manager makes the call.',
-      sub: 'Everything in the pack is a recorded object in Bob; nothing is inferred. People Ops never touched this onboarding.',
-      maya: { mode: 'work', messages: [
-        this.A('Your 90-day review with Daniel is Thursday. Here\u2019s what you shipped, for your own notes. This is yours, not a score.', { time: '09:00', title: 'Your first ninety days', rows: [this.r('Shipped', '3 items'), this.r('Meetings with Noa', '9'), this.r('Your confusion log', '4 docs tickets, closed')] }),
-        this.A('After Thursday I go quiet. Noa and Daniel know how to find me if you need anything.', { time: '09:00' }),
-        this.M('Thanks, Bob. It was a good start.', { time: '09:31' })
-      ] },
-      mgr: { messages: [
-        this.A('Maya\u2019s 90-day readiness review is Thursday. The evidence pack is below; every line is a recorded object in Bob, nothing is inferred. The call is yours.', { time: '09:00', title: 'Evidence pack \u00b7 Maya Chen \u00b7 day 90', rows: [
-          this.r('Plan actions on time', '17 / 19', 'done'),
-          this.r('Blockers cleared without Maya', '3', 'done'),
-          this.r('Buddy meetings', '9 \u00b7 target 8+', 'done'),
-          this.r('First contribution', 'day 1', 'done'),
-          this.r('Plan edits', '2 \u00b7 day \u22127'),
-          this.r('Questions routed', '1')
-        ], actions: ['Ready', 'Not yet', 'Extend'] }),
-        this.S('Recorded decision \u00b7 Thu 14:20 \u00b7 Daniel Rossi')
-      ] },
-      buddy: { messages: [
-        this.A('Ninety days. Nine meetings with Maya, which is the top of the range. Thank you; it counted as work, and your manager has the record.', { time: '09:05' }),
-        this.M('Happy to do it again.', { time: '09:40' })
-      ] },
-      ops: { mayaDone: true, maya: { day: 'day 90', status: 'Completed \u00b7 0 exceptions \u00b7 90 days unattended' }, note: 'People Ops never touched this onboarding. It appeared here as one green row.' },
-      backstage: [
-        { tag: 'ACTION', text: 'The pack doubles as probation evidence where that decision is a legal requirement. Bob already owns probation tracking.' },
-        { tag: 'GUARDRAIL', text: 'Readiness is read from the recorded decision, not inferred from surveillance. Bob does not see the work itself.' },
-        { tag: 'EXHAUST', text: 'Maya\u2019s confusion log became four documentation tickets that make the next designer faster.' }
-      ] }
-  ];
-
+  constructor(props) {
+    super(props);
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem('bobbeat.proto') || 'null'); } catch (e) {}
+    this.state = Object.assign({
+      moment: 0, persona: null,
+      buddy: null, planApproved: false, done: {}, d3choice: null, slot: null,
+    }, saved || {});
+  }
   componentDidMount() {
-    let b = 0;
-    try { b = parseInt(localStorage.getItem('bobbeat.beat') || '0', 10) || 0; } catch (e) {}
-    b = Math.min(Math.max(b, 0), this.beats.length - 1);
-    this.setState({ beat: b, playing: !!this.props.autoplay }, () => this.reveal());
-    this.onKey = (e) => {
-      if (e.key === 'ArrowRight') this.go(this.state.beat + 1);
-      else if (e.key === 'ArrowLeft') this.go(this.state.beat - 1);
-      else if (e.key === ' ') { e.preventDefault(); this.toggle(); }
+    this._key = (e) => {
+      if (e.key === 'ArrowRight') this.go(1);
+      if (e.key === 'ArrowLeft') this.go(-1);
     };
-    window.addEventListener('keydown', this.onKey);
-    this.lastChange = Date.now();
-    this.clock = setInterval(() => {
-      if (!this.state.playing) return;
-      const step = (Number(this.props.stepSeconds) || 8) * 1000;
-      if (Date.now() - this.lastChange >= step) this.go((this.state.beat + 1) % this.beats.length);
-    }, 300);
+    window.addEventListener('keydown', this._key);
   }
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onKey);
-    clearInterval(this.clock); clearInterval(this.revealTimer);
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.shown !== this.state.shown) {
-      [this.mayaRef, this.mgrRef].forEach(r => { if (r.current) r.current.scrollTop = r.current.scrollHeight; });
-    }
-  }
-  go(n) {
-    if (n < 0 || n >= this.beats.length) return;
-    this.lastChange = Date.now();
-    try { localStorage.setItem('bobbeat.beat', String(n)); } catch (e) {}
-    this.setState({ beat: n }, () => this.reveal());
-  }
-  toggle() { this.lastChange = Date.now(); this.setState(s => ({ playing: !s.playing })); }
-  reveal() {
-    clearInterval(this.revealTimer);
-    const b = this.beats[this.state.beat];
-    const second = b.mgr.asBuddy ? b.buddy : b.mgr.asOps ? b.opsChat : b.mgr;
-    const max = Math.max((b.maya.messages || []).length, (second.messages || []).length, 1);
-    this.setState({ shown: 0 });
-    this.revealTimer = setInterval(() => {
-      this.setState(s => ({ shown: s.shown + 1 }), () => { if (this.state.shown >= max) clearInterval(this.revealTimer); });
-    }, 320);
-  }
-
-  norm(list, mode, shown) {
-    return (list || []).map((m, i) => {
-      const vis = i < shown;
-      const isSys = m.from === 'sys', isHandoff = m.from === 'handoff', isMe = m.from === 'me';
-      const chat = !isSys && !isHandoff;
-      const rows = (m.rows || []).map(r => ({ k: r.k, v: r.v, dot: r.st === 'done' ? '#1F9D6A' : r.st === 'flag' ? '#EE164F' : r.st === 'open' ? '#D98A1F' : '#C9C9D6', vColor: r.st === 'flag' ? '#EE164F' : '#6B6B85' }));
-      const actions = (m.actions || []).map((a, j) => ({ label: a, bg: j === 0 ? '#16163F' : '#fff', fg: j === 0 ? '#fff' : '#16163F' }));
-      return {
-        isSys, isHandoff, label: m.label, text: m.text, hasText: !!m.text,
-        isBubble: chat && mode === 'personal', isRow: chat && mode === 'work',
-        align: isMe ? 'flex-end' : 'flex-start', bubbleBg: isMe ? '#DCEFD0' : '#ffffff',
-        radius: isMe ? '12px 12px 3px 12px' : '12px 12px 12px 3px',
-        av: isMe ? m.av || 'ME' : 'BB', avBg: isMe ? '#3D3D5C' : '#EE164F', name: isMe ? m.name || 'Me' : 'Bob Beat', time: m.time || '',
-        hasCard: !!(m.title || (m.rows && m.rows.length)), title: m.title, rows, hasActions: actions.length > 0, actions,
-        op: vis ? 1 : 0, ty: vis ? '0px' : '8px'
-      };
+  componentWillUnmount() { window.removeEventListener('keydown', this._key); }
+  set(patch) {
+    this.setState(patch, () => {
+      try { localStorage.setItem('bobbeat.proto', JSON.stringify(this.state)); } catch (e) {}
     });
   }
-  persona(p, mode, shown, moved, meName, meAv) {
-    const active = !!(p.messages && p.messages.length);
-    const msgs = this.norm(p.messages, mode, shown).map(m => (m.name === 'Me' ? Object.assign(m, { name: meName, av: meAv }) : m));
-    const personal = mode === 'personal';
+  go(d) {
+    const n = Math.min(this.moments().length - 1, Math.max(0, this.state.moment + d));
+    this.set({ moment: n, persona: null });
+  }
+
+  people() {
     return {
-      active, isQuiet: !active, quiet: p.quiet || '', messages: msgs, moved,
-      channelLabel: moved ? 'acted on today' : active ? (personal ? 'personal messaging' : 'Slack') : 'quiet',
-      pillBg: moved ? '#EE164F' : active ? '#16163F' : '#E6E6EC', pillFg: moved ? '#fff' : active ? '#fff' : '#6B6B85',
-      outline: moved ? '2px solid #EE164F' : '2px solid rgba(238,22,79,0)',
-      bg: personal ? '#EDE7DE' : '#ffffff', headerBg: personal ? '#2F6F62' : '#4A154B', headerFg: '#ffffff',
-      headerLine: personal ? '#2F6F62' : '#4A154B', headerSub: personal ? 'WhatsApp' : 'Slack', inputBg: personal ? '#ffffff' : '#F4F4F7', appBadge: personal ? 0 : 1
+      agent: { name: 'Bob Beat', initials: 'B', bg: 'linear-gradient(135deg, #f58a3c, #f2436c)', isApp: true },
+      maya: { name: 'Maya Levi', role: 'New hire', initials: 'ML', bg: '#7c5cbf' },
+      manager: { name: 'Eli Baron', role: 'Manager', initials: 'EB', bg: '#2f7d8c' },
+      buddy: { name: 'Noa Adler', role: 'Buddy', initials: 'NA', bg: '#b9773a' },
     };
+  }
+
+  moments() {
+    return [
+      { id: 'd-21', day: 'Day −21', label: 'Welcome', title: 'Welcome and paperwork', personas: ['maya'], device: 'phone', phoneDate: 'Monday, 3 weeks before start',
+        noticed: 'Maya\u2019s design-system access request has been open for 4 days. The owner hasn\u2019t responded.',
+        did: 'Nudged the owner, set an escalation deadline, and told Maya nothing is on her.',
+        tip: 'Maya isn\u2019t in the company Slack yet, so preboarding runs on her phone.' },
+      { id: 'd-7', day: 'Day −7', label: 'Plan and buddy', title: 'Draft plan, three buddy options', personas: ['manager'], device: 'slack',
+        noticed: 'Start date in 7 days. No 30/60/90 plan and no buddy assigned.',
+        did: 'Drafted a plan from the role template and the team\u2019s current projects. Proposed three buddies. Waits for Eli\u2019s call.',
+        tip: 'Try it: choose a buddy, then approve the plan.' },
+      { id: 'd-1', day: 'Day −1', label: 'Five actions', title: 'One message, five actions', personas: ['manager'], device: 'slack',
+        noticed: 'Five manager-owned actions are due before day 1. Three haven\u2019t been touched.',
+        did: 'Sent one message built from the current onboarding state. Reminds at 17:00 for anything left.',
+        tip: 'Try it: check the actions off.' },
+      { id: 'd1', day: 'Day 1', label: 'Handoff', title: 'WhatsApp to Slack', personas: ['maya', 'manager'], device: 'slack',
+        noticed: 'Maya\u2019s Slack account is live.',
+        did: 'Moved the thread to Slack. Confirmed week one, introduced the buddy, and keeps tracking Eli\u2019s actions.',
+        tip: '' },
+      { id: 'd3', day: 'Day 3', label: 'Access blocked', title: 'Access approved, never provisioned', personas: ['manager', 'maya'], device: 'slack',
+        noticed: 'Maya still hasn\u2019t opened the design system. Her first task depends on it.',
+        did: 'Asked IT to provision the seat, told Eli, and confirmed when it cleared. Maya never had to ask.',
+        tip: 'Try it: pick how to handle it, then switch to Maya\u2019s view.' },
+      { id: 'd10', day: 'Day 10', label: 'Buddy cadence', title: 'The buddy cadence dropped', personas: ['buddy', 'maya'], device: 'slack',
+        noticed: 'One buddy meeting since day 1. The weekly check-in didn\u2019t happen, and two of Maya\u2019s questions are waiting.',
+        did: 'Found two slots that fit both calendars and offered them to Noa with the questions attached.',
+        tip: 'Try it: book a slot, then switch to Maya\u2019s view.' },
+      { id: 'd14', day: 'Day 14', label: 'Two weeks in', title: 'End of the V1 span', personas: ['manager'], device: 'slack',
+        noticed: 'Preboarding through day 14 is complete.',
+        did: 'Summarised on-time actions, blockers cleared, and time-to-clear. People Ops did not need to step in.',
+        tip: '' },
+    ];
+  }
+
+  row(o) {
+    const r = Object.assign({ label: '', sub: '', value: '', button: '', selectedLabel: 'Selected', checkable: false, done: false, selected: false, onClick: null }, o);
+    r.hasSub = !!r.sub; r.hasValue = !!r.value; r.hasButton = !!r.button; r.notDone = !r.done; r.unselected = !r.selected;
+    return r;
+  }
+  card(title, rows, extra) {
+    const c = Object.assign({ title, rows: rows.map(r => this.row(r)), footer: '', buttons: [] }, extra || {});
+    c.hasFooter = !!c.footer; c.hasButtons = c.buttons.length > 0;
+    c.buttons = c.buttons.map(b => Object.assign({ secondary: !b.primary }, b));
+    return c;
+  }
+  msg(who, time, text, card, out) {
+    const p = this.people()[who];
+    return { who, name: p.name, initials: p.initials, bg: p.bg, isApp: !!p.isApp, time, text, card: card || null, hasCard: !!card, out: !!out, inn: !out };
+  }
+
+  screen(id, persona) {
+    const s = this.state, A = 'agent';
+    const buddyNames = { noa: 'Noa Adler', tom: 'Tom Reyes', sara: 'Sara Kim' };
+    const slots = { a: 'today 15:30–16:00', b: 'tomorrow 10:00–10:30' };
+    const out = [];
+    if (id === 'd-21') {
+      out.push(this.msg(A, '09:12', 'Hi Maya, welcome to Kestrel. I\u2019m Bob Beat, the onboarding assistant. I\u2019ll keep your first weeks on track and handle the follow-ups so you don\u2019t have to.'));
+      out.push(this.msg(A, '09:12', 'Where things stand before day 1:', this.card('Before day 1', [
+        { label: 'Contract', checkable: true, done: true },
+        { label: 'Tax form', sub: 'Due Friday', checkable: true, done: !!s.done.tax, onClick: () => this.set({ done: Object.assign({}, s.done, { tax: !s.done.tax }) }) },
+        { label: 'Laptop', value: 'Ships day −5' },
+        { label: 'Design system access', sub: 'Requested day −25', value: 'Waiting on IT' },
+      ])));
+      if (s.done.tax) out.push(this.msg('maya', '09:40', 'Thanks! Tax form done.', null, true));
+      out.push(this.msg(A, '09:41', 'One thing I\u2019m watching: your design-system access request has been open 4 days with no response. I\u2019ve nudged Dana in IT and will escalate to Eli if it isn\u2019t resolved by Thursday. Nothing you need to do.'));
+    }
+    if (id === 'd-7') {
+      out.push(this.msg(A, '08:30', 'Eli, Maya Levi starts in 7 days. Here\u2019s a draft 30/60/90 based on the product designer role template and your team\u2019s current projects. Edit anything, then approve.', this.card('Draft 30/60/90 · Maya Levi', [
+        { label: 'Days 1–30', sub: 'Ship a component update to the design system. Pair on the Checkout redesign.' },
+        { label: 'Days 31–60', sub: 'Own one flow end to end: Returns.' },
+        { label: 'Days 61–90', sub: 'Lead a design review. Present to Product.' },
+      ], { buttons: s.planApproved ? [] : [
+        { label: 'Edit plan', onClick: () => {} },
+        { label: 'Approve plan', primary: true, onClick: () => this.set({ planApproved: true }) },
+      ], footer: s.planApproved ? 'Approved by Eli Baron' : '' })));
+      out.push(this.msg(A, '08:30', 'Three buddy options, ranked by fit and availability:', this.card('Buddy options', ['noa', 'tom', 'sara'].map(k => ({
+        label: buddyNames[k],
+        sub: k === 'noa' ? 'Senior product designer, Checkout. Same time zone. Buddied twice before.' : k === 'tom' ? 'Product designer, Growth. Available, first time as a buddy.' : 'Staff product designer. Heavy load this month.',
+        button: 'Choose', selectedLabel: 'Chosen', selected: s.buddy === k, onClick: () => this.set({ buddy: k }),
+      })))));
+      if (s.planApproved && s.buddy) out.push(this.msg(A, '08:47', `Approved. I\u2019ve shared the plan with ${buddyNames[s.buddy]} and scheduled the buddy intro for day 1 at 14:00. I\u2019ll track each milestone and flag anything that slips.`));
+      else if (s.planApproved) out.push(this.msg(A, '08:47', 'Plan approved. Choose a buddy when you\u2019re ready; I\u2019m holding a day 1 intro slot at 14:00.'));
+      else if (s.buddy) out.push(this.msg(A, '08:47', `${buddyNames[s.buddy]} it is. Approve the plan and I\u2019ll share it with both of you.`));
+    }
+    if (id === 'd-1') {
+      const keys = ['call', 'note', 'task', 'seat', 'oneone'];
+      const labels = [
+        ['Confirm the 9:30 welcome call', 'Calendar hold sent, not accepted'],
+        ['Post a welcome note in #design', ''],
+        ['Assign the first task: design-system button audit', 'Draft brief ready to send'],
+        ['Approve the Figma seat', 'IT is waiting for your OK'],
+        ['Book Friday\u2019s 1:1', ''],
+      ];
+      const n = keys.filter(k => s.done[k]).length;
+      out.push(this.msg(A, '08:00', 'Maya starts tomorrow. Five actions from the current onboarding state:', this.card('Before tomorrow', keys.map((k, i) => ({
+        label: labels[i][0], sub: labels[i][1], checkable: true, done: !!s.done[k],
+        onClick: () => this.set({ done: Object.assign({}, s.done, { [k]: !s.done[k] }) }),
+      })), { footer: n === 5 ? '5 of 5 done' : `${n} of 5 done. I\u2019ll remind you at 17:00 for anything left.` })));
+      if (n === 5) out.push(this.msg(A, '10:12', 'All five done. Maya\u2019s day 1 is set. Nothing else is on you until the welcome call.'));
+    }
+    if (id === 'd1' && persona === 'maya') {
+      out.push(this.msg(A, '08:45', 'Welcome to Kestrel\u2019s Slack, Maya. We\u2019re moving here from WhatsApp; everything continues in this thread.'));
+      out.push(this.msg(A, '08:45', 'Your week one:', this.card('Week one', [
+        { label: 'Today 9:30 · Welcome call with Eli', value: 'Accepted' },
+        { label: 'Today 14:00 · Buddy intro with Noa', value: 'Booked' },
+        { label: 'Wed · First task: design-system button audit', value: 'Brief sent' },
+        { label: 'Thu · Checkout team sync', value: 'Invited' },
+        { label: 'Fri 15:00 · 1:1 with Eli', value: 'Booked' },
+      ])));
+      out.push(this.msg(A, '08:46', 'Your buddy is Noa Adler, senior product designer on Checkout. Eli\u2019s actions for you are tracked; you\u2019ll hear from me only when something changes.'));
+    }
+    if (id === 'd1' && persona === 'manager') {
+      out.push(this.msg(A, '08:50', 'Maya\u2019s day 1 is in motion. Your five actions landed. One open item: the Figma seat is approved but not yet provisioned by IT (Dana K.). I\u2019m following up and will tell you only if it slips past tomorrow.'));
+    }
+    if (id === 'd3' && persona === 'manager') {
+      out.push(this.msg(A, '09:05', 'Maya hasn\u2019t opened the design system yet. Access was approved on day 1 but the Figma seat was never provisioned, and her first task depends on it. I\u2019ve asked Dana in IT to provision it this morning.', this.card('Blocker · Design system access', [
+        { label: 'Owner', value: 'Dana K., IT' },
+        { label: 'Requested', value: 'Day −25' },
+        { label: 'Approved', value: 'Day 1' },
+        { label: 'Status', value: 'Not provisioned' },
+        { label: 'Impact', value: 'First task blocked' },
+      ], { buttons: s.d3choice ? [] : [
+        { label: 'Escalate to IT lead', primary: true, onClick: () => this.set({ d3choice: 'escalate' }) },
+        { label: 'Keep tracking', onClick: () => this.set({ d3choice: 'track' }) },
+      ], footer: s.d3choice === 'escalate' ? 'Escalated to Ravi Mehta, IT lead, at 09:11' : s.d3choice === 'track' ? 'Tracking. Escalates automatically at 14:00 if still open.' : '' })));
+      if (s.d3choice) {
+        out.push(this.msg('manager', '09:11', s.d3choice === 'escalate' ? 'Escalate, please. She needs it today.' : 'Keep tracking, thanks.'));
+        out.push(this.msg(A, '11:40', 'Resolved. Figma seat provisioned at 11:38. Time to clear: 2h 33m. Maya wasn\u2019t asked to chase it.'));
+      }
+    }
+    if (id === 'd3' && persona === 'maya') {
+      out.push(this.msg(A, '09:00', 'Morning. Today: 11:00 design review with the Checkout team, 15:00 button-audit working session with Noa.'));
+      if (s.d3choice) {
+        out.push(this.msg(A, '11:40', 'Your design-system access is live. Dana from IT set it up, so you\u2019re clear to start the button audit.'));
+        out.push(this.msg('maya', '11:52', 'Oh nice, I hadn\u2019t even noticed. Thanks!'));
+      }
+    }
+    if (id === 'd10' && persona === 'buddy') {
+      out.push(this.msg(A, '08:50', 'Noa, you and Maya met once on day 1, and the weekly buddy check-in hasn\u2019t happened since. She has two open questions about the Checkout review process waiting for you.', this.card('Two slots that work for both of you', [
+        { label: 'Today, 15:30–16:00', button: 'Book', selectedLabel: 'Booked', selected: s.slot === 'a', onClick: () => this.set({ slot: 'a' }) },
+        { label: 'Tomorrow, 10:00–10:30', button: 'Book', selectedLabel: 'Booked', selected: s.slot === 'b', onClick: () => this.set({ slot: 'b' }) },
+      ], { footer: s.slot ? '' : 'Or reply with another time.' })));
+      if (s.slot) {
+        out.push(this.msg(A, '08:53', `Booked ${slots[s.slot]}. Invite sent to Maya with her two questions attached, so you can prep in two minutes.`));
+        out.push(this.msg('buddy', '08:54', 'Thanks. The week got away from me.'));
+      }
+    }
+    if (id === 'd10' && persona === 'maya') {
+      out.push(this.msg(A, '08:55', 'Heads up: I\u2019m setting up your next check-in with Noa. You don\u2019t need to chase it.'));
+      if (s.slot) out.push(this.msg(A, '08:56', `Check-in with Noa is ${slots[s.slot]}. Your two Checkout questions are in the invite.`, this.card('Buddy check-in', [
+        { label: 'When', value: slots[s.slot].charAt(0).toUpperCase() + slots[s.slot].slice(1) },
+        { label: 'With', value: 'Noa Adler' },
+        { label: 'Agenda', value: 'Checkout review process · 2 questions' },
+      ])));
+    }
+    if (id === 'd14') {
+      out.push(this.msg(A, '09:00', 'Two weeks in. Maya\u2019s onboarding so far:', this.card('Preboarding → day 14', [
+        { label: 'On-time actions', value: '11 of 12' },
+        { label: 'Blockers cleared', value: '2 · median 2h 33m' },
+        { label: 'Buddy cadence', value: 'Kept · 2 check-ins' },
+        { label: 'Day 30 milestone', value: 'On track' },
+        { label: 'People Ops involvement', value: 'None' },
+      ], { buttons: [{ label: 'Open full log', onClick: () => {} }] })));
+      out.push(this.msg(A, '09:00', 'The plan continues to day 90 with milestone tracking. I\u2019ll surface only what needs your judgment.'));
+    }
+    return out;
   }
 
   renderVals() {
-    const { beat, shown, playing } = this.state;
-    const cur = this.beats[beat];
-    const beats = this.beats.map((b, i) => ({
-      dayLabel: b.dayLabel, short: b.short, product: b.product, go: () => this.go(i),
-      opacity: i === beat ? 1 : 0.62,
-      nodeBg: i === beat ? '#EE164F' : i < beat ? '#16163F' : '#ffffff',
-      nodeBorder: i === beat ? '#EE164F' : b.product ? '#EE164F' : '#16163F',
-      anim: i === beat ? 'bbpulse 1.6s ease-out infinite' : 'none'
-    }));
-    const maya = this.persona(cur.maya, cur.maya.mode, shown, cur.moved === 'maya', 'Maya Chen', 'MC');
-    const seat = cur.mgr.asBuddy ? 'buddy' : cur.mgr.asOps ? 'ops' : 'mgr';
-    const cast = {
-      mgr: { name: 'Daniel Rossi', role: 'Hiring manager \u00b7 Head of design', av: 'DR', bg: '#3D3D5C' },
-      buddy: { name: 'Noa Levi', role: 'Buddy \u00b7 Senior product designer', av: 'NL', bg: '#7A1E5E' },
-      ops: { name: 'Ruth Adler', role: 'People Ops \u00b7 policy owner', av: 'RA', bg: '#6B6B85' }
-    };
-    const who = cast[seat];
-    const src = seat === 'buddy' ? cur.buddy : seat === 'ops' ? cur.opsChat : cur.mgr;
-    const mgr = this.persona(src, 'work', shown, cur.moved === seat, who.name, who.av);
-    mgr.whoName = who.name; mgr.whoRole = who.role; mgr.whoAv = who.av; mgr.whoBg = who.bg;
-    const o = cur.ops;
-    const exceptions = [];
-    if (o.routed) exceptions.push(Object.assign({ bg: '#FDE9EF', op: shown > 0 ? 1 : 0 }, o.routed));
-    exceptions.push({ name: 'Eli Navon', meta: 'Data analyst \u00b7 day 12', issue: 'No first task assigned for 5 days. Manager (Tal) nudged twice, no response.', action: 'Message Tal\u2019s lead', bg: '#ffffff', op: 1 });
-    const onPath = [
-      { name: 'Maya Chen', day: o.maya.day, status: o.maya.status, dot: '#1F9D6A', bg: '#F0FAF5', border: '#BFE5D2', weight: 600 },
-      { name: 'Omer Katz', day: 'day 34', status: 'Backend engineer \u00b7 on path', dot: '#1F9D6A', bg: '#ffffff', border: '#EEEEF3', weight: 500 },
-      { name: 'Lior Dahan', day: 'starts in 5d', status: 'Account executive \u00b7 pre-boarding', dot: '#1F9D6A', bg: '#ffffff', border: '#EEEEF3', weight: 500 },
-      { name: 'Dana Peretz', day: 'day 71', status: 'Content designer \u00b7 on path', dot: '#1F9D6A', bg: '#ffffff', border: '#EEEEF3', weight: 500 }
-    ];
-    if (o.mayaDone) { onPath[0].dot = '#16163F'; onPath[0].bg = '#F4F4F7'; onPath[0].border = '#D9D9E3'; }
-    const ops = {
-      exceptions, onPath, excCount: String(exceptions.length), pathCount: String(onPath.length),
-      hasNote: !!o.note, note: o.note || '', channelLabel: o.routed ? 'one item routed' : 'unattended', pillBg: o.routed ? '#16163F' : '#E6E6EC', pillFg: o.routed ? '#fff' : '#6B6B85',
-      outline: '2px solid rgba(238,22,79,0)'
-    };
-    const backstage = cur.backstage.map(s => ({ tag: s.tag, text: s.text, line: s.tag === 'GUARDRAIL' || s.tag === 'PRIVACY' || s.tag === 'FRAMING' ? '#EE164F' : '#16163F' }));
+    const P = this.people();
+    const list = this.moments();
+    const idx = this.state.moment;
+    const cur = list[idx];
+    const persona = cur.personas.includes(this.state.persona) ? this.state.persona : cur.personas[0];
+    const viewer = P[persona];
+    const dmsBy = { maya: ['Eli Baron', 'Noa Adler'], manager: ['Maya Levi', 'Noa Adler', 'Dana K.'], buddy: ['Maya Levi', 'Eli Baron'] };
     return {
-      beats, cur: Object.assign({}, cur, { backstage }), maya, mgr, ops,
-      counter: (beat + 1) + ' / ' + this.beats.length,
-      prev: () => this.go(beat - 1), next: () => this.go(beat + 1), toggle: () => this.toggle(),
-      playLabel: playing ? 'pause' : 'play', playBg: playing ? '#16163F' : '#ffffff', playFg: playing ? '#ffffff' : '#16163F',
-      mayaRef: this.mayaRef, mgrRef: this.mgrRef,
-      showBackstage: this.props.showBackstage !== false
+      moments: list.map((m, i) => Object.assign({}, m, { active: i === idx, inactive: i !== idx, onSelect: () => this.set({ moment: i, persona: null }) })),
+      current: Object.assign({}, cur, { hasTip: !!cur.tip }),
+      personas: cur.personas.map(k => Object.assign({}, P[k], { active: k === persona, inactive: k !== persona, onSelect: () => this.set({ persona: k }) })),
+      viewer,
+      dms: dmsBy[persona],
+      isSlack: cur.device === 'slack',
+      isPhone: cur.device === 'phone',
+      phoneW: 340, phoneH: 720,
+      phoneDate: cur.phoneDate || '',
+      messages: this.screen(cur.id, persona),
+      goPrev: () => this.go(-1),
+      goNext: () => idx === list.length - 1 ? this.set({ moment: 0, persona: null }) : this.go(1),
+      showGuide: this.props.showGuide ?? true,
+      wideStage: !(this.props.showGuide ?? true),
+      nextLabel: idx === list.length - 1 ? 'Back to start' : 'Next →',
     };
   }
 }
