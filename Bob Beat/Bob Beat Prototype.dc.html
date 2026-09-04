@@ -37,13 +37,13 @@
       <div style="display: flex; align-items: center; gap: 12px;">
         <div style="width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff;">B</div>
         <div style="font-weight: 700; font-size: 17px; letter-spacing: -0.01em;">Bob Beat</div>
-        <div style="font-size: 13px; color: rgba(255,255,255,.6);">Prototype · V1: preboarding → day 14</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,.6);">Prototype · V1: day −7 → day 14</div>
       </div>
       <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}"><div style="font-size: 13px; color: rgba(255,255,255,.6);">One hire: Maya Levi, product designer at Kestrel</div></sc-if>
     </div>
 
     <div style="display: flex; align-items: stretch; gap: 6px; margin: 4px 0 22px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch;">
-      <sc-for list="{{ moments }}" as="m" hint-placeholder-count="7">
+      <sc-for list="{{ moments }}" as="m" hint-placeholder-count="6">
         <sc-if value="{{ m.active }}" hint-placeholder-val="{{ false }}">
           <div onClick="{{ m.onSelect }}" style="flex: 1 0 118px; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); backdrop-filter: blur(6px);">
             <div style="font-size: 12px; font-weight: 600; color: #f9b58a; letter-spacing: .02em;">{{ m.day }}</div>
@@ -62,7 +62,7 @@
     <div style="display: flex; gap: 28px 36px; flex: 1; align-items: flex-start; flex-wrap: wrap;">
 
       <sc-if value="{{ showGuide }}" hint-placeholder-val="{{ true }}">
-      <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 6px; flex: 1 1 280px; max-width: 320px; min-width: 0;">
+      <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 6px; flex: 1 1 240px; max-width: 320px; min-width: 0;">
         <div>
           <div style="font-size: 12px; font-weight: 600; color: #f9b58a; letter-spacing: .06em; text-transform: uppercase;">{{ current.day }}</div>
           <div style="font-size: 26px; font-weight: 700; line-height: 1.2; margin-top: 6px; letter-spacing: -0.02em; text-wrap: pretty;">{{ current.title }}</div>
@@ -114,7 +114,7 @@
       </div>
       </sc-if>
 
-      <div style="display: flex; justify-content: center; align-items: flex-start; min-width: 0; flex: 999 1 min(560px, 100%);">
+      <div style="display: flex; justify-content: center; align-items: flex-start; min-width: 0; flex: 999 1 min(380px, 100%);">
 
         <sc-if value="{{ isSlack }}" hint-placeholder-val="{{ true }}">
           <div style="width: 100%; max-width: 1000px; height: min(640px, calc(100vh - 140px)); min-height: 480px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 40px 90px rgba(40,0,20,.45), 0 0 0 1px rgba(255,255,255,.1); display: grid; grid-template-columns: {{ slackCols }}; color: #1d1c1d; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
@@ -292,12 +292,10 @@
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    let saved = null;
-    try { saved = JSON.parse(localStorage.getItem('bobbeat.proto') || 'null'); } catch (e) {}
-    this.state = Object.assign({
+    this.state = {
       moment: 0, persona: null,
-      buddy: null, planApproved: false, done: {}, d3choice: null, slot: null,
-    }, saved || {});
+      buddy: null, buddyAck: null, planApproved: false, done: {}, d3choice: null, slot: null,
+    };
   }
   componentDidMount() {
     this._key = (e) => {
@@ -311,9 +309,7 @@ class Component extends DCLogic {
   }
   componentWillUnmount() { window.removeEventListener('keydown', this._key); window.removeEventListener('resize', this._resize); }
   set(patch) {
-    this.setState(patch, () => {
-      try { localStorage.setItem('bobbeat.proto', JSON.stringify(this.state)); } catch (e) {}
-    });
+    this.setState(patch);
   }
   go(d) {
     const n = Math.min(this.moments().length - 1, Math.max(0, this.state.moment + d));
@@ -331,14 +327,10 @@ class Component extends DCLogic {
 
   moments() {
     return [
-      { id: 'd-21', day: 'Day −21', label: 'Welcome', title: 'Welcome and paperwork', personas: ['maya'], device: 'phone', phoneDate: 'Monday, 3 weeks before start',
-        noticed: 'Maya\u2019s design-system access request has been open for 4 days. The owner hasn\u2019t responded.',
-        did: 'Nudged the owner, set an escalation deadline, and told Maya nothing is on her.',
-        tip: 'Maya isn\u2019t in the company Slack yet, so preboarding runs on her phone.' },
-      { id: 'd-7', day: 'Day −7', label: 'Plan and buddy', title: 'Draft plan, three buddy options', personas: ['manager'], device: 'slack',
+      { id: 'd-7', day: 'Day −7', label: 'Plan and buddy', title: 'Draft plan, three buddy options', personas: ['manager', 'buddy'], device: 'slack',
         noticed: 'Start date in 7 days. No 30/60/90 plan and no buddy assigned.',
         did: 'Drafted a plan from the role template and the team\u2019s current projects. Proposed three buddies. Waits for Eli\u2019s call.',
-        tip: 'Try it: choose a buddy, then approve the plan.' },
+        tip: 'Try it: choose Noa as buddy, approve the plan, then switch to Noa\u2019s view.' },
       { id: 'd-1', day: 'Day −1', label: 'Five actions', title: 'One message, five actions', personas: ['manager'], device: 'slack',
         noticed: 'Five manager-owned actions are due before day 1. Three haven\u2019t been touched.',
         did: 'Sent one message built from the current onboarding state. Reminds at 17:00 for anything left.',
@@ -383,18 +375,7 @@ class Component extends DCLogic {
     const buddyNames = { noa: 'Noa Adler', tom: 'Tom Reyes', sara: 'Sara Kim' };
     const slots = { a: 'today 15:30–16:00', b: 'tomorrow 10:00–10:30' };
     const out = [];
-    if (id === 'd-21') {
-      out.push(this.msg(A, '09:12', 'Hi Maya, welcome to Kestrel. I\u2019m Bob Beat, the onboarding assistant. I\u2019ll keep your first weeks on track and handle the follow-ups so you don\u2019t have to.'));
-      out.push(this.msg(A, '09:12', 'Where things stand before day 1:', this.card('Before day 1', [
-        { label: 'Contract', checkable: true, done: true },
-        { label: 'Tax form', sub: 'Due Friday', checkable: true, done: !!s.done.tax, onClick: () => this.set({ done: Object.assign({}, s.done, { tax: !s.done.tax }) }) },
-        { label: 'Laptop', value: 'Ships day −5' },
-        { label: 'Design system access', sub: 'Requested day −25', value: 'Waiting on IT' },
-      ])));
-      if (s.done.tax) out.push(this.msg('maya', '09:40', 'Thanks! Tax form done.', null, true));
-      out.push(this.msg(A, '09:41', 'One thing I\u2019m watching: your design-system access request has been open 4 days with no response. I\u2019ve nudged Dana in IT and will escalate to Eli if it isn\u2019t resolved by Thursday. Nothing you need to do.'));
-    }
-    if (id === 'd-7') {
+    if (id === 'd-7' && persona === 'manager') {
       out.push(this.msg(A, '08:30', 'Eli, Maya Levi starts in 7 days. Here\u2019s a draft 30/60/90 based on the product designer role template and your team\u2019s current projects. Edit anything, then approve.', this.card('Draft 30/60/90 · Maya Levi', [
         { label: 'Days 1–30', sub: 'Ship a component update to the design system. Pair on the Checkout redesign.' },
         { label: 'Days 31–60', sub: 'Own one flow end to end: Returns.' },
@@ -411,6 +392,28 @@ class Component extends DCLogic {
       if (s.planApproved && s.buddy) out.push(this.msg(A, '08:47', `Approved. I\u2019ve shared the plan with ${buddyNames[s.buddy]} and scheduled the buddy intro for day 1 at 14:00. I\u2019ll track each milestone and flag anything that slips.`));
       else if (s.planApproved) out.push(this.msg(A, '08:47', 'Plan approved. Choose a buddy when you\u2019re ready; I\u2019m holding a day 1 intro slot at 14:00.'));
       else if (s.buddy) out.push(this.msg(A, '08:47', `${buddyNames[s.buddy]} it is. Approve the plan and I\u2019ll share it with both of you.`));
+    }
+    if (id === 'd-7' && persona === 'buddy') {
+      if (s.buddy !== 'noa') {
+        out.push(this.msg(A, '08:30', 'Nothing yet for Noa. Bob Beat only reaches out once Eli picks a buddy.'));
+      } else {
+        out.push(this.msg(A, '08:48', 'Hi Noa, Eli picked you as onboarding buddy for Maya Levi, product designer joining Checkout on the 15th. Here\u2019s what that means for the first two weeks:', this.card('Buddy · Maya Levi', [
+          { label: 'Day 1, 14:00 · Intro coffee', sub: '30 min. Calendar hold sent.', value: 'Hold sent' },
+          { label: 'Weekly check-in', sub: 'Thursdays 15:00, first on day 3. I\u2019ll flag if one slips.', value: 'Recurring' },
+          { label: 'Her first task', sub: 'Design-system button audit. You\u2019re the go-to for questions.' },
+        ], { footer: s.planApproved ? 'Maya\u2019s 30/60/90 is approved and attached.' : 'Eli is still finalising the 30/60/90; I\u2019ll share it once approved.', buttons: s.buddyAck ? [] : [
+          { label: 'Accept', primary: true, onClick: () => this.set({ buddyAck: 'yes' }) },
+          { label: 'Not this time', onClick: () => this.set({ buddyAck: 'no' }) },
+        ] })));
+        if (s.buddyAck === 'yes') {
+          out.push(this.msg('buddy', '08:52', 'Happy to. Accepted the day 1 hold.'));
+          out.push(this.msg(A, '08:52', 'Thanks. Two things to know before day 1: Maya asked about the Checkout review process during preboarding, and her design-system access is still pending with IT. I\u2019m on the second one; the first is a good opener.'));
+        }
+        if (s.buddyAck === 'no') {
+          out.push(this.msg('buddy', '08:52', 'Not this time, my month is packed.'));
+          out.push(this.msg(A, '08:52', 'Understood. I\u2019ve let Eli know and offered Tom Reyes as the next option. Nothing else on you.'));
+        }
+      }
     }
     if (id === 'd-1') {
       const keys = ['call', 'note', 'task', 'seat', 'oneone'];
@@ -509,7 +512,7 @@ class Component extends DCLogic {
     return {
       moments: list.map((m, i) => Object.assign({}, m, { active: i === idx, inactive: i !== idx, onSelect: () => this.set({ moment: i, persona: null }) })),
       current: Object.assign({}, cur, { hasTip: !!cur.tip }),
-      personas: cur.personas.map(k => Object.assign({}, P[k], { active: k === persona, inactive: k !== persona, onSelect: () => this.set({ persona: k }) })),
+      personas: cur.personas.map(k => Object.assign({}, P[k], { active: k === persona, inactive: k !== persona, onSelect: () => this.set(cur.id === 'd-7' && k === 'buddy' && this.state.buddy !== 'noa' ? { persona: k, buddy: 'noa' } : { persona: k }) })),
       viewer,
       dms: dmsBy[persona],
       isSlack: cur.device === 'slack',
