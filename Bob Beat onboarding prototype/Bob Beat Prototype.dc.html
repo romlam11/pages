@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Bob Beat · Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: #5a0d2e; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: #f7a56a; } a:hover { color: #fbd0a8; }
+    * { box-sizing: border-box; }
+    ::-webkit-scrollbar { width: 8px; height: 6px; } ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 8px; }
+  </style>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wqy4o8g0yk");
+  </script>
+</helmet>
+
+<div data-screen-label="Bob Beat prototype" style="min-height: 100vh; position: relative; overflow: hidden; background: linear-gradient(180deg, #5c0e2f 0%, #6c1038 60%, #7a1440 100%); color: #fbf3f2;">
+  <div style="position: absolute; top: -260px; right: -180px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle at 42% 30%, #f6a447 0%, #f26a48 30%, #e9375f 62%, rgba(233,55,95,0) 72%); opacity: .55; pointer-events: none;"></div>
+  <div style="position: absolute; bottom: -420px; right: 80px; width: 640px; height: 640px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #ff5b8a 0%, #e8305f 45%, rgba(232,48,95,0) 72%); opacity: .45; pointer-events: none;"></div>
+
+  <div style="position: relative; display: flex; flex-direction: column; min-height: 100vh; padding: 0 clamp(14px, 4vw, 40px) 32px;">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; min-height: 64px; padding: 10px 0; gap: 12px; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff;">B</div>
+        <div style="font-weight: 700; font-size: 17px; letter-spacing: -0.01em;">Bob Beat</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,.6);">Prototype · V1: day −7 → day 14</div>
+      </div>
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}"><div style="font-size: 13px; color: rgba(255,255,255,.6);">One hire: Maya Levi, product designer at Kestrel</div></sc-if>
+    </div>
+
+    <div style="display: flex; align-items: stretch; gap: 6px; margin: 4px 0 22px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch;">
+      <sc-for list="{{ moments }}" as="m" hint-placeholder-count="6">
+        <sc-if value="{{ m.active }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ m.onSelect }}" style="flex: 1 0 118px; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); backdrop-filter: blur(6px);">
+            <div style="font-size: 12px; font-weight: 600; color: #f9b58a; letter-spacing: .02em;">{{ m.day }}</div>
+            <div style="font-size: 14px; font-weight: 600; margin-top: 3px; color: #fff;">{{ m.label }}</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ m.inactive }}" hint-placeholder-val="{{ true }}">
+          <div onClick="{{ m.onSelect }}" style="flex: 1 0 118px; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); transition: background .15s;" style-hover="background: rgba(255,255,255,.1);">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .02em;">{{ m.day }}</div>
+            <div style="font-size: 14px; font-weight: 500; margin-top: 3px; color: rgba(255,255,255,.75);">{{ m.label }}</div>
+          </div>
+        </sc-if>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; gap: 28px 36px; flex: 1; align-items: flex-start; flex-wrap: wrap;">
+
+      <sc-if value="{{ showGuide }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 6px; flex: 1 1 240px; max-width: 320px; min-width: 0;">
+        <div>
+          <div style="font-size: 12px; font-weight: 600; color: #f9b58a; letter-spacing: .06em; text-transform: uppercase;">{{ current.day }}</div>
+          <div style="font-size: 26px; font-weight: 700; line-height: 1.2; margin-top: 6px; letter-spacing: -0.02em; text-wrap: pretty;">{{ current.title }}</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; font-size: 14px; line-height: 1.5;">
+          <div>
+            <div style="font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px;">Noticed</div>
+            <div style="color: rgba(255,255,255,.9); text-wrap: pretty;">{{ current.noticed }}</div>
+          </div>
+          <div>
+            <div style="font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px;">Did</div>
+            <div style="color: rgba(255,255,255,.9); text-wrap: pretty;">{{ current.did }}</div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,.5); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px;">Viewing as</div>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <sc-for list="{{ personas }}" as="p" hint-placeholder-count="2">
+              <sc-if value="{{ p.active }}" hint-placeholder-val="{{ true }}">
+                <div onClick="{{ p.onSelect }}" style="display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; background: #fbf3f2; color: #5a0d2e; cursor: pointer;">
+                  <div style="width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; background: {{ p.bg }};">{{ p.initials }}</div>
+                  <div style="font-size: 13px; font-weight: 600;">{{ p.name }}</div>
+                  <div style="font-size: 12px; color: rgba(90,13,46,.6);">{{ p.role }}</div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ p.inactive }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ p.onSelect }}" style="display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); color: #fbf3f2; cursor: pointer;" style-hover="background: rgba(255,255,255,.12);">
+                  <div style="width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; background: {{ p.bg }};">{{ p.initials }}</div>
+                  <div style="font-size: 13px; font-weight: 600;">{{ p.name }}</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,.55);">{{ p.role }}</div>
+                </div>
+              </sc-if>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ current.hasTip }}" hint-placeholder-val="{{ true }}">
+          <div style="display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; background: rgba(245,138,60,.12); border: 1px solid rgba(245,138,60,.3); font-size: 13.5px; line-height: 1.45; color: #ffd9bd;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #f58a3c; margin-top: 6px; flex-shrink: 0;"></div>
+            <div>{{ current.tip }}</div>
+          </div>
+        </sc-if>
+
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <div onClick="{{ goPrev }}" style="padding: 9px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); font-size: 13px; font-weight: 600; cursor: pointer; color: #fbf3f2; user-select: none;" style-hover="background: rgba(255,255,255,.1);">← Previous</div>
+          <div onClick="{{ goNext }}" style="padding: 9px 16px; border-radius: 999px; background: #fbf3f2; color: #5a0d2e; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none;" style-hover="background: #fff;">{{ nextLabel }}</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <div style="display: flex; justify-content: center; align-items: flex-start; min-width: 0; flex: 999 1 min(380px, 100%);">
+
+        <sc-if value="{{ isSlack }}" hint-placeholder-val="{{ true }}">
+          <div style="width: 100%; max-width: 1000px; height: min(640px, calc(100vh - 140px)); min-height: 480px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 40px 90px rgba(40,0,20,.45), 0 0 0 1px rgba(255,255,255,.1); display: grid; grid-template-columns: {{ slackCols }}; color: #1d1c1d; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+            <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+            <div style="background: #3a0a1f; color: rgba(255,255,255,.72); display: flex; flex-direction: column; font-size: 14px;">
+              <div style="height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,.1); color: #fff; font-weight: 700; font-size: 16px;">Kestrel <span style="font-size: 11px; opacity: .6;">▾</span></div>
+              <div style="padding: 14px 8px; display: flex; flex-direction: column; gap: 2px;">
+                <div style="padding: 4px 8px; font-size: 12.5px; color: rgba(255,255,255,.5);">Channels</div>
+                <div style="padding: 5px 8px; border-radius: 6px;"># design</div>
+                <div style="padding: 5px 8px; border-radius: 6px;"># checkout</div>
+                <div style="padding: 5px 8px; border-radius: 6px;"># onboarding</div>
+                <div style="padding: 4px 8px; margin-top: 12px; font-size: 12.5px; color: rgba(255,255,255,.5);">Direct messages</div>
+                <div style="padding: 5px 8px; border-radius: 6px; background: rgba(255,255,255,.16); color: #fff; font-weight: 600; display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #3fbf72; display: inline-block;"></span>Bob Beat</div>
+                <sc-for list="{{ dms }}" as="d" hint-placeholder-count="2">
+                  <div style="padding: 5px 8px; border-radius: 6px; display: flex; align-items: center; gap: 8px;"><span style="width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.4); display: inline-block;"></span>{{ d }}</div>
+                </sc-for>
+              </div>
+              <div style="margin-top: auto; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; gap: 10px;">
+                <div style="width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; background: {{ viewer.bg }};">{{ viewer.initials }}</div>
+                <div style="color: #fff; font-weight: 600; font-size: 13.5px;">{{ viewer.name }}</div>
+              </div>
+            </div>
+            </sc-if>
+
+            <div style="display: flex; flex-direction: column; min-width: 0; height: 100%; min-height: 0;">
+              <div style="height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-bottom: 1px solid #e8e3e5; flex-shrink: 0;">
+                <div style="width: 26px; height: 26px; border-radius: 6px; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #fff;">B</div>
+                <div style="font-weight: 700; font-size: 15px;">Bob Beat</div>
+                <div style="font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 3px; background: #ece7e9; color: #5f5a5c; letter-spacing: .04em;">APP</div>
+                <div style="font-size: 13px; color: #6f6a6c; margin-left: 4px;">Onboarding agent</div>
+                <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6f6a6c;">
+                    <div style="width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; background: {{ viewer.bg }};">{{ viewer.initials }}</div>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="flex: 1; overflow-y: auto; padding: 18px clamp(12px, 2vw, 20px) 8px; display: flex; flex-direction: column; gap: 18px;">
+                <sc-for list="{{ messages }}" as="m" hint-placeholder-count="3">
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #fff; background: {{ m.bg }};">{{ m.initials }}</div>
+                    <div style="min-width: 0; flex: 1;">
+                      <div style="display: flex; align-items: baseline; gap: 8px;">
+                        <div style="font-weight: 700; font-size: 15px;">{{ m.name }}</div>
+                        <sc-if value="{{ m.isApp }}" hint-placeholder-val="{{ true }}"><div style="font-size: 10px; font-weight: 700; padding: 1px 4px; border-radius: 3px; background: #ece7e9; color: #5f5a5c;">APP</div></sc-if>
+                        <div style="font-size: 12px; color: #8a8486;">{{ m.time }}</div>
+                      </div>
+                      <div style="font-size: 15px; line-height: 1.5; margin-top: 2px; color: #1d1c1d; text-wrap: pretty; max-width: 640px;">{{ m.text }}</div>
+
+                      <sc-if value="{{ m.hasCard }}" hint-placeholder-val="{{ false }}">
+                        <div style="margin-top: 10px; max-width: 600px; border: 1px solid #e3dde0; border-radius: 10px; padding: 14px 16px 12px; background: #fff;">
+                          <div style="font-size: 13.5px; font-weight: 700; color: #1d1c1d; margin-bottom: 6px;">{{ m.card.title }}</div>
+                          <sc-for list="{{ m.card.rows }}" as="r" hint-placeholder-count="3">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid #f1edef; flex-wrap: wrap;">
+                              <sc-if value="{{ r.checkable }}" hint-placeholder-val="{{ false }}">
+                                <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}">
+                                  <div onClick="{{ r.onClick }}" style="width: 20px; height: 20px; border-radius: 50%; background: #2e9e5b; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0;">✓</div>
+                                </sc-if>
+                                <sc-if value="{{ r.notDone }}" hint-placeholder-val="{{ true }}">
+                                  <div onClick="{{ r.onClick }}" style="width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #b9b1b5; cursor: pointer; flex-shrink: 0;" style-hover="border-color: #6b1235;"></div>
+                                </sc-if>
+                              </sc-if>
+                              <div style="flex: 1; min-width: 0;">
+                                <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}">
+                                  <div style="font-size: 14px; font-weight: 500; color: #8a8486; text-decoration: line-through;">{{ r.label }}</div>
+                                </sc-if>
+                                <sc-if value="{{ r.notDone }}" hint-placeholder-val="{{ true }}">
+                                  <div style="font-size: 14px; font-weight: 500; color: #1d1c1d;">{{ r.label }}</div>
+                                </sc-if>
+                                <sc-if value="{{ r.hasSub }}" hint-placeholder-val="{{ false }}"><div style="font-size: 12.5px; color: #7a7476; margin-top: 1px; line-height: 1.4;">{{ r.sub }}</div></sc-if>
+                              </div>
+                              <sc-if value="{{ r.hasValue }}" hint-placeholder-val="{{ true }}"><div style="font-size: 13px; color: #6f6a6c; white-space: nowrap;">{{ r.value }}</div></sc-if>
+                              <sc-if value="{{ r.hasButton }}" hint-placeholder-val="{{ false }}">
+                                <sc-if value="{{ r.selected }}" hint-placeholder-val="{{ false }}">
+                                  <div style="font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 7px; background: #fbe4ea; border: 1px solid #f2436c; color: #a01c46; white-space: nowrap;">{{ r.selectedLabel }}</div>
+                                </sc-if>
+                                <sc-if value="{{ r.unselected }}" hint-placeholder-val="{{ true }}">
+                                  <div onClick="{{ r.onClick }}" style="font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 7px; background: #fff; border: 1px solid #cfc7cb; color: #1d1c1d; cursor: pointer; white-space: nowrap;" style-hover="background: #f6f2f4;">{{ r.button }}</div>
+                                </sc-if>
+                              </sc-if>
+                            </div>
+                          </sc-for>
+                          <sc-if value="{{ m.card.hasFooter }}" hint-placeholder-val="{{ false }}"><div style="font-size: 12.5px; color: #7a7476; margin-top: 10px;">{{ m.card.footer }}</div></sc-if>
+                          <sc-if value="{{ m.card.hasButtons }}" hint-placeholder-val="{{ false }}">
+                            <div style="display: flex; gap: 8px; margin-top: 12px;">
+                              <sc-for list="{{ m.card.buttons }}" as="b" hint-placeholder-count="2">
+                                <sc-if value="{{ b.primary }}" hint-placeholder-val="{{ true }}">
+                                  <div onClick="{{ b.onClick }}" style="font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 7px; background: #6b1235; color: #fff; cursor: pointer;" style-hover="background: #7f1741;">{{ b.label }}</div>
+                                </sc-if>
+                                <sc-if value="{{ b.secondary }}" hint-placeholder-val="{{ false }}">
+                                  <div onClick="{{ b.onClick }}" style="font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 7px; background: #fff; border: 1px solid #cfc7cb; color: #1d1c1d; cursor: pointer;" style-hover="background: #f6f2f4;">{{ b.label }}</div>
+                                </sc-if>
+                              </sc-for>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="padding: 10px 20px 16px; flex-shrink: 0;">
+                <div style="border: 1px solid #d5cfd2; border-radius: 10px; padding: 10px 14px; font-size: 14px; color: #9a9496; display: flex; justify-content: space-between; align-items: center;">Message Bob Beat <span style="font-size: 12px; color: #b5aeb1;">↵</span></div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isPhone }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ phoneW }}" height="{{ phoneH }}" hint-size="350px,720px">
+            <div style="height: 100%; display: flex; flex-direction: column; background: #e5ddd5; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1d1c1d;">
+              <div style="padding: 58px 14px 10px; background: #075e54; color: #fff; display: flex; align-items: center; gap: 10px;">
+                <div style="font-size: 20px; color: #fff; line-height: 1;">‹</div>
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #f58a3c, #f2436c); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: #fff;">B</div>
+                <div>
+                  <div style="font-weight: 700; font-size: 15px; color: #fff;">Bob Beat</div>
+                  <div style="font-size: 12px; color: rgba(255,255,255,.75);">Kestrel · Business account</div>
+                </div>
+              </div>
+              <div style="flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="align-self: center; font-size: 11px; font-weight: 600; color: #5b6a72; background: #dbe8ee; padding: 4px 10px; border-radius: 8px; margin-bottom: 4px;">{{ phoneDate }}</div>
+                <sc-for list="{{ messages }}" as="m" hint-placeholder-count="3">
+                  <sc-if value="{{ m.out }}" hint-placeholder-val="{{ false }}">
+                    <div style="align-self: flex-end; max-width: 80%; background: #dcf8c6; border-radius: 14px 14px 4px 14px; padding: 8px 12px; font-size: 14px; line-height: 1.4; box-shadow: 0 1px 0 rgba(0,0,0,.05);">
+                      <div>{{ m.text }}</div>
+                      <div style="font-size: 10.5px; color: #6f8a70; text-align: right; margin-top: 3px;">{{ m.time }} ✓✓</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ m.inn }}" hint-placeholder-val="{{ true }}">
+                    <div style="align-self: flex-start; max-width: 84%; background: #fff; border-radius: 14px 14px 14px 4px; padding: 8px 12px; font-size: 14px; line-height: 1.4; box-shadow: 0 1px 0 rgba(0,0,0,.05);">
+                      <div style="text-wrap: pretty;">{{ m.text }}</div>
+                      <sc-if value="{{ m.hasCard }}" hint-placeholder-val="{{ false }}">
+                        <div style="margin-top: 8px; border-top: 1px solid #efe9eb; padding-top: 6px;">
+                          <div style="font-size: 12.5px; font-weight: 700; margin-bottom: 2px;">{{ m.card.title }}</div>
+                          <sc-for list="{{ m.card.rows }}" as="r" hint-placeholder-count="3">
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f3eff1;">
+                              <sc-if value="{{ r.checkable }}" hint-placeholder-val="{{ false }}">
+                                <sc-if value="{{ r.done }}" hint-placeholder-val="{{ false }}"><div style="width: 16px; height: 16px; border-radius: 50%; background: #25d366; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">✓</div></sc-if>
+                                <sc-if value="{{ r.notDone }}" hint-placeholder-val="{{ true }}"><div onClick="{{ r.onClick }}" style="width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #b9b1b5; flex-shrink: 0; cursor: pointer;"></div></sc-if>
+                              </sc-if>
+                              <div style="flex: 1; min-width: 0;">
+                                <div style="font-size: 13px; font-weight: 500;">{{ r.label }}</div>
+                                <sc-if value="{{ r.hasSub }}" hint-placeholder-val="{{ false }}"><div style="font-size: 11.5px; color: #7a7476; line-height: 1.35;">{{ r.sub }}</div></sc-if>
+                              </div>
+                              <sc-if value="{{ r.hasValue }}" hint-placeholder-val="{{ true }}"><div style="font-size: 11.5px; color: #6f6a6c; white-space: nowrap;">{{ r.value }}</div></sc-if>
+                              <sc-if value="{{ r.hasButton }}" hint-placeholder-val="{{ false }}">
+                                <sc-if value="{{ r.selected }}" hint-placeholder-val="{{ false }}"><div style="font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; background: #fbe4ea; border: 1px solid #f2436c; color: #a01c46;">{{ r.selectedLabel }}</div></sc-if>
+                                <sc-if value="{{ r.unselected }}" hint-placeholder-val="{{ true }}"><div onClick="{{ r.onClick }}" style="font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 7px; background: #128c7e; color: #fff; cursor: pointer;">{{ r.button }}</div></sc-if>
+                              </sc-if>
+                            </div>
+                          </sc-for>
+                          <sc-if value="{{ m.card.hasFooter }}" hint-placeholder-val="{{ false }}"><div style="font-size: 11.5px; color: #7a7476; margin-top: 6px;">{{ m.card.footer }}</div></sc-if>
+                        </div>
+                      </sc-if>
+                      <div style="font-size: 10.5px; color: #9a9496; text-align: right; margin-top: 3px;">{{ m.time }}</div>
+                    </div>
+                  </sc-if>
+                </sc-for>
+              </div>
+              <div style="padding: 8px 12px 40px; background: #f0f0f0; display: flex; align-items: center; gap: 8px;">
+                <div style="flex: 1; background: #fff; border-radius: 999px; padding: 9px 14px; font-size: 14px; color: #9a9496;">Message</div>
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px;">↑</div>
+              </div>
+            </div>
+          </x-import>
+        </sc-if>
+
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showGuide&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Demo&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      moment: 0, persona: null,
+      buddy: null, buddyAck: null, planApproved: false, done: {}, d3choice: null, slot: null,
+    };
+  }
+  componentDidMount() {
+    this._key = (e) => {
+      if (e.key === 'ArrowRight') this.go(1);
+      if (e.key === 'ArrowLeft') this.go(-1);
+    };
+    window.addEventListener('keydown', this._key);
+    this._resize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('resize', this._resize);
+    this._resize();
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this._key); window.removeEventListener('resize', this._resize); }
+  set(patch) {
+    this.setState(patch);
+  }
+  go(d) {
+    const n = Math.min(this.moments().length - 1, Math.max(0, this.state.moment + d));
+    this.set({ moment: n, persona: null });
+  }
+
+  people() {
+    return {
+      agent: { name: 'Bob Beat', initials: 'B', bg: 'linear-gradient(135deg, #f58a3c, #f2436c)', isApp: true },
+      maya: { name: 'Maya Levi', role: 'New hire', initials: 'ML', bg: '#7c5cbf' },
+      manager: { name: 'Eli Baron', role: 'Manager', initials: 'EB', bg: '#2f7d8c' },
+      buddy: { name: 'Noa Adler', role: 'Buddy', initials: 'NA', bg: '#b9773a' },
+    };
+  }
+
+  moments() {
+    return [
+      { id: 'd-7', day: 'Day −7', label: 'Plan and buddy', title: 'Draft plan, three buddy options', personas: ['manager', 'buddy'], device: 'slack',
+        noticed: 'Start date in 7 days. No 30/60/90 plan and no buddy assigned.',
+        did: 'Drafted a plan from the role template and the team\u2019s current projects. Proposed three buddies. Waits for Eli\u2019s call.',
+        tip: 'Try it: choose Noa as buddy, approve the plan, then switch to Noa\u2019s view.' },
+      { id: 'd-1', day: 'Day −1', label: 'Five actions', title: 'One message, five actions', personas: ['manager'], device: 'slack',
+        noticed: 'Five manager-owned actions are due before day 1. Three haven\u2019t been touched.',
+        did: 'Sent one message built from the current onboarding state. Reminds at 17:00 for anything left.',
+        tip: 'Try it: check the actions off.' },
+      { id: 'd1', day: 'Day 1', label: 'Handoff', title: 'WhatsApp to Slack', personas: ['maya', 'manager'], device: 'slack',
+        noticed: 'Maya\u2019s Slack account is live.',
+        did: 'Moved the thread to Slack. Confirmed week one, introduced the buddy, and keeps tracking Eli\u2019s actions.',
+        tip: '' },
+      { id: 'd3', day: 'Day 3', label: 'Access blocked', title: 'Access approved, never provisioned', personas: ['manager', 'maya'], device: 'slack',
+        noticed: 'Maya still hasn\u2019t opened the design system. Her first task depends on it.',
+        did: 'Asked IT to provision the seat, told Eli, and confirmed when it cleared. Maya never had to ask.',
+        tip: 'Try it: pick how to handle it, then switch to Maya\u2019s view.' },
+      { id: 'd10', day: 'Day 10', label: 'Buddy cadence', title: 'The buddy cadence dropped', personas: ['buddy', 'maya'], device: 'slack',
+        noticed: 'One buddy meeting since day 1. The weekly check-in didn\u2019t happen, and two of Maya\u2019s questions are waiting.',
+        did: 'Found two slots that fit both calendars and offered them to Noa with the questions attached.',
+        tip: 'Try it: book a slot, then switch to Maya\u2019s view.' },
+      { id: 'd14', day: 'Day 14', label: 'Two weeks in', title: 'End of the V1 span', personas: ['manager'], device: 'slack',
+        noticed: 'Preboarding through day 14 is complete.',
+        did: 'Summarised on-time actions, blockers cleared, and time-to-clear. People Ops did not need to step in.',
+        tip: '' },
+    ];
+  }
+
+  row(o) {
+    const r = Object.assign({ label: '', sub: '', value: '', button: '', selectedLabel: 'Selected', checkable: false, done: false, selected: false, onClick: null }, o);
+    r.hasSub = !!r.sub; r.hasValue = !!r.value; r.hasButton = !!r.button; r.notDone = !r.done; r.unselected = !r.selected;
+    return r;
+  }
+  card(title, rows, extra) {
+    const c = Object.assign({ title, rows: rows.map(r => this.row(r)), footer: '', buttons: [] }, extra || {});
+    c.hasFooter = !!c.footer; c.hasButtons = c.buttons.length > 0;
+    c.buttons = c.buttons.map(b => Object.assign({ secondary: !b.primary }, b));
+    return c;
+  }
+  msg(who, time, text, card, out) {
+    const p = this.people()[who];
+    return { who, name: p.name, initials: p.initials, bg: p.bg, isApp: !!p.isApp, time, text, card: card || null, hasCard: !!card, out: !!out, inn: !out };
+  }
+
+  screen(id, persona) {
+    const s = this.state, A = 'agent';
+    const buddyNames = { noa: 'Noa Adler', tom: 'Tom Reyes', sara: 'Sara Kim' };
+    const slots = { a: 'today 15:30–16:00', b: 'tomorrow 10:00–10:30' };
+    const out = [];
+    if (id === 'd-7' && persona === 'manager') {
+      out.push(this.msg(A, '08:30', 'Eli, Maya Levi starts in 7 days. Here\u2019s a draft 30/60/90 based on the product designer role template and your team\u2019s current projects. Edit anything, then approve.', this.card('Draft 30/60/90 · Maya Levi', [
+        { label: 'Days 1–30', sub: 'Ship a component update to the design system. Pair on the Checkout redesign.' },
+        { label: 'Days 31–60', sub: 'Own one flow end to end: Returns.' },
+        { label: 'Days 61–90', sub: 'Lead a design review. Present to Product.' },
+      ], { buttons: s.planApproved ? [] : [
+        { label: 'Edit plan', onClick: () => {} },
+        { label: 'Approve plan', primary: true, onClick: () => this.set({ planApproved: true }) },
+      ], footer: s.planApproved ? 'Approved by Eli Baron' : '' })));
+      out.push(this.msg(A, '08:30', 'Three buddy options, ranked by fit and availability:', this.card('Buddy options', ['noa', 'tom', 'sara'].map(k => ({
+        label: buddyNames[k],
+        sub: k === 'noa' ? 'Senior product designer, Checkout. Same time zone. Buddied twice before.' : k === 'tom' ? 'Product designer, Growth. Available, first time as a buddy.' : 'Staff product designer. Heavy load this month.',
+        button: 'Choose', selectedLabel: 'Chosen', selected: s.buddy === k, onClick: () => this.set({ buddy: k }),
+      })))));
+      if (s.planApproved && s.buddy) out.push(this.msg(A, '08:47', `Approved. I\u2019ve shared the plan with ${buddyNames[s.buddy]} and scheduled the buddy intro for day 1 at 14:00. I\u2019ll track each milestone and flag anything that slips.`));
+      else if (s.planApproved) out.push(this.msg(A, '08:47', 'Plan approved. Choose a buddy when you\u2019re ready; I\u2019m holding a day 1 intro slot at 14:00.'));
+      else if (s.buddy) out.push(this.msg(A, '08:47', `${buddyNames[s.buddy]} it is. Approve the plan and I\u2019ll share it with both of you.`));
+    }
+    if (id === 'd-7' && persona === 'buddy') {
+      if (s.buddy !== 'noa') {
+        out.push(this.msg(A, '08:30', 'Nothing yet for Noa. Bob Beat only reaches out once Eli picks a buddy.'));
+      } else {
+        out.push(this.msg(A, '08:48', 'Hi Noa, Eli picked you as onboarding buddy for Maya Levi, product designer joining Checkout on the 15th. Here\u2019s what that means for the first two weeks:', this.card('Buddy · Maya Levi', [
+          { label: 'Day 1, 14:00 · Intro coffee', sub: '30 min. Calendar hold sent.', value: 'Hold sent' },
+          { label: 'Weekly check-in', sub: 'Thursdays 15:00, first on day 3. I\u2019ll flag if one slips.', value: 'Recurring' },
+          { label: 'Her first task', sub: 'Design-system button audit. You\u2019re the go-to for questions.' },
+        ], { footer: s.planApproved ? 'Maya\u2019s 30/60/90 is approved and attached.' : 'Eli is still finalising the 30/60/90; I\u2019ll share it once approved.', buttons: s.buddyAck ? [] : [
+          { label: 'Accept', primary: true, onClick: () => this.set({ buddyAck: 'yes' }) },
+          { label: 'Not this time', onClick: () => this.set({ buddyAck: 'no' }) },
+        ] })));
+        if (s.buddyAck === 'yes') {
+          out.push(this.msg('buddy', '08:52', 'Happy to. Accepted the day 1 hold.'));
+          out.push(this.msg(A, '08:52', 'Thanks. Two things to know before day 1: Maya asked about the Checkout review process during preboarding, and her design-system access is still pending with IT. I\u2019m on the second one; the first is a good opener.'));
+        }
+        if (s.buddyAck === 'no') {
+          out.push(this.msg('buddy', '08:52', 'Not this time, my month is packed.'));
+          out.push(this.msg(A, '08:52', 'Understood. I\u2019ve let Eli know and offered Tom Reyes as the next option. Nothing else on you.'));
+        }
+      }
+    }
+    if (id === 'd-1') {
+      const keys = ['call', 'note', 'task', 'seat', 'oneone'];
+      const labels = [
+        ['Confirm the 9:30 welcome call', 'Calendar hold sent, not accepted'],
+        ['Post a welcome note in #design', ''],
+        ['Assign the first task: design-system button audit', 'Draft brief ready to send'],
+        ['Approve the Figma seat', 'IT is waiting for your OK'],
+        ['Book Friday\u2019s 1:1', ''],
+      ];
+      const n = keys.filter(k => s.done[k]).length;
+      out.push(this.msg(A, '08:00', 'Maya starts tomorrow. Five actions from the current onboarding state:', this.card('Before tomorrow', keys.map((k, i) => ({
+        label: labels[i][0], sub: labels[i][1], checkable: true, done: !!s.done[k],
+        onClick: () => this.set({ done: Object.assign({}, s.done, { [k]: !s.done[k] }) }),
+      })), { footer: n === 5 ? '5 of 5 done' : `${n} of 5 done. I\u2019ll remind you at 17:00 for anything left.` })));
+      if (n === 5) out.push(this.msg(A, '10:12', 'All five done. Maya\u2019s day 1 is set. Nothing else is on you until the welcome call.'));
+    }
+    if (id === 'd1' && persona === 'maya') {
+      out.push(this.msg(A, '08:45', 'Welcome to Kestrel\u2019s Slack, Maya. We\u2019re moving here from WhatsApp; everything continues in this thread.'));
+      out.push(this.msg(A, '08:45', 'Your week one:', this.card('Week one', [
+        { label: 'Today 9:30 · Welcome call with Eli', value: 'Accepted' },
+        { label: 'Today 14:00 · Buddy intro with Noa', value: 'Booked' },
+        { label: 'Wed · First task: design-system button audit', value: 'Brief sent' },
+        { label: 'Thu · Checkout team sync', value: 'Invited' },
+        { label: 'Fri 15:00 · 1:1 with Eli', value: 'Booked' },
+      ])));
+      out.push(this.msg(A, '08:46', 'Your buddy is Noa Adler, senior product designer on Checkout. Eli\u2019s actions for you are tracked; you\u2019ll hear from me only when something changes.'));
+    }
+    if (id === 'd1' && persona === 'manager') {
+      out.push(this.msg(A, '08:50', 'Maya\u2019s day 1 is in motion. Your five actions landed. One open item: the Figma seat is approved but not yet provisioned by IT (Dana K.). I\u2019m following up and will tell you only if it slips past tomorrow.'));
+    }
+    if (id === 'd3' && persona === 'manager') {
+      out.push(this.msg(A, '09:05', 'Maya hasn\u2019t opened the design system yet. Access was approved on day 1 but the Figma seat was never provisioned, and her first task depends on it. I\u2019ve asked Dana in IT to provision it this morning.', this.card('Blocker · Design system access', [
+        { label: 'Owner', value: 'Dana K., IT' },
+        { label: 'Requested', value: 'Day −25' },
+        { label: 'Approved', value: 'Day 1' },
+        { label: 'Status', value: 'Not provisioned' },
+        { label: 'Impact', value: 'First task blocked' },
+      ], { buttons: s.d3choice ? [] : [
+        { label: 'Escalate to IT lead', primary: true, onClick: () => this.set({ d3choice: 'escalate' }) },
+        { label: 'Keep tracking', onClick: () => this.set({ d3choice: 'track' }) },
+      ], footer: s.d3choice === 'escalate' ? 'Escalated to Ravi Mehta, IT lead, at 09:11' : s.d3choice === 'track' ? 'Tracking. Escalates automatically at 14:00 if still open.' : '' })));
+      if (s.d3choice) {
+        out.push(this.msg('manager', '09:11', s.d3choice === 'escalate' ? 'Escalate, please. She needs it today.' : 'Keep tracking, thanks.'));
+        out.push(this.msg(A, '11:40', 'Resolved. Figma seat provisioned at 11:38. Time to clear: 2h 33m. Maya wasn\u2019t asked to chase it.'));
+      }
+    }
+    if (id === 'd3' && persona === 'maya') {
+      out.push(this.msg(A, '09:00', 'Morning. Today: 11:00 design review with the Checkout team, 15:00 button-audit working session with Noa.'));
+      if (s.d3choice) {
+        out.push(this.msg(A, '11:40', 'Your design-system access is live. Dana from IT set it up, so you\u2019re clear to start the button audit.'));
+        out.push(this.msg('maya', '11:52', 'Oh nice, I hadn\u2019t even noticed. Thanks!'));
+      }
+    }
+    if (id === 'd10' && persona === 'buddy') {
+      out.push(this.msg(A, '08:50', 'Noa, you and Maya met once on day 1, and the weekly buddy check-in hasn\u2019t happened since. She has two open questions about the Checkout review process waiting for you.', this.card('Two slots that work for both of you', [
+        { label: 'Today, 15:30–16:00', button: 'Book', selectedLabel: 'Booked', selected: s.slot === 'a', onClick: () => this.set({ slot: 'a' }) },
+        { label: 'Tomorrow, 10:00–10:30', button: 'Book', selectedLabel: 'Booked', selected: s.slot === 'b', onClick: () => this.set({ slot: 'b' }) },
+      ], { footer: s.slot ? '' : 'Or reply with another time.' })));
+      if (s.slot) {
+        out.push(this.msg(A, '08:53', `Booked ${slots[s.slot]}. Invite sent to Maya with her two questions attached, so you can prep in two minutes.`));
+        out.push(this.msg('buddy', '08:54', 'Thanks. The week got away from me.'));
+      }
+    }
+    if (id === 'd10' && persona === 'maya') {
+      out.push(this.msg(A, '08:55', 'Heads up: I\u2019m setting up your next check-in with Noa. You don\u2019t need to chase it.'));
+      if (s.slot) out.push(this.msg(A, '08:56', `Check-in with Noa is ${slots[s.slot]}. Your two Checkout questions are in the invite.`, this.card('Buddy check-in', [
+        { label: 'When', value: slots[s.slot].charAt(0).toUpperCase() + slots[s.slot].slice(1) },
+        { label: 'With', value: 'Noa Adler' },
+        { label: 'Agenda', value: 'Checkout review process · 2 questions' },
+      ])));
+    }
+    if (id === 'd14') {
+      out.push(this.msg(A, '09:00', 'Two weeks in. Maya\u2019s onboarding so far:', this.card('Preboarding → day 14', [
+        { label: 'On-time actions', value: '11 of 12' },
+        { label: 'Blockers cleared', value: '2 · median 2h 33m' },
+        { label: 'Buddy cadence', value: 'Kept · 2 check-ins' },
+        { label: 'Day 30 milestone', value: 'On track' },
+        { label: 'People Ops involvement', value: 'None' },
+      ], { buttons: [{ label: 'Open full log', onClick: () => {} }] })));
+      out.push(this.msg(A, '09:00', 'The plan continues to day 90 with milestone tracking. I\u2019ll surface only what needs your judgment.'));
+    }
+    return out;
+  }
+
+  renderVals() {
+    const P = this.people();
+    const list = this.moments();
+    const idx = this.state.moment;
+    const cur = list[idx];
+    const persona = cur.personas.includes(this.state.persona) ? this.state.persona : cur.personas[0];
+    const viewer = P[persona];
+    const vw = this.state.vw || (typeof window !== 'undefined' ? window.innerWidth : 1280);
+    const isMobile = vw < 760;
+    const dmsBy = { maya: ['Eli Baron', 'Noa Adler'], manager: ['Maya Levi', 'Noa Adler', 'Dana K.'], buddy: ['Maya Levi', 'Eli Baron'] };
+    return {
+      moments: list.map((m, i) => Object.assign({}, m, { active: i === idx, inactive: i !== idx, onSelect: () => this.set({ moment: i, persona: null }) })),
+      current: Object.assign({}, cur, { hasTip: !!cur.tip }),
+      personas: cur.personas.map(k => Object.assign({}, P[k], { active: k === persona, inactive: k !== persona, onSelect: () => this.set(cur.id === 'd-7' && k === 'buddy' && this.state.buddy !== 'noa' ? { persona: k, buddy: 'noa' } : { persona: k }) })),
+      viewer,
+      dms: dmsBy[persona],
+      isSlack: cur.device === 'slack',
+      isPhone: cur.device === 'phone',
+      isMobile, isDesktop: !isMobile,
+      slackCols: isMobile ? 'minmax(0, 1fr)' : '224px minmax(0, 1fr)',
+      phoneW: Math.min(340, vw - 32), phoneH: isMobile ? 640 : 720,
+      phoneDate: cur.phoneDate || '',
+      messages: this.screen(cur.id, persona),
+      goPrev: () => this.go(-1),
+      goNext: () => idx === list.length - 1 ? this.set({ moment: 0, persona: null }) : this.go(1),
+      showGuide: this.props.showGuide ?? true,
+      wideStage: !(this.props.showGuide ?? true),
+      nextLabel: idx === list.length - 1 ? 'Back to start' : 'Next →',
+    };
+  }
+}
+</script>
+</body>
+</html>
